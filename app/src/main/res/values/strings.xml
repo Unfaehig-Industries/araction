@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">toozer-example</string>
+    <string name="hello_tooz">Hello Tooz!</string>
+</resources>
