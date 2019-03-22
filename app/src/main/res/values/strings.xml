@@ -1,4 +1,6 @@
 <resources>
-    <string name="app_name">toozer-example</string>
+    <string name="app_name">Toozer Example</string>
     <string name="hello_tooz">Hello Tooz!</string>
+    <string name="send_frame">Send frame</string>
+    <string name="change_color">Change color</string>
 </resources>
