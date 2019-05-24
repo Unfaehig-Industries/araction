@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        button_send_frame.isEnabled = false
 
         frameViewInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         promptView = frameViewInflater.inflate(R.layout.prompt, null)
