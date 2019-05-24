@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Toozer Example</string>
     <string name="hello_tooz">Hello Tooz!</string>
-    <string name="send_frame">Send frame</string>
+    <string name="update_card">Update Card</string>
     <string name="change_color">Change color</string>
     <string name="default_prompt_text">Toozer Example</string>
 </resources>

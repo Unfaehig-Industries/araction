@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="content_margin">16dp</dimen>
-    <dimen name="frame_width">400px</dimen>
-    <dimen name="frame_height">640px</dimen>
-    <dimen name="prompt_width">320px</dimen>
-    <dimen name="prompt_height">200px</dimen>
 </resources>
