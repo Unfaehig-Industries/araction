@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools" android:layout_width="@dimen/prompt_width"
               android:layout_height="@dimen/prompt_height"
-              android:background="@android:color/transparent"
+              android:background="@color/transparent"
               android:gravity="center"
               android:orientation="vertical"
               android:paddingLeft="30px"
@@ -13,5 +13,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/promptText" tools:text="@string/default_prompt_text"
             android:typeface="normal" android:textAlignment="center" android:textColor="@color/white"
-            android:textStyle="bold" android:fontFamily="sans-serif-black" android:textSize="18sp"/>
+            android:textStyle="bold" android:fontFamily="sans-serif-black" android:textSize="14sp"/>
 </LinearLayout>

@@ -54,13 +54,19 @@ class MainActivity : AppCompatActivity() {
         toozifier.register(this, getString(R.string.app_name), registrationListener)
 
         button_change_color.setOnClickListener {
-            val randomColor =
-                Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256))
-            view_frame.setBackgroundColor(randomColor)
+            val backgroundColor = getRandomColor()
+            val textColor = getRandomColor()
+
+            view_frame.setBackgroundColor(backgroundColor)
+            view_frame.setTextColor(textColor)
         }
 
         button_send_frame.setOnClickListener {
             toozifier.updateCard(promptView, view_frame, Constants.FRAME_TIME_TO_LIVE_FOREVER)
         }
+    }
+
+    private fun getRandomColor(): Int {
+        return Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256))
     }
 }
