@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/view_frame"
-        android:layout_width="400px"
-        android:layout_height="640px"
+        android:layout_width="@dimen/frame_view_width"
+        android:layout_height="@dimen/frame_view_height"
         android:background="@color/colorPrimary"
         android:gravity="center"
         android:text="@string/hello_tooz"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/content_margin"
         android:enabled="false"
-        android:text="@string/send_frame"
+        android:text="@string/update_card"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
