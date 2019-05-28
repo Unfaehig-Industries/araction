@@ -1,9 +1,7 @@
 package tech.tooz.bto.toozifier.example
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,7 +19,6 @@ class MainActivity : AppCompatActivity() {
 
     private val random = Random()
 
-    private lateinit var frameViewInflater: LayoutInflater
     private lateinit var promptView: View
 
     private val registrationListener = object : RegistrationListener {
@@ -47,24 +44,26 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        button_send_frame.isEnabled = false
 
-        frameViewInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        promptView = frameViewInflater.inflate(R.layout.layout_prompt, null)
+        promptView = layoutInflater.inflate(R.layout.layout_prompt, null)
 
         toozifier.register(this, getString(R.string.app_name), registrationListener)
 
         button_change_color.setOnClickListener {
-            val backgroundColor = getRandomColor()
-            val textColor = getRandomColor()
-
-            view_frame.setBackgroundColor(backgroundColor)
-            view_frame.setTextColor(textColor)
+            changeFrameAndTextColor()
         }
 
         button_send_frame.setOnClickListener {
             toozifier.updateCard(promptView, view_frame, Constants.FRAME_TIME_TO_LIVE_FOREVER)
         }
+    }
+
+    private fun changeFrameAndTextColor() {
+        val backgroundColor = getRandomColor()
+        val textColor = getRandomColor()
+
+        view_frame.setBackgroundColor(backgroundColor)
+        view_frame.setTextColor(textColor)
     }
 
     private fun getRandomColor(): Int {
@@ -75,5 +74,4 @@ class MainActivity : AppCompatActivity() {
         toozifier.deregister()
         super.onDestroy()
     }
-
 }
