@@ -1,19 +1,56 @@
 # Toozer Example
-
-Simple toozer that displays frames of different colors.
+Toozer app that demonstrates a simple usage of Toozifier library.
+It displays frames of different colors to BTO glasses.
 
 ## Implementation
+All implementation is contained in [MainActivity](./app/src/main/java/tech/tooz/bto/toozifier/example/MainActivity.kt).
 
-This application has only one activity, MainActivity. Upon its creation, we obtain a Toozifier instance.
-
+### 1. Obtain Toozifier instance
+The first step you need to do to use the Toozifier library is to obtain an instance of Toozifier object. You can do that by calling:
 ```
-private val toozifier = ToozifierFactory.getInstance()
+val toozifier: Toozifier = ToozifierFactory.getInstance()
 ```
 
-We register this app as a toozer in MainActivity's `onCreate` lifecycle callback method.
+### 2. Implement RegistrationListener interface
+Next you need to implement RegistrationListener which receives registration events from Toozifier:
+```
+private val registrationListener = object : RegistrationListener {
 
+        override fun onDeregistrationFailed(eventCause: EventCause) {
+            Timber.e("Deregistration failed: ${eventCause.description}")
+        }
+
+        override fun onDeregistrationSuccessful() {
+            Timber.i("Deregistration successful")
+        }
+
+        override fun onRegistrationFailed(eventCause: EventCause) {
+            Timber.e("Registration failed: ${eventCause.description}")
+        }
+
+        override fun onRegistrationSuccessful() {
+            Timber.i("Registration successful")
+        }
+    }
+```
+
+### 3. Register your app as a Toozer
+To use Toozifier features you need to register your app as a Toozer:
 ```
 toozifier.register(this, getString(R.string.app_name), registrationListener)
 ```
+*NOTE: You need to pass as arguments: context, toozer name, and a registration listener that receives registration events*
 
-We can start sending frames if the registration succeeds.
+### 4. Update card
+If registration succeeds, you can use Toozifier features like: updating cards, recording the audio, or receiving sensor data.  
+To update card call:
+```
+toozifier.updateCard(promptView, frameView, Constants.FRAME_TIME_TO_LIVE_FOREVER)
+```
+*NOTE: You need to pass as arguments: prompt view, frame view, and time to live parameter*
+
+### 5. Deregister Toozer
+To deregister toozer, call:
+```
+toozifier.deregister()
+```
