@@ -7,10 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import tooz.bto.common.Constants
-import tooz.bto.toozifier.EventCause
-import tooz.bto.toozifier.RegistrationListener
-import tooz.bto.toozifier.Toozifier
-import tooz.bto.toozifier.ToozifierFactory
+import tooz.bto.toozifier.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -41,12 +38,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val buttonEventListener = object : ButtonEventListener {
+
+        override fun onButtonEvent(button: Constants.Button) {
+            Timber.d("Button event: $button")
+            when (button) {
+                Constants.Button.B_1S -> {
+                    view_frame.setBackgroundColor(Color.BLUE)
+                    view_frame.setTextColor(Color.YELLOW)
+                }
+                else -> {
+                    // Do nothing
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         promptView = layoutInflater.inflate(R.layout.layout_prompt, null)
 
+        toozifier.addListener(buttonEventListener)
         toozifier.register(this, getString(R.string.app_name), registrationListener)
 
         button_change_color.setOnClickListener {
