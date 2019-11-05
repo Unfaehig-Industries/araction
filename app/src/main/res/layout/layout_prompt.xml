@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/prompt_view_width"
     android:layout_height="@dimen/prompt_view_height"
-    android:background="@color/colorPromptBackground"
+    android:background="@color/background_prompt"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="30px"

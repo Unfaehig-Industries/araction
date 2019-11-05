@@ -7,7 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import tooz.bto.common.Constants
-import tooz.bto.toozifier.*
+import tooz.bto.toozifier.ButtonEventListener
+import tooz.bto.toozifier.ErrorCause
+import tooz.bto.toozifier.Toozifier
+import tooz.bto.toozifier.ToozifierFactory
+import tooz.bto.toozifier.registration.RegistrationListener
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -25,23 +29,22 @@ class MainActivity : AppCompatActivity() {
      */
     private val registrationListener = object : RegistrationListener {
 
-        override fun onRegistrationSuccessful() {
-            Timber.i("Registration successful")
+        override fun onDeregisterFailure(errorCause: ErrorCause) {
+            Timber.e("Deregister failure: ${errorCause.description}")
+        }
+
+        override fun onDeregisterSuccess() {
+            Timber.i("Deregister success")
+        }
+
+        override fun onRegisterFailure(errorCause: ErrorCause) {
+            Timber.e("Register failure: ${errorCause.description}")
+        }
+
+        override fun onRegisterSuccess() {
+            Timber.i("Register success")
             button_send_frame.isEnabled = true
         }
-
-        override fun onDeregistrationSuccessful() {
-            Timber.i("Deregistration successful")
-        }
-
-        override fun onRegistrationFailed(eventCause: EventCause) {
-            Timber.e("Registration failed: ${eventCause.description}")
-        }
-
-        override fun onDeregistrationFailed(eventCause: EventCause) {
-            Timber.e("Deregistration failed: ${eventCause.description}")
-        }
-
     }
 
     /**
@@ -108,5 +111,4 @@ class MainActivity : AppCompatActivity() {
     private fun getRandomColor(): Int {
         return Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256))
     }
-
 }
