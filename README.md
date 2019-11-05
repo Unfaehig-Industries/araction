@@ -16,22 +16,23 @@ Next you need to implement RegistrationListener which receives registration even
 ```
 private val registrationListener = object : RegistrationListener {
 
-        override fun onDeregistrationFailed(eventCause: EventCause) {
-            Timber.e("Deregistration failed: ${eventCause.description}")
-        }
+   override fun onDeregisterFailure(errorCause: ErrorCause) {
+      Timber.e("Deregister failure: ${errorCause.description}")
+   }
 
-        override fun onDeregistrationSuccessful() {
-            Timber.i("Deregistration successful")
-        }
+   override fun onDeregisterSuccess() {
+      Timber.i("Deregister success")
+   }
 
-        override fun onRegistrationFailed(eventCause: EventCause) {
-            Timber.e("Registration failed: ${eventCause.description}")
-        }
+   override fun onRegisterFailure(errorCause: ErrorCause) {
+      Timber.e("Register failure: ${errorCause.description}")
+   }
 
-        override fun onRegistrationSuccessful() {
-            Timber.i("Registration successful")
-        }
-    }
+   override fun onRegisterSuccess() {
+      Timber.i("Register success")
+      button_send_frame.isEnabled = true
+   }
+}
 ```
 
 ### 3. Register your app as a Toozer
