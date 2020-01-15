@@ -7,10 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import tooz.bto.common.Constants
-import tooz.bto.toozifier.ButtonEventListener
-import tooz.bto.toozifier.ErrorCause
 import tooz.bto.toozifier.Toozifier
 import tooz.bto.toozifier.ToozifierFactory
+import tooz.bto.toozifier.button.Button
+import tooz.bto.toozifier.button.ButtonEventListener
+import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
 import java.util.*
 
@@ -56,17 +57,10 @@ class MainActivity : AppCompatActivity() {
      */
     private val buttonEventListener = object : ButtonEventListener {
 
-        override fun onButtonEvent(button: Constants.Button) {
+        override fun onButtonEvent(button: Button) {
             Timber.d("Button event: $button")
-            when (button) {
-                Constants.Button.B_1S -> {
-                    view_frame.setBackgroundColor(Color.BLUE)
-                    view_frame.setTextColor(Color.YELLOW)
-                }
-                else -> {
-                    // Do nothing
-                }
-            }
+            changeFrameAndTextColor()
+            toozifier.updateCard(promptView, view_frame, Constants.FRAME_TIME_TO_LIVE_FOREVER)
         }
     }
 
