@@ -22,6 +22,19 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures {
+        viewBinding true
+    }
+//    android.applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            if (variant.name.contains("debug")) {
+//                outputFileName = new File("../../../../../apks/", "example-app.apk")
+//            }
+//        }
+//    }
 }
 
 repositories {

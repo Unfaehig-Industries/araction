@@ -2,11 +2,10 @@ package tech.tooz.bto.toozifier.examples.heartbeat
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.Wearable
@@ -14,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_heartbeat.*
 import tech.tooz.bto.toozifier.examples.BaseFragment
 import tech.tooz.bto.toozifier.examples.R
 import tech.tooz.bto.toozifier.examples.ViewState
+import tech.tooz.bto.toozifier.examples.databinding.FragmentHeartbeatBinding
 import timber.log.Timber
 import tooz.bto.common.Constants
 import tooz.bto.toozifier.button.Button
@@ -24,13 +24,15 @@ import tooz.bto.toozifier.registration.RegistrationListener
 class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListener, MessageClient.OnMessageReceivedListener {
 
     private var heartBeatCard: AppCompatTextView? = null
+    private var binding: FragmentHeartbeatBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_heartbeat, container, false)
+        binding = FragmentHeartbeatBinding.inflate(inflater, container, false)
+        return binding!!.root
     }
 
     @SuppressLint("InflateParams")
@@ -39,16 +41,29 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
         heartBeatCard = (LayoutInflater.from(requireContext())
             .inflate(R.layout.card_heartbeat, null) as LinearLayout).findViewById(R.id.text_view_bpm)
         registerToozer()
-        button_retry?.setOnClickListener {
-            deregisterToozer()
-            registerToozer()
-        }
         Wearable.getMessageClient(requireContext()).addListener(this)
+        setInitialHeartBeatText()
+        // TODO test if a refresh button might be needed in case of state failure
+//        setHasOptionsMenu(true)
+        setClickListener()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.options_heartbeat, menu);
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == R.id.refresh) {
+            findNavController().navigate(R.id.fragment_heartbeat_to_self)
+            true
+        } else super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         Wearable.getMessageClient(requireContext()).removeListener(this)
+        binding = null
     }
 
     override fun onRegisterSuccess() {
@@ -91,12 +106,12 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
     private fun setLayout(viewState: ViewState) {
         when (viewState) {
             ViewState.SUCCESS -> {
-                layout_error?.visibility = View.GONE
-                text_view_bpm.visibility = View.VISIBLE
+                binding?.layoutError?.visibility = View.GONE
+                binding?.textViewBpm?.visibility = View.VISIBLE
             }
             ViewState.ERROR -> {
-                layout_error?.visibility = View.VISIBLE
-                text_view_bpm.visibility = View.GONE
+                binding?.layoutError?.visibility = View.VISIBLE
+                binding?.textViewBpm?.visibility = View.GONE
             }
         }
     }
@@ -113,6 +128,19 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
     private fun deregisterToozer() {
         toozifier.removeListener(this)
         toozifier.deregister()
+    }
+
+    private fun setClickListener() {
+        button_glass_connection_error?.setOnClickListener {
+            deregisterToozer()
+            registerToozer()
+        }
+    }
+
+    private fun setInitialHeartBeatText() {
+        getString(R.string.bpm, "0").apply {
+            binding?.textViewBpm?.text = this
+        }
     }
 
 }

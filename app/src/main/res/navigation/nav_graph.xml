@@ -7,17 +7,40 @@
     <fragment
         android:id="@+id/fragment_example_list"
         android:name="tech.tooz.bto.toozifier.examples.ExampleListFragment"
-        android:label="ExampleListFragment" />
+        android:label="Toozer Examples">
+
+        <action
+            android:id="@+id/fragment_heartbeat_action"
+            app:destination="@+id/fragment_heartbeat"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/fragment_prompt_action"
+            app:destination="@+id/fragment_prompt"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_prompt"
         android:name="tech.tooz.bto.toozifier.examples.prompt.PromptFragment"
-        android:label="PromptFragment" />
+        android:label="Prompt" />
 
     <fragment
         android:id="@+id/fragment_heartbeat"
         android:name="tech.tooz.bto.toozifier.examples.heartbeat.HeartBeatFragment"
-        android:label="HeartBeatFragment" />
-
+        android:label="Heartbeat">
+        <action
+            android:id="@+id/fragment_heartbeat_to_self"
+            app:destination="@+id/fragment_heartbeat"
+            app:popUpTo="@id/fragment_heartbeat"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

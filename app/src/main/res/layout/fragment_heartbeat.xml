@@ -57,7 +57,7 @@
             android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_retry"
+            android:id="@+id/button_glass_connection_error"
             android:layout_width="140dp"
             android:layout_height="60dp"
             android:layout_margin="12dp"

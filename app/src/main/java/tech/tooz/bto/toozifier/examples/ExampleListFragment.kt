@@ -68,7 +68,7 @@ class ExampleListFragment : Fragment() {
                         holder = holder,
                         text = parentFragment.requireContext().getString(R.string.prompt_example),
                         clickListener = {
-                            parentFragment.findNavController().navigate(R.id.fragment_prompt)
+                            parentFragment.findNavController().navigate(R.id.fragment_prompt_action)
                         }
                     )
                 }
@@ -77,7 +77,7 @@ class ExampleListFragment : Fragment() {
                         holder = holder,
                         text = parentFragment.requireContext().getString(R.string.heartbeat_example),
                         clickListener = {
-                            parentFragment.findNavController().navigate(R.id.fragment_heartbeat)
+                            parentFragment.findNavController().navigate(R.id.fragment_heartbeat_action)
                         }
                     )
                 }
