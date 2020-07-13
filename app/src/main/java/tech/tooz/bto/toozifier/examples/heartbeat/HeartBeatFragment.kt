@@ -69,8 +69,9 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
         setLayout(ViewState.ERROR)
     }
 
+    // The message we receive from the watch, if the event path equals /tooz/heartbeat, it is the current heart beat
     override fun onMessageReceived(event: MessageEvent) {
-        Timber.d("onMessageReceived $event")
+        Timber.d("$WATCH_EVENT onMessageReceived $event")
         heartBeatCard?.let { card ->
             if (event.path == "/tooz/heartbeat") {
                 val message = String(event.data)

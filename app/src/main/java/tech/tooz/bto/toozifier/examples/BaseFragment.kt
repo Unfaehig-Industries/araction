@@ -6,6 +6,7 @@ open class BaseFragment : Fragment() {
 
     companion object {
         const val TOOZ_EVENT = "Tooz event:"
+        const val WATCH_EVENT = "Watch event:"
     }
 
     protected val toozifier = ExampleApplication.getExampleApplication().toozifier
