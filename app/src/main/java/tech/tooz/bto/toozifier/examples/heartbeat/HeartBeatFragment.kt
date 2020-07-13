@@ -23,10 +23,6 @@ import tooz.bto.toozifier.registration.RegistrationListener
 
 class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListener, MessageClient.OnMessageReceivedListener {
 
-    companion object {
-        private const val TOOZ_EVENT = "Tooz event:"
-    }
-
     private var heartBeatCard: AppCompatTextView? = null
 
     override fun onCreateView(
@@ -58,10 +54,6 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
     override fun onRegisterSuccess() {
         Timber.d("$TOOZ_EVENT onRegisterSuccess")
         setLayout(ViewState.SUCCESS)
-//        pulsator?.apply {
-//            start()
-//                toozifier.updateCard(this, this, 100000)
-//        }
     }
 
     override fun onDeregisterFailure(errorCause: ErrorCause) {
@@ -92,7 +84,6 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
     }
 
     override fun onButtonEvent(button: Button) {
-        // TODO
         Timber.d("$TOOZ_EVENT onButtonEvent $button")
     }
 
@@ -101,12 +92,10 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
             ViewState.SUCCESS -> {
                 layout_error?.visibility = View.GONE
                 text_view_bpm.visibility = View.VISIBLE
-//                pulsator?.visibility = View.VISIBLE
             }
             ViewState.ERROR -> {
                 layout_error?.visibility = View.VISIBLE
                 text_view_bpm.visibility = View.GONE
-//                pulsator?.visibility = View.GONE
             }
         }
     }
@@ -126,40 +115,3 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
     }
 
 }
-
-
-//        ic_heart.post {
-//            Timber.d("ic_heart_height: ${ic_heart.height}")
-//            val increaseAnimator = ValueAnimator.ofInt(ic_heart.height, ic_heart.height * 2).setDuration(2000)
-//            val decreaseAnimator = ValueAnimator.ofInt(ic_heart.height * 2, ic_heart.height).setDuration(2000)
-//            /* We use an update listener which listens to each tick
-//             * and manually updates the height of the view  */
-//
-//            increaseAnimator.addUpdateListener {
-//                ic_heart.apply {
-//                    val params = layoutParams
-//                    params.width = it.animatedValue as Int
-//                    layoutParams = params
-//                    Timber.d("ic_heart_height: it.animatedValue as Int: ${it.animatedValue as Int}")
-//                    requestLayout()
-//                }
-//            }
-//
-//            decreaseAnimator.addUpdateListener {
-//                ic_heart.apply {
-//                    val params = layoutParams
-//                    params.width = it.animatedValue as Int
-//                    layoutParams = params
-//                    Timber.d("ic_heart_height: it.animatedValue as Int: ${it.animatedValue as Int}")
-//                    requestLayout()
-//                }
-//            }
-//
-//            val animationSet = AnimatorSet()
-//            increaseAnimator.repeatCount = ObjectAnimator.INFINITE
-//            decreaseAnimator.repeatCount = ObjectAnimator.INFINITE
-//            animationSet.interpolator = AccelerateDecelerateInterpolator()
-//            animationSet.play(increaseAnimator).before(decreaseAnimator)
-//
-//            animationSet.start()
-//        }

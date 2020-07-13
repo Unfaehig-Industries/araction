@@ -68,19 +68,19 @@ class PromptFragment : BaseFragment() {
     private val registrationListener = object : RegistrationListener {
 
         override fun onDeregisterFailure(errorCause: ErrorCause) {
-            Timber.e("Deregister failure: ${errorCause.description}")
+            Timber.e("$TOOZ_EVENT Deregister failure: ${errorCause.description}")
         }
 
         override fun onDeregisterSuccess() {
-            Timber.i("Deregister success")
+            Timber.i("$TOOZ_EVENT Deregister success")
         }
 
         override fun onRegisterFailure(errorCause: ErrorCause) {
-            Timber.e("Register failure: ${errorCause.description}")
+            Timber.e("$TOOZ_EVENT Register failure: ${errorCause.description}")
         }
 
         override fun onRegisterSuccess() {
-            Timber.i("Register success")
+            Timber.i("$TOOZ_EVENT Register success")
             button_send_frame.isEnabled = true
         }
     }
@@ -95,9 +95,8 @@ class PromptFragment : BaseFragment() {
     private val buttonEventListener = object : ButtonEventListener {
 
         override fun onButtonEvent(button: Button) {
-            Timber.d("Button event: $button")
+            Timber.d("$TOOZ_EVENT Button event: $button")
             changeFrameAndTextColor()
-            // TODO make open source
             toozifier.updateCard(
                 promptView,
                 view_frame,
