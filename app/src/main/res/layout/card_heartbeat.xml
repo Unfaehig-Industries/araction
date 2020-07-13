@@ -6,9 +6,9 @@
     android:background="@color/background_prompt"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="30px"
+    android:paddingLeft="30dp"
     android:paddingTop="10dp"
-    android:paddingRight="30px">
+    android:paddingRight="30dp">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_view_bpm"

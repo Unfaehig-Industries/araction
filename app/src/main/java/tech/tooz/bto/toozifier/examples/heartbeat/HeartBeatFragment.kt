@@ -25,7 +25,8 @@ import tooz.bto.toozifier.registration.RegistrationListener
 
 class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnMessageReceivedListener {
 
-    private var heartBeatCard: AppCompatTextView? = null
+    private var promptViewHeartBeat: AppCompatTextView? = null
+    private var focusViewHeartBeat: AppCompatTextView? = null
     private var binding: FragmentHeartbeatBinding? = null
 
     private val registrationListener = object : RegistrationListener {
@@ -58,12 +59,11 @@ class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnM
         return binding!!.root
     }
 
-    @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setLayout(Resource(state = ViewState.LOADING))
-        heartBeatCard = (LayoutInflater.from(requireContext())
-            .inflate(R.layout.card_heartbeat, null) as LinearLayout).findViewById(R.id.text_view_bpm)
+        inflateFocusView()
+        inflatePromptView()
         setInitialHeartBeatText()
         setClickListener()
     }
@@ -76,8 +76,8 @@ class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnM
 
     override fun onPause() {
         super.onPause()
-        Wearable.getMessageClient(requireContext()).removeListener(this)
         deregisterToozer()
+        Wearable.getMessageClient(requireContext()).removeListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -101,13 +101,17 @@ class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnM
     override fun onMessageReceived(event: MessageEvent) {
         Timber.d("$WATCH_EVENT onMessageReceived $event")
         if (isAdded) {
-            heartBeatCard?.let { card ->
+            if (focusViewHeartBeat != null && promptViewHeartBeat != null) {
                 if (event.path == "/tooz/heartbeat") {
                     val message = String(event.data)
                     getString(R.string.bpm, message).apply {
                         text_view_bpm.text = this
-                        card.text = this
-                        toozifier.updateCard(card, card, Constants.FRAME_TIME_TO_LIVE_FOREVER)
+                        focusViewHeartBeat!!.text = this
+                        promptViewHeartBeat!!.text = this
+                        // The focusView is shown when this application is shown as a card, for example when the user switches through the existing apps on the glasses
+                        // The promptView is shown when this application is in fullscreen mode on the glasses
+                        // Both views can be the same
+                        toozifier.updateCard(focusViewHeartBeat!!, promptViewHeartBeat!!, Constants.FRAME_TIME_TO_LIVE_FOREVER)
                     }
                 }
             }
@@ -164,6 +168,18 @@ class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnM
         getString(R.string.bpm, "0").apply {
             binding?.textViewBpm?.text = this
         }
+    }
+
+    @SuppressLint("InflateParams")
+    private fun inflateFocusView() {
+        focusViewHeartBeat = (LayoutInflater.from(requireContext())
+            .inflate(R.layout.card_heartbeat, null) as LinearLayout).findViewById(R.id.text_view_bpm)
+    }
+
+    @SuppressLint("InflateParams")
+    private fun inflatePromptView() {
+        promptViewHeartBeat = (LayoutInflater.from(requireContext())
+            .inflate(R.layout.card_heartbeat, null) as LinearLayout).findViewById(R.id.text_view_bpm)
     }
 
 }
