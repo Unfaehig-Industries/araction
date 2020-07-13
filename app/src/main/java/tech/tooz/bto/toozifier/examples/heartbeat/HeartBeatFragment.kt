@@ -105,7 +105,7 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
         toozifier.addListener(this)
         toozifier.register(
             requireContext(),
-            "Heartbeat oh my, what to put here?",
+            "Heartbeat-Example",
             this
         )
     }
