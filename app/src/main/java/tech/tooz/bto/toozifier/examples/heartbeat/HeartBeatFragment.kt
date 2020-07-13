@@ -1,7 +1,6 @@
 package tech.tooz.bto.toozifier.examples.heartbeat
 
 import android.annotation.SuppressLint
-import android.bluetooth.BluetoothAdapter
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
@@ -24,10 +23,31 @@ import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
 
 
-class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListener, MessageClient.OnMessageReceivedListener {
+class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnMessageReceivedListener {
 
     private var heartBeatCard: AppCompatTextView? = null
     private var binding: FragmentHeartbeatBinding? = null
+
+    private val registrationListener = object : RegistrationListener {
+
+        override fun onRegisterSuccess() {
+            Timber.d("$TOOZ_EVENT onRegisterSuccess")
+            if (isAdded) setLayout(Resource(state = ViewState.SUCCESS))
+        }
+
+        override fun onDeregisterFailure(errorCause: ErrorCause) {
+            Timber.d("$TOOZ_EVENT onDeregisterFailure $errorCause")
+        }
+
+        override fun onDeregisterSuccess() {
+            Timber.d("$TOOZ_EVENT onDeregisterSuccess")
+        }
+
+        override fun onRegisterFailure(errorCause: ErrorCause) {
+            Timber.d("$TOOZ_EVENT onRegisterFailure $errorCause")
+            if (isAdded) setLayout(Resource(state = ViewState.ERROR, errorMessage = getString(R.string.error)))
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,10 +64,20 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
         setLayout(Resource(state = ViewState.LOADING))
         heartBeatCard = (LayoutInflater.from(requireContext())
             .inflate(R.layout.card_heartbeat, null) as LinearLayout).findViewById(R.id.text_view_bpm)
-        registerToozer()
-        Wearable.getMessageClient(requireContext()).addListener(this)
         setInitialHeartBeatText()
         setClickListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerToozer()
+        Wearable.getMessageClient(requireContext()).addListener(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Wearable.getMessageClient(requireContext()).removeListener(this)
+        deregisterToozer()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -64,26 +94,7 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Wearable.getMessageClient(requireContext()).removeListener(this)
         binding = null
-    }
-
-    override fun onRegisterSuccess() {
-        Timber.d("$TOOZ_EVENT onRegisterSuccess")
-        if (isAdded) setLayout(Resource(state = ViewState.SUCCESS))
-    }
-
-    override fun onDeregisterFailure(errorCause: ErrorCause) {
-        Timber.d("$TOOZ_EVENT onDeregisterFailure $errorCause")
-    }
-
-    override fun onDeregisterSuccess() {
-        Timber.d("$TOOZ_EVENT onDeregisterSuccess")
-    }
-
-    override fun onRegisterFailure(errorCause: ErrorCause) {
-        Timber.d("$TOOZ_EVENT onRegisterFailure $errorCause")
-        if (isAdded) setLayout(Resource(state = ViewState.ERROR, errorMessage = getString(R.string.error)))
     }
 
     // The message we receive from the watch, if the event path equals /tooz/heartbeat, it is the current heart beat
@@ -133,7 +144,7 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
         toozifier.register(
             requireContext(),
             "Heartbeat-Example",
-            this
+            registrationListener
         )
     }
 
