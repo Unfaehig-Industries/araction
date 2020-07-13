@@ -1,6 +1,7 @@
 package tech.tooz.bto.toozifier.examples
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -25,6 +26,10 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController)
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         toolbar.setupWithNavController(navController, appBarConfiguration)
+    }
+
+    fun showProgress(show: Boolean) {
+        progress.visibility = if (show) View.VISIBLE else View.GONE
     }
 
 }

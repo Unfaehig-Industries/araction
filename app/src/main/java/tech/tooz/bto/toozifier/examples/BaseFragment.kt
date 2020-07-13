@@ -11,4 +11,6 @@ open class BaseFragment : Fragment() {
 
     protected val toozifier = ExampleApplication.getExampleApplication().toozifier
 
+    protected fun showProgress(show: Boolean) = (activity as? MainActivity)?.showProgress(show)
+
 }

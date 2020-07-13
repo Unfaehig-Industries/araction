@@ -49,6 +49,7 @@
         tools:visibility="visible">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_error"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_width="match_parent"
@@ -67,22 +68,4 @@
     </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout><!--<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent"-->
-    <!--    app:layoutDescription="@xml/fragment_heartbeat_scene">-->
-
-    <!--    <androidx.appcompat.widget.AppCompatImageView-->
-    <!--        android:id="@+id/ic_heart"-->
-    <!--        android:layout_width="120dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:adjustViewBounds="true"-->
-    <!--        android:tint="@color/colorAccent"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:srcCompat="@drawable/ic_heart" />-->
-
-    <!--</androidx.constraintlayout.motion.widget.MotionLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

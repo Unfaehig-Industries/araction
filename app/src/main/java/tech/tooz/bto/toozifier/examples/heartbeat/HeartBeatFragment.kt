@@ -1,6 +1,7 @@
 package tech.tooz.bto.toozifier.examples.heartbeat
 
 import android.annotation.SuppressLint
+import android.bluetooth.BluetoothAdapter
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
@@ -12,6 +13,7 @@ import com.google.android.gms.wearable.Wearable
 import kotlinx.android.synthetic.main.fragment_heartbeat.*
 import tech.tooz.bto.toozifier.examples.BaseFragment
 import tech.tooz.bto.toozifier.examples.R
+import tech.tooz.bto.toozifier.examples.Resource
 import tech.tooz.bto.toozifier.examples.ViewState
 import tech.tooz.bto.toozifier.examples.databinding.FragmentHeartbeatBinding
 import timber.log.Timber
@@ -20,6 +22,7 @@ import tooz.bto.toozifier.button.Button
 import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
+
 
 class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListener, MessageClient.OnMessageReceivedListener {
 
@@ -38,13 +41,12 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
     @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setLayout(Resource(state = ViewState.LOADING))
         heartBeatCard = (LayoutInflater.from(requireContext())
             .inflate(R.layout.card_heartbeat, null) as LinearLayout).findViewById(R.id.text_view_bpm)
         registerToozer()
         Wearable.getMessageClient(requireContext()).addListener(this)
         setInitialHeartBeatText()
-        // TODO test if a refresh button might be needed in case of state failure
-//        setHasOptionsMenu(true)
         setClickListener()
     }
 
@@ -68,7 +70,7 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
 
     override fun onRegisterSuccess() {
         Timber.d("$TOOZ_EVENT onRegisterSuccess")
-        setLayout(ViewState.SUCCESS)
+        if (isAdded) setLayout(Resource(state = ViewState.SUCCESS))
     }
 
     override fun onDeregisterFailure(errorCause: ErrorCause) {
@@ -81,19 +83,21 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
 
     override fun onRegisterFailure(errorCause: ErrorCause) {
         Timber.d("$TOOZ_EVENT onRegisterFailure $errorCause")
-        setLayout(ViewState.ERROR)
+        if (isAdded) setLayout(Resource(state = ViewState.ERROR, errorMessage = getString(R.string.error)))
     }
 
     // The message we receive from the watch, if the event path equals /tooz/heartbeat, it is the current heart beat
     override fun onMessageReceived(event: MessageEvent) {
         Timber.d("$WATCH_EVENT onMessageReceived $event")
-        heartBeatCard?.let { card ->
-            if (event.path == "/tooz/heartbeat") {
-                val message = String(event.data)
-                getString(R.string.bpm, message).apply {
-                    text_view_bpm.text = this
-                    card.text = this
-                    toozifier.updateCard(card, card, Constants.FRAME_TIME_TO_LIVE_FOREVER)
+        if (isAdded) {
+            heartBeatCard?.let { card ->
+                if (event.path == "/tooz/heartbeat") {
+                    val message = String(event.data)
+                    getString(R.string.bpm, message).apply {
+                        text_view_bpm.text = this
+                        card.text = this
+                        toozifier.updateCard(card, card, Constants.FRAME_TIME_TO_LIVE_FOREVER)
+                    }
                 }
             }
         }
@@ -103,15 +107,23 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
         Timber.d("$TOOZ_EVENT onButtonEvent $button")
     }
 
-    private fun setLayout(viewState: ViewState) {
-        when (viewState) {
+    private fun setLayout(resource: Resource) {
+        when (resource.state) {
             ViewState.SUCCESS -> {
                 binding?.layoutError?.visibility = View.GONE
                 binding?.textViewBpm?.visibility = View.VISIBLE
+                showProgress(false)
             }
             ViewState.ERROR -> {
                 binding?.layoutError?.visibility = View.VISIBLE
                 binding?.textViewBpm?.visibility = View.GONE
+                binding?.textViewError?.text = resource.errorMessage
+                showProgress(false)
+            }
+            ViewState.LOADING -> {
+                binding?.layoutError?.visibility = View.GONE
+                binding?.textViewBpm?.visibility = View.GONE
+                showProgress(true)
             }
         }
     }
@@ -144,3 +156,7 @@ class HeartBeatFragment : BaseFragment(), RegistrationListener, ButtonEventListe
     }
 
 }
+
+
+// TODO test if a refresh button might be needed in case of state failure
+//        setHasOptionsMenu(true)

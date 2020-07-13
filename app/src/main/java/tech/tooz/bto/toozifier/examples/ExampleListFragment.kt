@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -48,9 +49,9 @@ class ExampleListFragment : Fragment() {
         RecyclerView.Adapter<ExamplesAdapter.ExampleViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExampleViewHolder {
-            val textView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_example, parent, false) as TextView
-            return ExampleViewHolder(textView)
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_example, parent, false)
+            return ExampleViewHolder(view)
         }
 
         override fun getItemCount(): Int {
@@ -85,13 +86,13 @@ class ExampleListFragment : Fragment() {
         }
 
         private fun bindItem(holder: ExampleViewHolder, text: String, clickListener: () -> Unit) {
-            holder.textView.text = text
+            holder.rootLayout.findViewById<TextView>(R.id.example_item_textview).text = text
             holder.itemView.setOnClickListener {
                 clickListener.invoke()
             }
         }
 
-        class ExampleViewHolder(val textView: TextView) : RecyclerView.ViewHolder(textView)
+        class ExampleViewHolder(val rootLayout: View) : RecyclerView.ViewHolder(rootLayout)
     }
 
     enum class Example {
