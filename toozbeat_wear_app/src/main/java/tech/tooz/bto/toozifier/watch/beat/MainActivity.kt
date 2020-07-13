@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.support.wearable.activity.WearableActivity
 import android.util.Log
 import android.widget.TextView
+import androidx.wear.ambient.AmbientModeSupport
 import com.google.android.gms.tasks.Tasks
 import com.google.android.gms.wearable.Node
 import com.google.android.gms.wearable.Wearable
@@ -25,6 +26,7 @@ class MainActivity : WearableActivity(), SensorEventListener {
     lateinit var textView: TextView
     private var sensorManager: SensorManager? = null
     private var heartBeatSensor: Sensor? = null
+    private var currentHeartBeat: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,15 +49,31 @@ class MainActivity : WearableActivity(), SensorEventListener {
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-        // TODO?
+
+    }
+
+    override fun onUpdateAmbient() {
+        super.onUpdateAmbient()
+        textView.text = getString(R.string.bpm, currentHeartBeat)
+    }
+
+    override fun onEnterAmbient(ambientDetails: Bundle?) {
+        super.onEnterAmbient(ambientDetails)
+        textView.paint.isAntiAlias = false
+    }
+
+    override fun onExitAmbient() {
+        super.onExitAmbient()
+        textView.paint.isAntiAlias = true
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
         event?.values?.let { values ->
             if (values.isNotEmpty()) {
                 values[0].toInt().let { firstValue ->
-                    textView.text = getString(R.string.bpm, firstValue)
-                    sendMessageToHandheld(firstValue.toString())
+                    currentHeartBeat = firstValue
+                    textView.text = getString(R.string.bpm, currentHeartBeat)
+                    sendMessageToHandheld(currentHeartBeat.toString())
                 }
             }
         }
@@ -95,7 +113,7 @@ class MainActivity : WearableActivity(), SensorEventListener {
                     val sendMessageTask = Wearable.getMessageClient(this@MainActivity)
                         .sendMessage(node.id, path, message.toByteArray())
                     try {
-                       Tasks.await(sendMessageTask)
+                        Tasks.await(sendMessageTask)
                     } catch (exception: ExecutionException) {
                         Log.d("Error!", exception.toString())
                     } catch (exception: InterruptedException) {
