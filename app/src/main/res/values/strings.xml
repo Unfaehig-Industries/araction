@@ -1,7 +1,14 @@
 <resources>
-    <string name="app_name">Toozer Example</string>
+    <string name="app_name">Toozer Examples</string>
     <string name="hello_tooz">Hello Tooz!</string>
     <string name="update_card">Update Card</string>
     <string name="change_color">Change color</string>
     <string name="default_prompt_text">Toozer Example</string>
+    <string name="prompt_example">Prompt</string>
+    <string name="heartbeat_example">Heartbeat</string>
+    <string name="error">An error occurred</string>
+    <string name="try_again">Try again</string>
+<!--    <string name="wear_os_service_path">/tech/tooz/bto/presentooz/wearoscontrol</string>-->
+    <string name="bpm">%s bpm</string>
+
 </resources>

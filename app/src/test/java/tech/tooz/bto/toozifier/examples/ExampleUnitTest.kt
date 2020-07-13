@@ -1,4 +1,4 @@
-package tech.tooz.bto.toozifier.example
+package tech.tooz.bto.toozifier.examples
 
 import org.junit.Test
 

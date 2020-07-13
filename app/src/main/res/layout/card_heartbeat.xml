@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/prompt_view_width"
+    android:layout_height="@dimen/prompt_view_height"
+    android:background="@color/background_prompt"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="30px"
+    android:paddingTop="10dp"
+    android:paddingRight="30px">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_bpm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:visibility="gone"
+        tools:text="108 bpm"
+        tools:visibility="visible" />
+
+</LinearLayout>

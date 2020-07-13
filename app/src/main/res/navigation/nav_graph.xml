@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment_example_list">
+
+    <fragment
+        android:id="@+id/fragment_example_list"
+        android:name="tech.tooz.bto.toozifier.examples.ExampleListFragment"
+        android:label="ExampleListFragment" />
+
+    <fragment
+        android:id="@+id/fragment_prompt"
+        android:name="tech.tooz.bto.toozifier.examples.prompt.PromptFragment"
+        android:label="PromptFragment" />
+
+    <fragment
+        android:id="@+id/fragment_heartbeat"
+        android:name="tech.tooz.bto.toozifier.examples.heartbeat.HeartBeatFragment"
+        android:label="HeartBeatFragment" />
+
+
+</navigation>

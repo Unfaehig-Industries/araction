@@ -1,23 +1,60 @@
-package tech.tooz.bto.toozifier.example
+package tech.tooz.bto.toozifier.examples.prompt
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_prompt.*
+import tech.tooz.bto.toozifier.examples.BaseFragment
+import tech.tooz.bto.toozifier.examples.R
 import timber.log.Timber
 import tooz.bto.common.Constants
-import tooz.bto.toozifier.Toozifier
-import tooz.bto.toozifier.ToozifierFactory
 import tooz.bto.toozifier.button.Button
 import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class PromptFragment : BaseFragment() {
 
-    private val toozifier: Toozifier = ToozifierFactory.getInstance()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_prompt, container, false)
+    }
+
+    /**
+     * This is where we register with tooz OS, add the button event listener, and prepare our hidden
+     * prompt view.
+     */
+    @SuppressLint("InflateParams")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        promptView = layoutInflater.inflate(R.layout.layout_prompt, null)
+
+        toozifier.addListener(buttonEventListener)
+        toozifier.register(
+            requireContext(),
+            getString(R.string.app_name),
+            registrationListener
+        )
+
+        button_change_color.setOnClickListener {
+            changeFrameAndTextColor()
+        }
+
+        button_send_frame.setOnClickListener {
+            toozifier.updateCard(
+                promptView,
+                view_frame,
+                Constants.FRAME_TIME_TO_LIVE_FOREVER
+            )
+        }
+    }
 
     private val random = Random()
 
@@ -60,29 +97,12 @@ class MainActivity : AppCompatActivity() {
         override fun onButtonEvent(button: Button) {
             Timber.d("Button event: $button")
             changeFrameAndTextColor()
-            toozifier.updateCard(promptView, view_frame, Constants.FRAME_TIME_TO_LIVE_FOREVER)
-        }
-    }
-
-    /**
-     * This is where we register with tooz OS, add the button event listener, and prepare our hidden
-     * prompt view.
-     */
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        promptView = layoutInflater.inflate(R.layout.layout_prompt, null)
-
-        toozifier.addListener(buttonEventListener)
-        toozifier.register(this, getString(R.string.app_name), registrationListener)
-
-        button_change_color.setOnClickListener {
-            changeFrameAndTextColor()
-        }
-
-        button_send_frame.setOnClickListener {
-            toozifier.updateCard(promptView, view_frame, Constants.FRAME_TIME_TO_LIVE_FOREVER)
+            // TODO make open source
+            toozifier.updateCard(
+                promptView,
+                view_frame,
+                Constants.FRAME_TIME_TO_LIVE_FOREVER
+            )
         }
     }
 
