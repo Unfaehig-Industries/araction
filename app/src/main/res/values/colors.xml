@@ -6,4 +6,9 @@
     <color name="transparent">#00000000</color>
     <color name="white">#ffffff</color>
     <color name="gunmetal">#4c4e5c</color>
+
+    <color name="heart_green">#4CAF50</color>
+    <color name="heart_yellow">#FFEB3B</color>
+    <color name="heart_red">#F44336</color>
+
 </resources>

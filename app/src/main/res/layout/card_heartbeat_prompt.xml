@@ -6,9 +6,11 @@
     android:background="@color/background_prompt"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="30dp"
-    android:paddingTop="10dp"
-    android:paddingRight="30dp">
+    android:paddingLeft="30px"
+    android:paddingTop="10px"
+    android:paddingRight="30px">
+
+    <!-- Note: Use px here because the resolution in the glasses is fixed to frame_view_width, frame_view_height, see above -->
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_view_bpm"

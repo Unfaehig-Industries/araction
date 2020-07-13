@@ -4,7 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
+import androidx.annotation.ColorRes
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.MessageEvent
@@ -21,12 +25,13 @@ import tooz.bto.toozifier.button.Button
 import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
+import java.lang.Exception
 
 
 class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnMessageReceivedListener {
 
+    private var focusViewHeartBeat: ConstraintLayout? = null
     private var promptViewHeartBeat: AppCompatTextView? = null
-    private var focusViewHeartBeat: AppCompatTextView? = null
     private var binding: FragmentHeartbeatBinding? = null
 
     private val registrationListener = object : RegistrationListener {
@@ -101,17 +106,27 @@ class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnM
     override fun onMessageReceived(event: MessageEvent) {
         Timber.d("$WATCH_EVENT onMessageReceived $event")
         if (isAdded) {
-            if (focusViewHeartBeat != null && promptViewHeartBeat != null) {
+            if (promptViewHeartBeat != null && focusViewHeartBeat != null) {
                 if (event.path == "/tooz/heartbeat") {
                     val message = String(event.data)
                     getString(R.string.bpm, message).apply {
                         text_view_bpm.text = this
-                        focusViewHeartBeat!!.text = this
                         promptViewHeartBeat!!.text = this
-                        // The focusView is shown when this application is shown as a card, for example when the user switches through the existing apps on the glasses
-                        // The promptView is shown when this application is in fullscreen mode on the glasses
-                        // Both views can be the same
-                        toozifier.updateCard(focusViewHeartBeat!!, promptViewHeartBeat!!, Constants.FRAME_TIME_TO_LIVE_FOREVER)
+                        focusViewHeartBeat!!.findViewById<AppCompatTextView>(R.id.text_view_bpm).text = this
+                        focusViewHeartBeat!!.findViewById<AppCompatImageView>(R.id.image_view_bpm)
+                                .setColorFilter(ContextCompat.getColor(requireContext(),
+                                        getHeartColor(
+                                                try {
+                                                    message.toInt()
+                                                } catch (e: Exception) {
+                                                    Timber.d("Error parsing message to int: $e")
+                                                    0
+                                                }
+                                        )))
+                        // The promptView is shown when this application is shown as a card, for example when the user switches through the existing apps on the glasses
+                        // The focusView is shown when this application is in fullscreen mode on the glasses
+                        // Both views can be the same. In this example the focusView has a heart with a color, indication the frequency while the promptView only has text
+                        toozifier.updateCard(promptViewHeartBeat!!, focusViewHeartBeat!!, Constants.FRAME_TIME_TO_LIVE_FOREVER)
                     }
                 }
             }
@@ -120,6 +135,16 @@ class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnM
 
     override fun onButtonEvent(button: Button) {
         Timber.d("$TOOZ_EVENT onButtonEvent $button")
+    }
+
+    @ColorRes
+    private fun getHeartColor(bpm: Int): Int {
+        return when (bpm) {
+            in Int.MIN_VALUE..99 -> R.color.heart_green
+            in 100..140 -> R.color.heart_yellow
+            in 141..Int.MAX_VALUE -> R.color.heart_red
+            else -> 0
+        }
     }
 
     private fun setLayout(resource: Resource) {
@@ -172,14 +197,14 @@ class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnM
 
     @SuppressLint("InflateParams")
     private fun inflateFocusView() {
-        focusViewHeartBeat = (LayoutInflater.from(requireContext())
-            .inflate(R.layout.card_heartbeat, null) as LinearLayout).findViewById(R.id.text_view_bpm)
+        promptViewHeartBeat = (LayoutInflater.from(requireContext())
+            .inflate(R.layout.card_heartbeat_prompt, null) as LinearLayout).findViewById(R.id.text_view_bpm)
     }
 
     @SuppressLint("InflateParams")
     private fun inflatePromptView() {
-        promptViewHeartBeat = (LayoutInflater.from(requireContext())
-            .inflate(R.layout.card_heartbeat, null) as LinearLayout).findViewById(R.id.text_view_bpm)
+        focusViewHeartBeat = (LayoutInflater.from(requireContext())
+            .inflate(R.layout.card_heartbeat_focus, null) as ConstraintLayout).findViewById(R.id.root_view_prompt)
     }
 
 }
