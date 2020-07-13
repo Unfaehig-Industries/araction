@@ -110,23 +110,9 @@ class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnM
                 if (event.path == "/tooz/heartbeat") {
                     val message = String(event.data)
                     getString(R.string.bpm, message).apply {
-                        text_view_bpm.text = this
-                        promptViewHeartBeat!!.text = this
-                        focusViewHeartBeat!!.findViewById<AppCompatTextView>(R.id.text_view_bpm).text = this
-                        focusViewHeartBeat!!.findViewById<AppCompatImageView>(R.id.image_view_bpm)
-                                .setColorFilter(ContextCompat.getColor(requireContext(),
-                                        getHeartColor(
-                                                try {
-                                                    message.toInt()
-                                                } catch (e: Exception) {
-                                                    Timber.d("Error parsing message to int: $e")
-                                                    0
-                                                }
-                                        )))
-                        // The promptView is shown when this application is shown as a card, for example when the user switches through the existing apps on the glasses
-                        // The focusView is shown when this application is in fullscreen mode on the glasses
-                        // Both views can be the same. In this example the focusView has a heart with a color, indication the frequency while the promptView only has text
-                        toozifier.updateCard(promptViewHeartBeat!!, focusViewHeartBeat!!, Constants.FRAME_TIME_TO_LIVE_FOREVER)
+                        val color = ContextCompat.getColor(requireContext(), getHeartColor(parseMessageToInt(message)))
+                        updateFragmentUi(color, this)
+                        updateToozUi(color, this)
                     }
                 }
             }
@@ -147,22 +133,46 @@ class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnM
         }
     }
 
+    private fun parseMessageToInt(message: String): Int {
+        return try {
+            message.toInt()
+        } catch (e: Exception) {
+            Timber.d("Error parsing message to int: $e")
+            0
+        }
+    }
+
+    private fun updateFragmentUi(color: Int, text: String) {
+        text_view_bpm.text = text
+        image_view_bpm.setColorFilter(color)
+    }
+
+    private fun updateToozUi(color: Int, text: String) {
+        promptViewHeartBeat!!.text = text
+        focusViewHeartBeat!!.findViewById<AppCompatTextView>(R.id.text_view_bpm).text = text
+        focusViewHeartBeat!!.findViewById<AppCompatImageView>(R.id.image_view_bpm).setColorFilter(color)
+        // The promptView is shown when this application is shown as a card, for example when the user switches through the existing apps on the glasses
+        // The focusView is shown when this application is in fullscreen mode on the glasses
+        // Both views can be the same. In this example the focusView has a heart with a color, indication the frequency while the promptView only has text
+        toozifier.updateCard(promptViewHeartBeat!!, focusViewHeartBeat!!, Constants.FRAME_TIME_TO_LIVE_FOREVER)
+    }
+
     private fun setLayout(resource: Resource) {
         when (resource.state) {
             ViewState.SUCCESS -> {
                 binding?.layoutError?.visibility = View.GONE
-                binding?.textViewBpm?.visibility = View.VISIBLE
+                binding?.layoutSuccess?.visibility = View.VISIBLE
                 showProgress(false)
             }
             ViewState.ERROR -> {
                 binding?.layoutError?.visibility = View.VISIBLE
-                binding?.textViewBpm?.visibility = View.GONE
+                binding?.layoutSuccess?.visibility = View.GONE
                 binding?.textViewError?.text = resource.errorMessage
                 showProgress(false)
             }
             ViewState.LOADING -> {
                 binding?.layoutError?.visibility = View.GONE
-                binding?.textViewBpm?.visibility = View.GONE
+                binding?.layoutSuccess?.visibility = View.GONE
                 showProgress(true)
             }
         }

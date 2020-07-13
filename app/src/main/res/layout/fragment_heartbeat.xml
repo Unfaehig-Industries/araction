@@ -5,19 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_view_bpm"
+    <LinearLayout
+        android:id="@+id/layout_success"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:gravity="center"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="108 bpm"
-        tools:visibility="gone"/>
+        tools:visibility="visible">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_view_bpm"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/ic_heart" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_marginTop="16dp"
+            android:id="@+id/text_view_bpm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:textColor="?android:textColorSecondary"
+            tools:text="108 bpm"
+            tools:visibility="gone" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_error"
@@ -34,10 +53,10 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_view_error"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:text="@string/error"
             android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
