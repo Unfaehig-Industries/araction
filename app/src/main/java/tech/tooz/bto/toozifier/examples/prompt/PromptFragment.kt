@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_prompt.*
-import tech.tooz.bto.toozifier.examples.BaseFragment
+import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
 import tech.tooz.bto.toozifier.examples.R
 import timber.log.Timber
 import tooz.bto.common.Constants
@@ -17,7 +17,7 @@ import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
 import java.util.*
 
-class PromptFragment : BaseFragment() {
+class PromptFragment : BaseToozifierFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

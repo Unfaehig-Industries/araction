@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -26,6 +25,7 @@ class ExampleListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpExamplesList()
+        (activity as? MainActivity)?.showProgress(false)
     }
 
     private fun setUpExamplesList() {
@@ -39,7 +39,8 @@ class ExampleListFragment : Fragment() {
         recyclerview_example.adapter = ExamplesAdapter(
             items = arrayListOf(
                 Example.PROMPT,
-                Example.HEARTBEAT
+                Example.HEARTBEAT,
+                Example.SENSOR
             ),
             parentFragment = this
         )
@@ -78,7 +79,17 @@ class ExampleListFragment : Fragment() {
                         holder = holder,
                         text = parentFragment.requireContext().getString(R.string.heartbeat_example),
                         clickListener = {
-                            parentFragment.findNavController().navigate(R.id.fragment_heartbeat_action)
+                            parentFragment.findNavController()
+                                .navigate(R.id.fragment_heartbeat_action)
+                        }
+                    )
+                }
+                Example.SENSOR.ordinal -> {
+                    bindItem(
+                        holder = holder,
+                        text = parentFragment.requireContext().getString(R.string.sensor),
+                        clickListener = {
+                            parentFragment.findNavController().navigate(R.id.fragment_sensor_action)
                         }
                     )
                 }
@@ -96,7 +107,7 @@ class ExampleListFragment : Fragment() {
     }
 
     enum class Example {
-        PROMPT, HEARTBEAT
+        PROMPT, HEARTBEAT, SENSOR
     }
 
 }

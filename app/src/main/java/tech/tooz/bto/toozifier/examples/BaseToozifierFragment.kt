@@ -2,11 +2,12 @@ package tech.tooz.bto.toozifier.examples
 
 import androidx.fragment.app.Fragment
 
-open class BaseFragment : Fragment() {
+open class BaseToozifierFragment : Fragment() {
 
     companion object {
         const val TOOZ_EVENT = "Tooz event:"
         const val WATCH_EVENT = "Watch event:"
+        const val SENSOR_EVENT = "Sensor event:"
     }
 
     protected val toozifier = ExampleApplication.getExampleApplication().toozifier

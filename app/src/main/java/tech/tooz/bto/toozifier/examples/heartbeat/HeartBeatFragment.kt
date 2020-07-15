@@ -14,7 +14,7 @@ import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.Wearable
 import kotlinx.android.synthetic.main.fragment_heartbeat.*
-import tech.tooz.bto.toozifier.examples.BaseFragment
+import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
 import tech.tooz.bto.toozifier.examples.R
 import tech.tooz.bto.toozifier.examples.Resource
 import tech.tooz.bto.toozifier.examples.ViewState
@@ -28,7 +28,7 @@ import tooz.bto.toozifier.registration.RegistrationListener
 import java.lang.Exception
 
 
-class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnMessageReceivedListener {
+class HeartBeatFragment : BaseToozifierFragment(), ButtonEventListener, MessageClient.OnMessageReceivedListener {
 
     private var focusViewHeartBeat: ConstraintLayout? = null
     private var promptViewHeartBeat: AppCompatTextView? = null
@@ -182,7 +182,7 @@ class HeartBeatFragment : BaseFragment(), ButtonEventListener, MessageClient.OnM
         toozifier.addListener(this)
         toozifier.register(
             requireContext(),
-            "Heartbeat-Example",
+            getString(R.string.app_name),
             registrationListener
         )
     }
