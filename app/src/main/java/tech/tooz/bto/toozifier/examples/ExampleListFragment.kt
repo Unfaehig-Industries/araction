@@ -87,7 +87,7 @@ class ExampleListFragment : Fragment() {
                 Example.SENSOR.ordinal -> {
                     bindItem(
                         holder = holder,
-                        text = parentFragment.requireContext().getString(R.string.sensor),
+                        text = parentFragment.requireContext().getString(R.string.scrolling_by_head_motion),
                         clickListener = {
                             parentFragment.findNavController().navigate(R.id.fragment_sensor_action)
                         }

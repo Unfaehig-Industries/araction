@@ -30,8 +30,11 @@ import java.lang.Exception
 
 class HeartBeatFragment : BaseToozifierFragment(), ButtonEventListener, MessageClient.OnMessageReceivedListener {
 
+    // These are views that are displayed in the glasses
     private var focusViewHeartBeat: ConstraintLayout? = null
     private var promptViewHeartBeat: AppCompatTextView? = null
+
+    // The binding contains the views that are part of this fragment
     private var binding: FragmentHeartbeatBinding? = null
 
     private val registrationListener = object : RegistrationListener {

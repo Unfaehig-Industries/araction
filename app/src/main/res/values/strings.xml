@@ -10,5 +10,6 @@
     <string name="try_again">Try again</string>
     <string name="bpm">%s bpm</string>
     <string name="refresh">Refresh</string>
-    <string name="sensor">Sensor</string>
+    <string name="scrolling_by_head_motion">Scroll with head motion</string>
+    <string name="scroll_mode_is">Scroll mode is</string>
 </resources>

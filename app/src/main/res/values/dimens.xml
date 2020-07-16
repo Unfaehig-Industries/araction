@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="content_margin">16dp</dimen>
+    <dimen name="width_safe_area">390px</dimen>
+    <dimen name="height_safe_area">528px</dimen>
 </resources>

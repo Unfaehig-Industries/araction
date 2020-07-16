@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/fragment_sensor"
         android:name="tech.tooz.bto.toozifier.examples.sensor.SensorFragment"
-        android:label="Sensor" />
+        android:label="@string/scrolling_by_head_motion" />
 
     <fragment
         android:id="@+id/fragment_heartbeat"

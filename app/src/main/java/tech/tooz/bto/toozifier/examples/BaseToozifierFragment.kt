@@ -8,6 +8,7 @@ open class BaseToozifierFragment : Fragment() {
         const val TOOZ_EVENT = "Tooz event:"
         const val WATCH_EVENT = "Watch event:"
         const val SENSOR_EVENT = "Sensor event:"
+        const val BUTTON_EVENT = "Button event:"
     }
 
     protected val toozifier = ExampleApplication.getExampleApplication().toozifier
