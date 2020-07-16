@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_example_list.*
 import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
 import tech.tooz.bto.toozifier.examples.R
 import tech.tooz.bto.toozifier.examples.databinding.FragmentSensorBinding
@@ -208,9 +210,16 @@ class SensorFragment : BaseToozifierFragment() {
     }
 
     private fun setupRecyclerView() {
-        binding?.apply {
-            recyclerViewScrollByHeadMotion.layoutManager = LinearLayoutManager(requireContext())
-            recyclerViewScrollByHeadMotion.adapter = ScrollByHeadMotionAdapter()
+        binding?.recyclerViewScrollByHeadMotion?.let {
+            val layoutManager = LinearLayoutManager(requireContext())
+            it.layoutManager = layoutManager
+            it.adapter = ScrollByHeadMotionAdapter()
+
+            val dividerItemDecoration = DividerItemDecoration(
+                it.context,
+                layoutManager.orientation
+            )
+            it.addItemDecoration(dividerItemDecoration)
         }
     }
 
