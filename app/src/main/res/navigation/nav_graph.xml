@@ -33,6 +33,14 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/fragment_webview_action"
+            app:destination="@+id/fragment_webview"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -44,6 +52,11 @@
         android:id="@+id/fragment_sensor"
         android:name="tech.tooz.bto.toozifier.examples.sensor.SensorFragment"
         android:label="@string/scrolling_by_head_motion" />
+
+    <fragment
+        android:id="@+id/fragment_webview"
+        android:name="tech.tooz.bto.toozifier.examples.webview.WebViewFragment"
+        android:label="@string/webview" />
 
     <fragment
         android:id="@+id/fragment_heartbeat"
