@@ -12,5 +12,5 @@
     <string name="refresh">Refresh</string>
     <string name="scrolling_by_head_motion">Scroll with head motion</string>
     <string name="scroll_mode_is">Scroll mode is</string>
-    <string name="webview">Webview</string>
+    <string name="webview_example">Webview Example</string>
 </resources>

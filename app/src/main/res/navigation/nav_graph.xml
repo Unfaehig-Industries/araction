@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/fragment_webview"
         android:name="tech.tooz.bto.toozifier.examples.webview.WebViewFragment"
-        android:label="@string/webview" />
+        android:label="@string/webview_example" />
 
     <fragment
         android:id="@+id/fragment_heartbeat"

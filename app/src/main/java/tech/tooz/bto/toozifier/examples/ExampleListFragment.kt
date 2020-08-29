@@ -40,8 +40,8 @@ class ExampleListFragment : Fragment() {
             items = arrayListOf(
                 Example.PROMPT,
                 Example.HEARTBEAT,
-                Example.SENSOR
-                Example.WEB_VIEW,
+                Example.SENSOR,
+                Example.WEB_VIEW
             ),
             parentFragment = this
         )
@@ -97,7 +97,7 @@ class ExampleListFragment : Fragment() {
                 Example.WEB_VIEW.ordinal -> {
                     bindItem(
                         holder = holder,
-                        text = parentFragment.requireContext().getString(R.string.webview),
+                        text = parentFragment.requireContext().getString(R.string.webview_example),
                         clickListener = {
                             parentFragment.findNavController().navigate(R.id.fragment_webview_action)
                         }
@@ -117,7 +117,6 @@ class ExampleListFragment : Fragment() {
     }
 
     enum class Example {
-        PROMPT, HEARTBEAT, SENSOR
         PROMPT, HEARTBEAT, SENSOR, WEB_VIEW, OPEN_GL
     }
 
