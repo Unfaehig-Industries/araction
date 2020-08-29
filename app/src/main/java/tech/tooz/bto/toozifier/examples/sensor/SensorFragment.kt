@@ -105,7 +105,6 @@ class SensorFragment : BaseToozifierFragment() {
                                 }
                             }
                             accelerationYAxisValues.clear()
-                            // TODO why is this necessary?
                             // keep tooz ui alive
                             updateToozUi()
                         } else if (averageAcceleration < -(ACCELERATION_SCROLL_THRESHOLD) && scrollMode == ScrollMode.UP) {
@@ -120,7 +119,6 @@ class SensorFragment : BaseToozifierFragment() {
                                 }
                             }
                             accelerationYAxisValues.clear()
-                            // TODO why is this necessary?
                             // keep tooz ui alive
                             updateToozUi()
                         }
@@ -193,7 +191,7 @@ class SensorFragment : BaseToozifierFragment() {
             toozifier.updateCard(
                 scrollByHeadMotionPromptView!!,
                 scrollByHeadMotionFocusView!!,
-                // TODO why does that not work?
+                // check underlying implementation
                 Constants.FRAME_TIME_TO_LIVE_FOREVER
             )
         }
