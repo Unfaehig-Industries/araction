@@ -255,7 +255,7 @@ class SensorFragment : BaseToozifierFragment() {
 }
 
 fun DoubleArray.clear() {
-    forEachIndexed { index, d ->
+    forEachIndexed { index, _ ->
         set(index, 0.0)
     }
 }
