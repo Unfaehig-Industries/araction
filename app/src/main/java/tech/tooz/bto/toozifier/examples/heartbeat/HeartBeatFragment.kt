@@ -221,7 +221,3 @@ class HeartBeatFragment : BaseToozifierFragment(), ButtonEventListener, MessageC
     }
 
 }
-
-
-// TODO test if a refresh button might be needed in case of state failure
-//        setHasOptionsMenu(true)
