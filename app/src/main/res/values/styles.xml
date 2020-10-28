@@ -12,4 +12,8 @@
         <item name="colorControlNormal">@color/white</item>
     </style>
 
+    <style name="button_overlay">
+        <item name="colorOnSurface">@color/colorAccent</item>
+    </style>
+
 </resources>

@@ -12,5 +12,10 @@
     <string name="refresh">Refresh</string>
     <string name="scrolling_by_head_motion">Scroll with head motion</string>
     <string name="scroll_mode_is">Scroll mode is</string>
-    <string name="webview_example">Webview Example</string>
+    <string name="webview_example">Webview</string>
+    <string name="audio">Audio</string>
+    <string name="record">Record Audio</string>
+    <string name="play_last_recording">Play last recording</string>
+    <string name="stop">Stop</string>
+    <string name="audio_recorder">Audio Recorder</string>
 </resources>

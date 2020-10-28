@@ -41,6 +41,7 @@ class ExampleListFragment : Fragment() {
                 Example.PROMPT,
                 Example.HEARTBEAT,
                 Example.SENSOR,
+                Example.AUDIO,
                 Example.WEB_VIEW
             ),
             parentFragment = this
@@ -103,6 +104,15 @@ class ExampleListFragment : Fragment() {
                         }
                     )
                 }
+                Example.AUDIO.ordinal -> {
+                    bindItem(
+                        holder = holder,
+                        text = parentFragment.requireContext().getString(R.string.audio),
+                        clickListener = {
+                            parentFragment.findNavController().navigate(R.id.fragment_audio)
+                        }
+                    )
+                }
             }
         }
 
@@ -117,7 +127,7 @@ class ExampleListFragment : Fragment() {
     }
 
     enum class Example {
-        PROMPT, HEARTBEAT, SENSOR, WEB_VIEW, OPEN_GL
+        PROMPT, HEARTBEAT, SENSOR, AUDIO, WEB_VIEW
     }
 
 }

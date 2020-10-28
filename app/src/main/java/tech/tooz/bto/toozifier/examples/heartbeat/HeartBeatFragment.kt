@@ -88,7 +88,7 @@ class HeartBeatFragment : BaseToozifierFragment(), ButtonEventListener, MessageC
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.options_heartbeat, menu);
+        inflater.inflate(R.menu.options_refresh, menu);
         super.onCreateOptionsMenu(menu, inflater)
     }
 
