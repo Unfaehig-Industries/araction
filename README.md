@@ -66,6 +66,14 @@ To try it out, do the following:
 3. Install the Toozbeat-App on the watch and give it permission to read sensor data
 4. Install the Example-App on the device and start the "Heartbeat"-Example, put on glasses and wait a moment.
 
+## Audio example
+
+The audio example records voice input from the glasses and uses an AudioTrack to play it. The supported audio format is:
+
+- PCM 16 bit/sample
+- Sample rate: 16000 Hz
+- Channel: MONO
+
 ## Sensor example
 
 The sensor example shows the usage of the IMU. In the example the sensor data is evaluated to track head motion.

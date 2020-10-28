@@ -40,7 +40,8 @@ class ExampleListFragment : Fragment() {
             items = arrayListOf(
                 Example.PROMPT,
                 Example.HEARTBEAT,
-                Example.SENSOR
+                Example.SENSOR,
+                Example.AUDIO
             ),
             parentFragment = this
         )
@@ -93,6 +94,15 @@ class ExampleListFragment : Fragment() {
                         }
                     )
                 }
+                Example.AUDIO.ordinal -> {
+                    bindItem(
+                        holder = holder,
+                        text = parentFragment.requireContext().getString(R.string.audio),
+                        clickListener = {
+                            parentFragment.findNavController().navigate(R.id.fragment_audio)
+                        }
+                    )
+                }
             }
         }
 
@@ -107,7 +117,7 @@ class ExampleListFragment : Fragment() {
     }
 
     enum class Example {
-        PROMPT, HEARTBEAT, SENSOR
+        PROMPT, HEARTBEAT, SENSOR, AUDIO
     }
 
 }
