@@ -12,6 +12,7 @@ import timber.log.Timber
 import tooz.bto.common.Constants
 import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
+import java.util.*
 import kotlin.concurrent.fixedRateTimer
 
 class WebViewFragment : BaseToozifierFragment() {
@@ -37,6 +38,8 @@ class WebViewFragment : BaseToozifierFragment() {
     // The binding contains the views that are part of this fragment
     private var binding: FragmentWebviewBinding? = null
 
+    private var timer: Timer? = null
+
     private val registrationListener = object : RegistrationListener {
 
         override fun onRegisterSuccess() {
@@ -50,10 +53,12 @@ class WebViewFragment : BaseToozifierFragment() {
 
         override fun onDeregisterSuccess() {
             Timber.d("$TOOZ_EVENT onDeregisterSuccess")
+            timer?.cancel()
         }
 
         override fun onRegisterFailure(errorCause: ErrorCause) {
             Timber.d("$TOOZ_EVENT onRegisterFailure $errorCause")
+            timer?.cancel()
         }
     }
 
@@ -81,6 +86,7 @@ class WebViewFragment : BaseToozifierFragment() {
 
     override fun onPause() {
         super.onPause()
+        timer?.cancel()
         deregisterToozer()
     }
 
@@ -92,7 +98,7 @@ class WebViewFragment : BaseToozifierFragment() {
     // We update the webview every second. In this case it does not do much since the content of the webview is static.
     // If the contents were dynamic, the changes would be reflected in the glasses
     private fun setToozUi() {
-        fixedRateTimer(period = 1000) {
+        timer = fixedRateTimer(period = 1000) {
             toozifier.updateCard(promptViewWebView!!, focusViewWebView!!, Constants.FRAME_TIME_TO_LIVE_FOREVER)
         }
     }
@@ -109,7 +115,6 @@ class WebViewFragment : BaseToozifierFragment() {
     private fun deregisterToozer() {
         toozifier.deregister()
     }
-
 
     @SuppressLint("InflateParams")
     private fun inflateFocusView() {
