@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_example_list.*
 import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
 import tech.tooz.bto.toozifier.examples.R
 import tech.tooz.bto.toozifier.examples.databinding.FragmentSensorBinding
@@ -43,7 +42,7 @@ class SensorFragment : BaseToozifierFragment() {
     private var scrollByHeadMotionFocusView: View? = null
     private var scrollByHeadMotionFocusScrollModeTextView: AppCompatTextView? = null
 
-    // Stores the last 5 y values for acceleration, with a reading interval of 100 ms, this means we always have the last 500 ms  in this array
+    // Stores the last 5 y values for acceleration, with a reading interval of 100 ms, this means we always have the values of the last 500 ms in this array
     private val accelerationYAxisValues = DoubleArray(5)
     private var accelerationDataCounter = 0
     private var currentYAxisValue = 0.0

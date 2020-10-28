@@ -52,6 +52,9 @@ To deregister toozer, call:
 toozifier.deregister()
 ```
 
+## Card Example
+
+The card example is a simple example of how to update the focus view in the glasses.
 
 ## Heartbeat-Example
 
@@ -62,3 +65,11 @@ To try it out, do the following:
 2. Install the "Wear os App" on your phone and pair the watch with your phone
 3. Install the Toozbeat-App on the watch and give it permission to read sensor data
 4. Install the Example-App on the device and start the "Heartbeat"-Example, put on glasses and wait a moment.
+
+## Sensor example
+
+The sensor example shows the usage of the IMU. In the example the sensor data is evaluated to track head motion.
+
+### Important note regarding reading sensor data
+
+The IMU with its three integrated sensors accelerometer, gyroscope and magnetometer enables the measurement of relative movements of the hardware. Thus, the measured changes of direction and acceleration can be used as a trigger to display new information. A determination of the absolute position is not possible, since this requires a continuous recalibration of the sensors.
