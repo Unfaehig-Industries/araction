@@ -81,7 +81,7 @@ class PromptFragment : BaseToozifierFragment() {
 
         override fun onRegisterSuccess() {
             Timber.i("$TOOZ_EVENT Register success")
-            button_send_frame.isEnabled = true
+            button_send_frame?.isEnabled = true
         }
     }
 
@@ -98,9 +98,9 @@ class PromptFragment : BaseToozifierFragment() {
             Timber.d("$TOOZ_EVENT Button event: $button")
             changeFrameAndTextColor()
             toozifier.updateCard(
-                promptView,
-                view_frame,
-                Constants.FRAME_TIME_TO_LIVE_FOREVER
+                promptView = promptView,
+                focusView = view_frame,
+                timeToLive = Constants.FRAME_TIME_TO_LIVE_FOREVER
             )
         }
     }
@@ -117,8 +117,8 @@ class PromptFragment : BaseToozifierFragment() {
         val backgroundColor = getRandomColor()
         val textColor = getRandomColor()
 
-        view_frame.setBackgroundColor(backgroundColor)
-        view_frame.setTextColor(textColor)
+        view_frame?.setBackgroundColor(backgroundColor)
+        view_frame?.setTextColor(textColor)
     }
 
     private fun getRandomColor(): Int {

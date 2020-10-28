@@ -25,7 +25,6 @@ import tooz.bto.toozifier.button.Button
 import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
-import java.lang.Exception
 
 
 class HeartBeatFragment : BaseToozifierFragment(), ButtonEventListener, MessageClient.OnMessageReceivedListener {
