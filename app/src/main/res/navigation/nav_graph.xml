@@ -41,14 +41,6 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
-        <action
-            android:id="@+id/fragment_audio"
-            app:destination="@+id/fragment_audio"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
     </fragment>
 
     <fragment
@@ -60,11 +52,6 @@
         android:id="@+id/fragment_sensor"
         android:name="tech.tooz.bto.toozifier.examples.sensor.SensorFragment"
         android:label="@string/scrolling_by_head_motion" />
-
-    <fragment
-        android:id="@+id/fragment_audio"
-        android:name="tech.tooz.bto.toozifier.examples.audio.AudioFragment"
-        android:label="@string/audio" />
 
     <fragment
         android:id="@+id/fragment_webview"
