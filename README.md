@@ -1,5 +1,5 @@
 # Toozer Examples
-Toozer app that demonstrates example usages of Toozifier library.
+Toozer app that demonstrates example usages of Toozifier library. In order to work through these examples, a basic understanding of the Android SDK is required. For learning Android-Development, please visit the offical [Android Codelabs](https://developer.android.com/courses).
 
 ### 1. Obtain Toozifier instance
 The first step you need to do to use the Toozifier library is to obtain an instance of Toozifier object. You can do that by calling
@@ -13,20 +13,19 @@ Next you need to implement RegistrationListener which receives registration even
 private val registrationListener = object : RegistrationListener {
 
    override fun onDeregisterFailure(errorCause: ErrorCause) {
-      Timber.e("Deregister failure: ${errorCause.description}")
+      // Deregister failure
    }
 
    override fun onDeregisterSuccess() {
-      Timber.i("Deregister success")
+      // Deregister success
    }
 
    override fun onRegisterFailure(errorCause: ErrorCause) {
-      Timber.e("Register failure: ${errorCause.description}")
+      // Register failure
    }
 
    override fun onRegisterSuccess() {
-      Timber.i("Register success")
-      button_send_frame.isEnabled = true
+      // Register success, do something with the glasses!
    }
 }
 ```
