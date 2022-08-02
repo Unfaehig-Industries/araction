@@ -1,2 +1,1 @@
-include ':toozbeat_wear_app'
 include ':app'
