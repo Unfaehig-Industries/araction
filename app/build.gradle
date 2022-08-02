@@ -8,6 +8,7 @@ android {
     defaultConfig {
         applicationId "tech.tooz.bto.toozifier.examples"
         minSdkVersion 24
+        //noinspection OldTargetApi
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
