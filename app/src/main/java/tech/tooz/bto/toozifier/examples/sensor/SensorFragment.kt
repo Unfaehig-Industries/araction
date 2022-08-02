@@ -13,7 +13,6 @@ import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
 import tech.tooz.bto.toozifier.examples.R
 import tech.tooz.bto.toozifier.examples.databinding.FragmentSensorBinding
 import timber.log.Timber
-import tooz.bto.common.Constants
 import tooz.bto.common.ToozServiceMessage
 import tooz.bto.toozifier.button.Button
 import tooz.bto.toozifier.button.ButtonEventListener
@@ -26,10 +25,6 @@ class SensorFragment : BaseToozifierFragment() {
 
     companion object {
         private const val SENSOR_READING_INTERVAL = 100
-        private const val SCROLL_BY_PIXEL = 2000
-        private const val ACCELERATION_SCROLL_THRESHOLD = 0.025
-        private const val ACCELERATION_FAST_SCROLL_THRESHOLD = 0.055
-        private const val FLING_VELOCITY = 5000
     }
 
     private val sensor = Sensor.acceleration
@@ -41,14 +36,6 @@ class SensorFragment : BaseToozifierFragment() {
     private var scrollByHeadMotionPromptView: View? = null
     private var scrollByHeadMotionFocusView: View? = null
     private var scrollByHeadMotionFocusScrollModeTextView: AppCompatTextView? = null
-
-    // Stores the last 5 y values for acceleration, with a reading interval of 100 ms, this means we always have the values of the last 500 ms in this array
-    private val accelerationYAxisValues = DoubleArray(5)
-    private var accelerationDataCounter = 0
-    private var currentYAxisValue = 0.0
-
-    private var scrollMode = ScrollMode.DOWN
-
 
     override fun onResume() {
         super.onResume()
@@ -81,8 +68,6 @@ class SensorFragment : BaseToozifierFragment() {
 
         override fun onRegisterSuccess() {
             Timber.d("$TOOZ_EVENT onRegisterSuccess")
-            scrollByHeadMotionFocusScrollModeTextView?.text = scrollMode.toString()
-            updateToozUi()
             toozifier.registerForSensorData(
                 Pair(sensor, SENSOR_READING_INTERVAL)
             )
@@ -110,47 +95,7 @@ class SensorFragment : BaseToozifierFragment() {
         override fun onSensorDataReceived(sensorReading: ToozServiceMessage.Sensor.SensorReading) {
             Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: ${sensorReading.name}")
             sensorReading.reading.acceleration?.apply {
-                AccelerationData(x, y, z).apply {
-                    if (y != null) {
-                        accelerationYAxisValues[accelerationDataCounter] = y - currentYAxisValue
-                        currentYAxisValue = y
-                        if (accelerationDataCounter == accelerationYAxisValues.lastIndex - 1) {
-                            accelerationDataCounter = 0
-                        } else {
-                            accelerationDataCounter++
-                        }
-                        val averageAcceleration = accelerationYAxisValues.average()
-                        if (averageAcceleration > ACCELERATION_SCROLL_THRESHOLD && scrollMode == ScrollMode.DOWN) {
-                            binding?.recyclerViewScrollByHeadMotion?.apply {
-                                if (shouldScrollFast(averageAcceleration)) {
-                                    fling(0, FLING_VELOCITY)
-                                } else {
-                                    smoothScrollBy(
-                                        0,
-                                        SCROLL_BY_PIXEL
-                                    )
-                                }
-                            }
-                            accelerationYAxisValues.clear()
-                            // keep tooz ui alive
-                            updateToozUi()
-                        } else if (averageAcceleration < -(ACCELERATION_SCROLL_THRESHOLD) && scrollMode == ScrollMode.UP) {
-                            binding?.recyclerViewScrollByHeadMotion?.apply {
-                                if (shouldScrollFast(averageAcceleration)) {
-                                    fling(0, -(FLING_VELOCITY))
-                                } else {
-                                    smoothScrollBy(
-                                        0,
-                                        -(SCROLL_BY_PIXEL)
-                                    )
-                                }
-                            }
-                            accelerationYAxisValues.clear()
-                            // keep tooz ui alive
-                            updateToozUi()
-                        }
-                    }
-                }
+                Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: $x $y $z")
             }
         }
 
@@ -173,16 +118,6 @@ class SensorFragment : BaseToozifierFragment() {
     private val buttonEventListener = object : ButtonEventListener {
         override fun onButtonEvent(button: Button) {
             Timber.d("$BUTTON_EVENT $button")
-            // Check if main button was pressed
-            if (button == Button.A_1S) {
-                scrollMode = when (scrollMode) {
-                    ScrollMode.UP -> ScrollMode.DOWN
-                    ScrollMode.DOWN -> ScrollMode.UP
-                }
-            }
-            // Update focus with view current scroll mode
-            scrollByHeadMotionFocusScrollModeTextView?.text = scrollMode.toString()
-            updateToozUi()
         }
     }
 
@@ -201,17 +136,6 @@ class SensorFragment : BaseToozifierFragment() {
         setupRecyclerView()
         inflateFocusView()
         inflatePromptView()
-    }
-
-    private fun updateToozUi() {
-        if (scrollByHeadMotionPromptView != null && scrollByHeadMotionFocusView != null) {
-            toozifier.updateCard(
-                scrollByHeadMotionPromptView!!,
-                scrollByHeadMotionFocusView!!,
-                // check underlying implementation
-                Constants.FRAME_TIME_TO_LIVE_FOREVER
-            )
-        }
     }
 
     private fun setupRecyclerView() {
@@ -241,21 +165,5 @@ class SensorFragment : BaseToozifierFragment() {
     private fun inflatePromptView() {
         scrollByHeadMotionPromptView =
             LayoutInflater.from(requireContext()).inflate(R.layout.card_scroll_by_head_motion_prompt, null, false)
-    }
-
-    private fun shouldScrollFast(averageAcceleration: Double): Boolean {
-        return averageAcceleration > ACCELERATION_FAST_SCROLL_THRESHOLD
-    }
-
-    data class AccelerationData(val x: Double?, val y: Double?, val z: Double?)
-
-    enum class ScrollMode {
-        UP, DOWN
-    }
-}
-
-fun DoubleArray.clear() {
-    forEachIndexed { index, _ ->
-        set(index, 0.0)
     }
 }
