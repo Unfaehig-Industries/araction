@@ -26,5 +26,10 @@
       <option name="name" value="maven" />
       <option name="url" value="https://packagecloud.io/priv/302cbca5719420eb9daefeca8e796513968b859375f79f2e/tooz/bto/maven2" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="MavenRepo" />
+      <option name="name" value="MavenRepo" />
+      <option name="url" value="https://repo.maven.apache.org/maven2/" />
+    </remote-repository>
   </component>
 </project>
