@@ -190,7 +190,7 @@ class SensorFragment : BaseToozifierFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSensorBinding.inflate(inflater, container, false)
         return binding!!.root
     }
