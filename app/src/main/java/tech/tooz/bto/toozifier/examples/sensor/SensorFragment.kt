@@ -49,6 +49,34 @@ class SensorFragment : BaseToozifierFragment() {
 
     private var scrollMode = ScrollMode.DOWN
 
+
+    override fun onResume() {
+        super.onResume()
+        registerToozer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        deregisterToozer()
+    }
+
+    private fun registerToozer() {
+        toozifier.addListener(sensorDataListener)
+        toozifier.addListener(buttonEventListener)
+        toozifier.register(
+            requireContext(),
+            getString(R.string.app_name),
+            registrationListener
+        )
+    }
+
+    private fun deregisterToozer() {
+        toozifier.deregister()
+        toozifier.removeListener(sensorDataListener)
+        toozifier.removeListener(buttonEventListener)
+        toozifier.deregisterFromSensorData(Sensor.acceleration)
+    }
+
     private val registrationListener = object : RegistrationListener {
 
         override fun onRegisterSuccess() {
@@ -175,16 +203,6 @@ class SensorFragment : BaseToozifierFragment() {
         inflatePromptView()
     }
 
-    override fun onResume() {
-        super.onResume()
-        registerToozer()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        deregisterToozer()
-    }
-
     private fun updateToozUi() {
         if (scrollByHeadMotionPromptView != null && scrollByHeadMotionFocusView != null) {
             toozifier.updateCard(
@@ -194,23 +212,6 @@ class SensorFragment : BaseToozifierFragment() {
                 Constants.FRAME_TIME_TO_LIVE_FOREVER
             )
         }
-    }
-
-    private fun registerToozer() {
-        toozifier.addListener(sensorDataListener)
-        toozifier.addListener(buttonEventListener)
-        toozifier.register(
-            requireContext(),
-            getString(R.string.app_name),
-            registrationListener
-        )
-    }
-
-    private fun deregisterToozer() {
-        toozifier.deregister()
-        toozifier.removeListener(sensorDataListener)
-        toozifier.removeListener(buttonEventListener)
-        toozifier.deregisterFromSensorData(Sensor.acceleration)
     }
 
     private fun setupRecyclerView() {
