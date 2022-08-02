@@ -39,7 +39,6 @@ class ExampleListFragment : Fragment() {
         recyclerview_example.adapter = ExamplesAdapter(
             items = arrayListOf(
                 Example.PROMPT,
-                Example.HEARTBEAT,
                 Example.SENSOR,
                 Example.WEB_VIEW
             ),
@@ -72,16 +71,6 @@ class ExampleListFragment : Fragment() {
                         text = parentFragment.requireContext().getString(R.string.prompt_example),
                         clickListener = {
                             parentFragment.findNavController().navigate(R.id.fragment_prompt_action)
-                        }
-                    )
-                }
-                Example.HEARTBEAT.ordinal -> {
-                    bindItem(
-                        holder = holder,
-                        text = parentFragment.requireContext().getString(R.string.heartbeat_example),
-                        clickListener = {
-                            parentFragment.findNavController()
-                                .navigate(R.id.fragment_heartbeat_action)
                         }
                     )
                 }

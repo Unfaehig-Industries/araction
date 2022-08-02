@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.webkit.WebView
-import kotlinx.android.synthetic.main.fragment_heartbeat.*
 import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
 import tech.tooz.bto.toozifier.examples.R
 import tech.tooz.bto.toozifier.examples.databinding.FragmentWebviewBinding
