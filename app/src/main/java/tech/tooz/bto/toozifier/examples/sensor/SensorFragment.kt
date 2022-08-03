@@ -104,11 +104,7 @@ class SensorFragment : BaseToozifierFragment() {
                 yText?.text = y.toString()
                 zText?.text = z.toString()
 
-                toozifier.updateCard(
-                    binding!!.recyclerViewScrollByHeadMotion,
-                    sensorDataView!!,
-                    Constants.FRAME_TIME_TO_LIVE_FOREVER
-                )
+                toozifier.sendFrame(sensorDataView!!)
             }
         }
 
