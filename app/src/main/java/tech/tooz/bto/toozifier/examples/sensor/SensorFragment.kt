@@ -6,13 +6,14 @@ import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
+import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
 import tech.tooz.bto.toozifier.examples.R
 import tech.tooz.bto.toozifier.examples.databinding.FragmentSensorBinding
 import timber.log.Timber
+import tooz.bto.common.Constants
 import tooz.bto.common.ToozServiceMessage
 import tooz.bto.toozifier.button.Button
 import tooz.bto.toozifier.button.ButtonEventListener
@@ -33,9 +34,11 @@ class SensorFragment : BaseToozifierFragment() {
     private var binding: FragmentSensorBinding? = null
 
     // These are views that are displayed in the glasses
-    private var scrollByHeadMotionPromptView: View? = null
-    private var scrollByHeadMotionFocusView: View? = null
-    private var scrollByHeadMotionFocusScrollModeTextView: AppCompatTextView? = null
+    private var sensorDataView: View? = null
+    // These are the text fields that are displayed in this view
+    private var xText : TextView? = null
+    private var yText : TextView? = null
+    private var zText : TextView? = null
 
     override fun onResume() {
         super.onResume()
@@ -96,6 +99,16 @@ class SensorFragment : BaseToozifierFragment() {
             Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: ${sensorReading.name}")
             sensorReading.reading.acceleration?.apply {
                 Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: $x $y $z")
+
+                xText?.text = x.toString()
+                yText?.text = y.toString()
+                zText?.text = z.toString()
+
+                toozifier.updateCard(
+                    binding!!.recyclerViewScrollByHeadMotion,
+                    sensorDataView!!,
+                    Constants.FRAME_TIME_TO_LIVE_FOREVER
+                )
             }
         }
 
@@ -134,8 +147,7 @@ class SensorFragment : BaseToozifierFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-        inflateFocusView()
-        inflatePromptView()
+        inflateSensorView()
     }
 
     private fun setupRecyclerView() {
@@ -152,18 +164,10 @@ class SensorFragment : BaseToozifierFragment() {
         }
     }
 
-    @SuppressLint("InflateParams")
-    private fun inflateFocusView() {
-        scrollByHeadMotionFocusView =
-            LayoutInflater.from(requireContext()).inflate(R.layout.card_scroll_by_head_motion_focus, null, false)
-                ?.apply {
-                    scrollByHeadMotionFocusScrollModeTextView = findViewById(R.id.text_view_scroll_mode)
-                }
-    }
-
-    @SuppressLint("InflateParams")
-    private fun inflatePromptView() {
-        scrollByHeadMotionPromptView =
-            LayoutInflater.from(requireContext()).inflate(R.layout.card_scroll_by_head_motion_prompt, null, false)
+    private fun inflateSensorView() {
+        sensorDataView = LayoutInflater.from(requireContext()).inflate(R.layout.layout_sensor, null, false)
+        xText = sensorDataView?.findViewById(R.id.sensor_x)
+        yText = sensorDataView?.findViewById(R.id.sensor_y)
+        zText = sensorDataView?.findViewById(R.id.sensor_z)
     }
 }

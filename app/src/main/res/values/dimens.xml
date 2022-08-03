@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="content_margin">16dp</dimen>
-    <dimen name="width_safe_area">390px</dimen>
-    <dimen name="height_safe_area">528px</dimen>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="content_margin" tools:ignore="PxUsage">16px</dimen>
+    <dimen name="item_width" tools:ignore="PxUsage">100px</dimen>
+    <dimen name="item_height" tools:ignore="PxUsage">50px</dimen>
+    <dimen name="item_margin" tools:ignore="PxUsage">10px</dimen>
+    <dimen name="width_safe_area" tools:ignore="PxUsage">390px</dimen>
+    <dimen name="height_safe_area" tools:ignore="PxUsage">528px</dimen>
 </resources>
