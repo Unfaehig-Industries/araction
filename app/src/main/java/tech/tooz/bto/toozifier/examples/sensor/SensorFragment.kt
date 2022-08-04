@@ -19,11 +19,12 @@ import tooz.bto.toozifier.sensors.Sensor
 
 class SensorFragment : BaseToozifierFragment() {
 
-    private val sensorData: SensorData = SensorData(toozifier)
-
     // The binding contains the views that are part of this fragment
     private var _binding: FragmentSensorBinding? = null
     private val binding get() = _binding!!
+
+    private val sensorData: SensorData = SensorData(toozifier)
+    private var adapter: ScrollByHeadMotionAdapter? = null
 
     override fun onResume() {
         super.onResume()
@@ -91,6 +92,7 @@ class SensorFragment : BaseToozifierFragment() {
     @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = ScrollByHeadMotionAdapter()
         setupRecyclerView()
 
         // Get the view which is supposed to be shown on the glasses
@@ -101,7 +103,7 @@ class SensorFragment : BaseToozifierFragment() {
         binding.recyclerViewScrollByHeadMotion.let {
             val layoutManager = LinearLayoutManager(requireContext())
             it.layoutManager = layoutManager
-            it.adapter = ScrollByHeadMotionAdapter()
+            it.adapter = adapter
 
             val dividerItemDecoration = DividerItemDecoration(
                 it.context,
