@@ -97,6 +97,7 @@ class SensorFragment : BaseToozifierFragment() {
 
         override fun onSensorDataReceived(sensorReading: ToozServiceMessage.Sensor.SensorReading) {
             Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: ${sensorReading.name}")
+
             sensorReading.reading.acceleration?.apply {
                 Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: $x $y $z")
 
@@ -104,7 +105,9 @@ class SensorFragment : BaseToozifierFragment() {
                 yText?.text = y.toString()
                 zText?.text = z.toString()
 
-                toozifier.sendFrame(sensorDataView!!)
+                sensorDataView?.run {
+                    toozifier.sendFrame(this)
+                }
             }
         }
 
@@ -143,6 +146,8 @@ class SensorFragment : BaseToozifierFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+
+        // Get the view which is supposed to be shown on the glasses
         inflateSensorView()
     }
 
