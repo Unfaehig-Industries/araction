@@ -93,6 +93,7 @@ class SensorFragment : BaseToozifierFragment() {
 
             sensorReading.reading.acceleration?.run {
                 Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: $x $y $z")
+                adapter?.createItem("sensor: $x $y $z")
                 sensorData.sendFrame(this)
             }
         }
