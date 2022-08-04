@@ -2,43 +2,27 @@ package tech.tooz.bto.toozifier.examples.sensor
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
 import tech.tooz.bto.toozifier.examples.R
 import tech.tooz.bto.toozifier.examples.databinding.FragmentSensorBinding
 import timber.log.Timber
-import tooz.bto.common.Constants
-import tooz.bto.common.ToozServiceMessage
 import tooz.bto.toozifier.button.Button
 import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
-import tooz.bto.toozifier.sensors.SensorDataListener
 
 class SensorFragment : BaseToozifierFragment() {
 
-    companion object {
-        private const val SENSOR_READING_INTERVAL = 100
-    }
-
-    private val sensor = Sensor.acceleration
+    private val sensorData: SensorData = SensorData(toozifier)
 
     // The binding contains the views that are part of this fragment
     private var binding: FragmentSensorBinding? = null
-
-    // These are views that are displayed in the glasses
-    private var sensorDataView: View? = null
-    // These are the text fields that are displayed in this view
-    private var xText : TextView? = null
-    private var yText : TextView? = null
-    private var zText : TextView? = null
 
     override fun onResume() {
         super.onResume()
@@ -51,7 +35,7 @@ class SensorFragment : BaseToozifierFragment() {
     }
 
     private fun registerToozer() {
-        toozifier.addListener(sensorDataListener)
+        toozifier.addListener(sensorData.listener)
         toozifier.addListener(buttonEventListener)
         toozifier.register(
             requireContext(),
@@ -62,7 +46,7 @@ class SensorFragment : BaseToozifierFragment() {
 
     private fun deregisterToozer() {
         toozifier.deregister()
-        toozifier.removeListener(sensorDataListener)
+        toozifier.removeListener(sensorData.listener)
         toozifier.removeListener(buttonEventListener)
         toozifier.deregisterFromSensorData(Sensor.acceleration)
     }
@@ -71,9 +55,8 @@ class SensorFragment : BaseToozifierFragment() {
 
         override fun onRegisterSuccess() {
             Timber.d("$TOOZ_EVENT onRegisterSuccess")
-            toozifier.registerForSensorData(
-                Pair(sensor, SENSOR_READING_INTERVAL)
-            )
+
+            sensorData.registerForSensorData()
         }
 
         override fun onDeregisterFailure(errorCause: ErrorCause) {
@@ -86,44 +69,6 @@ class SensorFragment : BaseToozifierFragment() {
 
         override fun onRegisterFailure(errorCause: ErrorCause) {
             Timber.d("$TOOZ_EVENT onRegisterFailure $errorCause")
-        }
-    }
-
-    private val sensorDataListener = object : SensorDataListener {
-
-        override fun onSensorDataDeregistered(sensor: Sensor) {
-            Timber.d("$SENSOR_EVENT onSensorDataDeregistered sensor: $sensor")
-        }
-
-        override fun onSensorDataReceived(sensorReading: ToozServiceMessage.Sensor.SensorReading) {
-            Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: ${sensorReading.name}")
-
-            sensorReading.reading.acceleration?.apply {
-                Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: $x $y $z")
-
-                xText?.text = x.toString()
-                yText?.text = y.toString()
-                zText?.text = z.toString()
-
-                sensorDataView?.run {
-                    toozifier.sendFrame(this)
-                }
-            }
-        }
-
-        override fun onSensorDataRegistered() {
-            Timber.d("$SENSOR_EVENT onSensorDataRegistered")
-        }
-
-        override fun onSensorError(sensor: Sensor, errorCause: ErrorCause) {
-            Timber.d("$SENSOR_EVENT onSensorError sensor: $sensor errorCause: $errorCause")
-        }
-
-        override fun onSensorListReceived(sensors: List<Sensor>) {
-            Timber.d("$SENSOR_EVENT onSensorListReceived sensors:\n\n")
-            sensors.forEach {
-                Timber.d("$SENSOR_EVENT \tsensor: $it")
-            }
         }
     }
 
@@ -148,7 +93,7 @@ class SensorFragment : BaseToozifierFragment() {
         setupRecyclerView()
 
         // Get the view which is supposed to be shown on the glasses
-        inflateSensorView()
+        sensorData.inflateSensorView(requireContext())
     }
 
     private fun setupRecyclerView() {
@@ -163,12 +108,5 @@ class SensorFragment : BaseToozifierFragment() {
             )
             it.addItemDecoration(dividerItemDecoration)
         }
-    }
-
-    private fun inflateSensorView() {
-        sensorDataView = LayoutInflater.from(requireContext()).inflate(R.layout.layout_sensor, null, false)
-        xText = sensorDataView?.findViewById(R.id.sensor_x)
-        yText = sensorDataView?.findViewById(R.id.sensor_y)
-        zText = sensorDataView?.findViewById(R.id.sensor_z)
     }
 }
