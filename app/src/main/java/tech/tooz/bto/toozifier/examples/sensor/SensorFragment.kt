@@ -33,6 +33,8 @@ class SensorFragment : BaseToozifierFragment() {
     // The binding contains the views that are part of this fragment
     private var binding: FragmentSensorBinding? = null
 
+    private var adapter: ScrollByHeadMotionAdapter? = null
+
     // These are views that are displayed in the glasses
     private var sensorDataView: View? = null
     // These are the text fields that are displayed in this view
@@ -105,6 +107,8 @@ class SensorFragment : BaseToozifierFragment() {
                 zText?.text = z.toString()
 
                 toozifier.sendFrame(sensorDataView!!)
+
+                adapter!!.createItem("sensor: $x $y $z");
             }
         }
 
@@ -142,15 +146,18 @@ class SensorFragment : BaseToozifierFragment() {
     @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = ScrollByHeadMotionAdapter()
         setupRecyclerView()
         inflateSensorView()
+
     }
 
     private fun setupRecyclerView() {
+        Timber.d("setting up RecyclerView")
         binding?.recyclerViewScrollByHeadMotion?.let {
             val layoutManager = LinearLayoutManager(requireContext())
             it.layoutManager = layoutManager
-            it.adapter = ScrollByHeadMotionAdapter()
+            it.adapter = adapter
 
             val dividerItemDecoration = DividerItemDecoration(
                 it.context,
@@ -158,6 +165,7 @@ class SensorFragment : BaseToozifierFragment() {
             )
             it.addItemDecoration(dividerItemDecoration)
         }
+
     }
 
     private fun inflateSensorView() {

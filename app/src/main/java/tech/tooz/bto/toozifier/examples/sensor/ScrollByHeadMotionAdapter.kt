@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import tech.tooz.bto.toozifier.examples.R
+import timber.log.Timber
 
 class ScrollByHeadMotionAdapter : RecyclerView.Adapter<ScrollByHeadMotionAdapter.ScrollByHeadMotionViewHOlder>() {
 
-    private var items: List<String>
+    private var items: MutableList<String>
 
     init {
-        items = createItems()
+        items = mutableListOf()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScrollByHeadMotionViewHOlder {
@@ -30,11 +31,10 @@ class ScrollByHeadMotionAdapter : RecyclerView.Adapter<ScrollByHeadMotionAdapter
 
     class ScrollByHeadMotionViewHOlder(val view: AppCompatTextView) : RecyclerView.ViewHolder(view)
 
-    private fun createItems(): List<String> {
-        val items = arrayListOf<String>()
-        for (i in 0..1000) {
-            items.add("Item $i")
-        }
+    fun createItem(name: String): List<String> {
+        Timber.d("adding item: $name")
+        items.add(name)
+        notifyItemInserted(items.size - 1)
         return items
     }
 }
