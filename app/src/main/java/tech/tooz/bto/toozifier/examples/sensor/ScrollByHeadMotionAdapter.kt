@@ -33,7 +33,7 @@ class ScrollByHeadMotionAdapter : RecyclerView.Adapter<ScrollByHeadMotionAdapter
 
     fun createItem(name: String): List<String> {
         Timber.d("adding item: $name")
-        items.add(name)
+        items.add(0, name)
         notifyItemInserted(items.size - 1)
         return items
     }
