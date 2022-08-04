@@ -10,16 +10,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_example_list.*
+import tech.tooz.bto.toozifier.examples.databinding.FragmentExampleListBinding
 
 class ExampleListFragment : Fragment() {
+
+    private var _binding: FragmentExampleListBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_example_list, container, false)
+    ): View {
+        _binding = FragmentExampleListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,13 +34,13 @@ class ExampleListFragment : Fragment() {
 
     private fun setUpExamplesList() {
         val layoutManager = LinearLayoutManager(requireContext())
-        recyclerview_example.layoutManager = layoutManager
+        binding.recyclerviewExample.layoutManager = layoutManager
         val dividerItemDecoration = DividerItemDecoration(
-            recyclerview_example.context,
+            binding.recyclerviewExample.context,
             layoutManager.orientation
         )
-        recyclerview_example.addItemDecoration(dividerItemDecoration)
-        recyclerview_example.adapter = ExamplesAdapter(
+        binding.recyclerviewExample.addItemDecoration(dividerItemDecoration)
+        binding.recyclerviewExample.adapter = ExamplesAdapter(
             items = arrayListOf(
                 Example.PROMPT,
                 Example.SENSOR,

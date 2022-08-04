@@ -22,7 +22,8 @@ class SensorFragment : BaseToozifierFragment() {
     private val sensorData: SensorData = SensorData(toozifier)
 
     // The binding contains the views that are part of this fragment
-    private var binding: FragmentSensorBinding? = null
+    private var _binding: FragmentSensorBinding? = null
+    private val binding get() = _binding!!
 
     override fun onResume() {
         super.onResume()
@@ -83,8 +84,8 @@ class SensorFragment : BaseToozifierFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSensorBinding.inflate(inflater, container, false)
-        return binding!!.root
+        _binding = FragmentSensorBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @SuppressLint("InflateParams")
@@ -97,7 +98,7 @@ class SensorFragment : BaseToozifierFragment() {
     }
 
     private fun setupRecyclerView() {
-        binding?.recyclerViewScrollByHeadMotion?.let {
+        binding.recyclerViewScrollByHeadMotion.let {
             val layoutManager = LinearLayoutManager(requireContext())
             it.layoutManager = layoutManager
             it.adapter = ScrollByHeadMotionAdapter()

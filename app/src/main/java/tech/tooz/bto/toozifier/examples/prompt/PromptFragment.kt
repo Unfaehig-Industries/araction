@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_prompt.*
 import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
 import tech.tooz.bto.toozifier.examples.R
+import tech.tooz.bto.toozifier.examples.databinding.FragmentPromptBinding
 import timber.log.Timber
 import tooz.bto.common.Constants
 import tooz.bto.toozifier.button.Button
@@ -19,12 +19,16 @@ import java.util.*
 
 class PromptFragment : BaseToozifierFragment() {
 
+    private var _binding: FragmentPromptBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_prompt, container, false)
+    ): View {
+        _binding = FragmentPromptBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     /**
@@ -43,14 +47,14 @@ class PromptFragment : BaseToozifierFragment() {
             registrationListener
         )
 
-        button_change_color.setOnClickListener {
+        binding.buttonChangeColor.setOnClickListener {
             changeFrameAndTextColor()
         }
 
-        button_send_frame.setOnClickListener {
+        binding.buttonSendFrame.setOnClickListener {
             toozifier.updateCard(
                 promptView,
-                view_frame,
+                binding.viewFrame,
                 Constants.FRAME_TIME_TO_LIVE_FOREVER
             )
         }
@@ -81,7 +85,7 @@ class PromptFragment : BaseToozifierFragment() {
 
         override fun onRegisterSuccess() {
             Timber.i("$TOOZ_EVENT Register success")
-            button_send_frame?.isEnabled = true
+            binding.buttonSendFrame.isEnabled = true
         }
     }
 
@@ -99,7 +103,7 @@ class PromptFragment : BaseToozifierFragment() {
             changeFrameAndTextColor()
             toozifier.updateCard(
                 promptView = promptView,
-                focusView = view_frame,
+                focusView = binding.viewFrame,
                 timeToLive = Constants.FRAME_TIME_TO_LIVE_FOREVER
             )
         }
@@ -113,12 +117,17 @@ class PromptFragment : BaseToozifierFragment() {
         super.onDestroy()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun changeFrameAndTextColor() {
         val backgroundColor = getRandomColor()
         val textColor = getRandomColor()
 
-        view_frame?.setBackgroundColor(backgroundColor)
-        view_frame?.setTextColor(textColor)
+        binding.viewFrame.setBackgroundColor(backgroundColor)
+        binding.viewFrame.setTextColor(textColor)
     }
 
     private fun getRandomColor(): Int {
