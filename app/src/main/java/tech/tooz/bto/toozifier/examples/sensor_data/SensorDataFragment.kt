@@ -38,7 +38,7 @@ class SensorDataFragment : BaseToozifierFragment() {
     private val SENSOR_READING_INTERVAL = 100
 
     private var lastTouched = 0
-    private val TOUCH_COOLDOWN = 30000
+    private val TOUCH_COOLDOWN = 10000
 
     override fun onResume() {
         super.onResume()
@@ -167,7 +167,7 @@ class SensorDataFragment : BaseToozifierFragment() {
         return binding.root
     }
 
-    @SuppressLint("InflateParams")
+    @SuppressLint("InflateParams", "ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = LogSensorDataAdapter()
@@ -214,10 +214,13 @@ class SensorDataFragment : BaseToozifierFragment() {
         Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of $sensor: $x $y $z")
         sensorData.sendFrame(sensor, x, y, z)
         adapter?.createItem("$sensor: $x $y $z")
-        adapter?.itemCount
-            ?.let { if((System.currentTimeMillis() - lastTouched) > TOUCH_COOLDOWN) {
-                binding.recyclerViewScrollByHeadMotion.smoothScrollToPosition(it)}
-            };
+
+        if((System.currentTimeMillis().toInt() - lastTouched) > TOUCH_COOLDOWN) {
+            adapter?.itemCount
+            ?.let {
+                binding.recyclerViewScrollByHeadMotion.smoothScrollToPosition(it)
+            }
+        }
     }
 
     fun singleSensorData (sensor: String, x: Double?) {
