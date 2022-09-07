@@ -30,7 +30,7 @@ class SensorFragment : BaseToozifierFragment() {
     private val sensorData: SensorData = SensorData(toozifier)
     private var adapter: ScrollByHeadMotionAdapter? = null
 
-    private var dataSensors: Array<Sensor> = arrayOf(Sensor.acceleration, Sensor.gyroscope, Sensor.rotation, Sensor.gameRotation, Sensor.geomagRotation, Sensor.light, Sensor.temperature, Sensor.magneticField)
+    private val dataSensors: Array<Sensor> = arrayOf(Sensor.acceleration, Sensor.gyroscope, Sensor.rotation, Sensor.gameRotation, Sensor.geomagRotation, Sensor.light, Sensor.temperature, Sensor.magneticField)
     private var activeSensor = 0
     private val SENSOR_READING_INTERVAL = 100
 
