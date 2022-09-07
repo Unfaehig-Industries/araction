@@ -13,11 +13,26 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/sensor_x"
+            android:id="@+id/sensor_name"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/item_height"
             android:layout_marginBottom="@dimen/item_margin"
             android:fontFamily="sans-serif-black"
+            android:text="@string/sensor_placeholder"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:typeface="normal" />
+
+        <TextView
+            android:id="@+id/sensor_x"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/item_height"
+            android:layout_below="@id/sensor_name"
+            android:layout_marginBottom="@dimen/item_margin"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/x_placeholder"
             android:textAlignment="textEnd"
             android:textColor="@color/white"
             android:textSize="14sp"
@@ -31,6 +46,7 @@
             android:layout_below="@id/sensor_x"
             android:layout_marginBottom="@dimen/item_margin"
             android:fontFamily="sans-serif-black"
+            android:text="@string/y_placeholder"
             android:textAlignment="textEnd"
             android:textColor="@color/white"
             android:textSize="14sp"
@@ -44,6 +60,7 @@
             android:layout_below="@id/sensor_y"
             android:layout_marginBottom="@dimen/item_margin"
             android:fontFamily="sans-serif-black"
+            android:text="@string/z_placeholder"
             android:textAlignment="textEnd"
             android:textColor="@color/white"
             android:textSize="14sp"

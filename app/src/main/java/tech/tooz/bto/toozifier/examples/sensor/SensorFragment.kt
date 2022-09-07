@@ -12,6 +12,7 @@ import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
 import tech.tooz.bto.toozifier.examples.R
 import tech.tooz.bto.toozifier.examples.databinding.FragmentSensorBinding
 import timber.log.Timber
+import tooz.bto.common.ToozServiceMessage
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
 import tooz.bto.toozifier.button.ButtonEventListener
@@ -29,7 +30,8 @@ class SensorFragment : BaseToozifierFragment() {
     private val sensorData: SensorData = SensorData(toozifier)
     private var adapter: ScrollByHeadMotionAdapter? = null
 
-    private val sensor = Sensor.acceleration
+    private var dataSensors: Array<Sensor> = arrayOf(Sensor.acceleration, Sensor.gyroscope, Sensor.rotation, Sensor.gameRotation, Sensor.geomagRotation, Sensor.light, Sensor.temperature, Sensor.magneticField)
+    private var activeSensor = 0
     private val SENSOR_READING_INTERVAL = 100
 
     override fun onResume() {
@@ -65,7 +67,7 @@ class SensorFragment : BaseToozifierFragment() {
             Timber.d("$TOOZ_EVENT onRegisterSuccess")
 
             toozifier.registerForSensorData(
-                Pair(sensor, SENSOR_READING_INTERVAL)
+                Pair(dataSensors[activeSensor], SENSOR_READING_INTERVAL)
             )
         }
 
@@ -91,10 +93,39 @@ class SensorFragment : BaseToozifierFragment() {
         override fun onSensorDataReceived(sensorReading: SensorReading) {
             Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: ${sensorReading.name}")
 
-            sensorReading.reading.acceleration?.run {
-                Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: $x $y $z")
-                adapter?.createItem("sensor: $x $y $z")
-                sensorData.sendFrame(this)
+            when(sensorReading.name) {
+                "acceleration" -> {
+                    val sensorDataReading: ToozServiceMessage.Sensor.Acceleration? = sensorReading.reading.acceleration
+                    tripleSensorData(sensorReading.name, sensorDataReading?.x, sensorDataReading?.y, sensorDataReading?.z)
+                }
+                "gyroscope" -> {
+                    val sensorDataReading: ToozServiceMessage.Sensor.Gyroscope? = sensorReading.reading.gyroscope
+                    tripleSensorData(sensorReading.name, sensorDataReading?.x, sensorDataReading?.y, sensorDataReading?.z)
+                }
+                "rotation" -> {
+                    val sensorDataReading: ToozServiceMessage.Sensor.Rotation? = sensorReading.reading.rotation
+                    tripleSensorData(sensorReading.name, sensorDataReading?.x, sensorDataReading?.y, sensorDataReading?.z)
+                }
+                "gameRotation" -> {
+                    val sensorDataReading: ToozServiceMessage.Sensor.GameRotation? = sensorReading.reading.gameRotation
+                    tripleSensorData(sensorReading.name, sensorDataReading?.x, sensorDataReading?.y, sensorDataReading?.z)
+                }
+                "geomagRotation" -> {
+                    val sensorDataReading: ToozServiceMessage.Sensor.GeomagRotation? = sensorReading.reading.geomagRotation
+                    tripleSensorData(sensorReading.name, sensorDataReading?.x, sensorDataReading?.y, sensorDataReading?.z)
+                }
+                "light" -> {
+                    val sensorDataReading: Double? = sensorReading.reading.light
+                    singleSensorData(sensorReading.name, sensorDataReading)
+                }
+                "temperature" -> {
+                    val sensorDataReading: Double? = sensorReading.reading.temperature
+                    singleSensorData(sensorReading.name, sensorDataReading)
+                }
+                "magneticField" -> {
+                    val sensorDataReading: ToozServiceMessage.Sensor.MagneticField? = sensorReading.reading.magneticField
+                    tripleSensorData(sensorReading.name, sensorDataReading?.x, sensorDataReading?.y, sensorDataReading?.z)
+                }
             }
         }
 
@@ -117,6 +148,7 @@ class SensorFragment : BaseToozifierFragment() {
     private val buttonEventListener = object : ButtonEventListener {
         override fun onButtonEvent(button: Button) {
             Timber.d("$BUTTON_EVENT $button")
+            cycleActiveSensor()
         }
     }
 
@@ -151,5 +183,32 @@ class SensorFragment : BaseToozifierFragment() {
             )
             it.addItemDecoration(dividerItemDecoration)
         }
+    }
+
+    private fun cycleActiveSensor() {
+        sensorData.sendEmptyFrame()
+        toozifier.deregisterFromSensorData(dataSensors[activeSensor])
+
+        activeSensor += 1
+        if (activeSensor >= dataSensors.size) {
+            activeSensor = 0
+        }
+
+        Timber.d("Active Sensor: ${dataSensors[activeSensor]}")
+        toozifier.registerForSensorData(
+            Pair(dataSensors[activeSensor], SENSOR_READING_INTERVAL)
+        )
+    }
+
+    fun tripleSensorData (sensor: String, x: Double?, y: Double?, z: Double?) {
+        Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of $sensor: $x $y $z")
+        adapter?.createItem("$sensor: $x $y $z")
+        sensorData.sendFrame(sensor, x, y, z)
+    }
+
+    fun singleSensorData (sensor: String, x: Double?) {
+        Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of $sensor: $x")
+        adapter?.createItem("$sensor: $x")
+        sensorData.sendFrame(sensor, x)
     }
 }

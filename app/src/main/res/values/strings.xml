@@ -18,4 +18,8 @@
     <string name="play_last_recording">Play last recording</string>
     <string name="stop">Stop</string>
     <string name="audio_recorder">Audio Recorder</string>
+    <string name="sensor_placeholder">sensor</string>
+    <string name="x_placeholder">x</string>
+    <string name="y_placeholder">y</string>
+    <string name="z_placeholder">z</string>
 </resources>
