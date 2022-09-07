@@ -1,4 +1,4 @@
-package tech.tooz.bto.toozifier.examples
+package tech.unfaehig_industries.tooz.araction
 
 import androidx.fragment.app.Fragment
 

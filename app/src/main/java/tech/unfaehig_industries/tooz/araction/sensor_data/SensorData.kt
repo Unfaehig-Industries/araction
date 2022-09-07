@@ -1,12 +1,12 @@
-package tech.tooz.bto.toozifier.examples.sensor_data
+package tech.unfaehig_industries.tooz.araction.sensor_data
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import tech.tooz.bto.toozifier.examples.R
-import tech.tooz.bto.toozifier.examples.databinding.SensorDataLayoutBinding
-import tech.tooz.bto.toozifier.examples.roundDecimal
+import tech.unfaehig_industries.tooz.araction.R
+import tech.unfaehig_industries.tooz.araction.databinding.SensorDataLayoutBinding
+import tech.unfaehig_industries.tooz.araction.roundDecimal
 import tooz.bto.toozifier.Toozifier
 
 class SensorData (private val toozifier: Toozifier) {

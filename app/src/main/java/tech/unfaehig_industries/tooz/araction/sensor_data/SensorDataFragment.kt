@@ -1,4 +1,4 @@
-package tech.tooz.bto.toozifier.examples.sensor_data
+package tech.unfaehig_industries.tooz.araction.sensor_data
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
-import tech.tooz.bto.toozifier.examples.R
-import tech.tooz.bto.toozifier.examples.databinding.SensorDataFragmentBinding
+import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
+import tech.unfaehig_industries.tooz.araction.R
+import tech.unfaehig_industries.tooz.araction.databinding.SensorDataFragmentBinding
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
@@ -20,8 +20,6 @@ import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
 import tooz.bto.toozifier.sensors.SensorDataListener
-import android.view.MotionEvent
-import android.view.View.OnTouchListener
 
 
 class SensorDataFragment : BaseToozifierFragment() {

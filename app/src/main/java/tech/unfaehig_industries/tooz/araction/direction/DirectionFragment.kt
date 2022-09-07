@@ -1,4 +1,4 @@
-package tech.tooz.bto.toozifier.examples.direction
+package tech.unfaehig_industries.tooz.araction.direction
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,9 +6,9 @@ import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
-import tech.tooz.bto.toozifier.examples.R
-import tech.tooz.bto.toozifier.examples.databinding.DirectionFragmentBinding
+import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
+import tech.unfaehig_industries.tooz.araction.R
+import tech.unfaehig_industries.tooz.araction.databinding.DirectionFragmentBinding
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading

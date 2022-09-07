@@ -1,4 +1,4 @@
-package tech.tooz.bto.toozifier.examples
+package tech.unfaehig_industries.tooz.araction
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4

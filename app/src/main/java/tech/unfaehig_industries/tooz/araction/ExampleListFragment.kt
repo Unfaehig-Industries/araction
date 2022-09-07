@@ -1,4 +1,4 @@
-package tech.tooz.bto.toozifier.examples
+package tech.unfaehig_industries.tooz.araction
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import tech.tooz.bto.toozifier.examples.databinding.ExampleListFragmentBinding
+import tech.unfaehig_industries.tooz.araction.databinding.ExampleListFragmentBinding
 
 class ExampleListFragment : Fragment() {
 

@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 32
     defaultConfig {
-        applicationId "tech.tooz.bto.toozifier.examples"
+        applicationId "tech.unfaehig_industries.tooz.araction"
         minSdkVersion 24
         //noinspection OldTargetApi
         targetSdkVersion 32

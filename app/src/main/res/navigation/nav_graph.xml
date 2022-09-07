@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/example_list_fragment"
-        android:name="tech.tooz.bto.toozifier.examples.ExampleListFragment"
+        android:name="tech.unfaehig_industries.tooz.araction.ExampleListFragment"
         android:label="@string/app_name">
 
         <action
@@ -27,10 +27,10 @@
 
     <fragment
         android:id="@+id/sensor_data_fragment"
-        android:name="tech.tooz.bto.toozifier.examples.sensor_data.SensorDataFragment"
+        android:name="tech.unfaehig_industries.tooz.araction.sensor_data.SensorDataFragment"
         android:label="@string/sensor_data_example_name" />
     <fragment
         android:id="@+id/direction_fragment"
-        android:name="tech.tooz.bto.toozifier.examples.direction.DirectionFragment"
+        android:name="tech.unfaehig_industries.tooz.araction.direction.DirectionFragment"
         android:label="@string/direction_example_name" />
 </navigation>
