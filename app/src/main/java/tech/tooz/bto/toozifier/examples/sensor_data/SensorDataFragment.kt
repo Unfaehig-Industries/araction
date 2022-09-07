@@ -133,10 +133,6 @@ class SensorDataFragment : BaseToozifierFragment() {
             }
         }
 
-        override fun onSensorDataRegistered() {
-            Timber.d("$SENSOR_EVENT onSensorDataRegistered")
-        }
-
         override fun onSensorError(sensor: Sensor, errorCause: ErrorCause) {
             Timber.d("$SENSOR_EVENT onSensorError sensor: $sensor errorCause: $errorCause")
         }
@@ -206,13 +202,13 @@ class SensorDataFragment : BaseToozifierFragment() {
 
     fun tripleSensorData (sensor: String, x: Double?, y: Double?, z: Double?) {
         Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of $sensor: $x $y $z")
-        adapter?.createItem("$sensor: $x $y $z")
         sensorData.sendFrame(sensor, x, y, z)
+        adapter?.createItem("$sensor: $x $y $z")
     }
 
     fun singleSensorData (sensor: String, x: Double?) {
         Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of $sensor: $x")
-        adapter?.createItem("$sensor: $x")
         sensorData.sendFrame(sensor, x)
+        adapter?.createItem("$sensor: $x")
     }
 }
