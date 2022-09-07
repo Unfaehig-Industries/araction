@@ -20,6 +20,9 @@ import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
 import tooz.bto.toozifier.sensors.SensorDataListener
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
+
 
 class SensorDataFragment : BaseToozifierFragment() {
 
@@ -33,6 +36,9 @@ class SensorDataFragment : BaseToozifierFragment() {
     private val dataSensors: Array<Sensor> = arrayOf(Sensor.acceleration, Sensor.gyroscope, Sensor.rotation, Sensor.gameRotation, Sensor.geomagRotation, Sensor.light, Sensor.temperature, Sensor.magneticField)
     private var activeSensor = 0
     private val SENSOR_READING_INTERVAL = 100
+
+    private var lastTouched = 0
+    private val TOUCH_COOLDOWN = 30000
 
     override fun onResume() {
         super.onResume()
@@ -169,6 +175,10 @@ class SensorDataFragment : BaseToozifierFragment() {
 
         // Get the view which is supposed to be shown on the glasses
         sensorData.inflateSensorView(requireContext())
+        binding.recyclerViewScrollByHeadMotion.setOnTouchListener {v, event ->
+            lastTouched = System.currentTimeMillis().toInt()
+            false
+        }
     }
 
     private fun setupRecyclerView() {
@@ -204,6 +214,10 @@ class SensorDataFragment : BaseToozifierFragment() {
         Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of $sensor: $x $y $z")
         sensorData.sendFrame(sensor, x, y, z)
         adapter?.createItem("$sensor: $x $y $z")
+        adapter?.itemCount
+            ?.let { if((System.currentTimeMillis() - lastTouched) > TOUCH_COOLDOWN) {
+                binding.recyclerViewScrollByHeadMotion.smoothScrollToPosition(it)}
+            };
     }
 
     fun singleSensorData (sensor: String, x: Double?) {
