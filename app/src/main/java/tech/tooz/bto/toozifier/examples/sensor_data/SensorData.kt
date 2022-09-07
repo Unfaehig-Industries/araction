@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.TextView
 import tech.tooz.bto.toozifier.examples.R
 import tech.tooz.bto.toozifier.examples.databinding.SensorDataLayoutBinding
+import tech.tooz.bto.toozifier.examples.roundDecimal
 import tooz.bto.toozifier.Toozifier
 
 class SensorData (private val toozifier: Toozifier) {
@@ -20,9 +21,9 @@ class SensorData (private val toozifier: Toozifier) {
 
     fun sendFrame (sensor: String, x: Double?, y: Double?, z: Double?) {
         nameText?.text = sensor
-        xText?.text = x?.toString()
-        yText?.text = y?.toString()
-        zText?.text = z?.toString()
+        xText?.text = x?.roundDecimal(2)
+        yText?.text = y?.roundDecimal(2)
+        zText?.text = z?.roundDecimal(2)
 
         sensorDataView?.run {
             toozifier.sendFrame(this)
@@ -31,7 +32,7 @@ class SensorData (private val toozifier: Toozifier) {
 
     fun sendFrame (sensor: String, x: Double?) {
         nameText?.text = sensor
-        xText?.text = x?.toString()
+        xText?.text = x?.roundDecimal(1)
         yText?.text = ""
         zText?.text = ""
 
