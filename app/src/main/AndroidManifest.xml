@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="tech.tooz.bto.toozifier.examples">
+    package="tech.unfaehig_industries.tooz.araction">
 
     <application
-        android:name="tech.tooz.bto.toozifier.examples.BaseApplication"
+        android:name="tech.unfaehig_industries.tooz.araction.BaseApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="tech.tooz.bto.toozifier.examples.MainActivity"
+        <activity android:name="tech.unfaehig_industries.tooz.araction.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

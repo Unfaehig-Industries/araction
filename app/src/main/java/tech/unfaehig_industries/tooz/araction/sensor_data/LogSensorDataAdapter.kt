@@ -1,10 +1,10 @@
-package tech.tooz.bto.toozifier.examples.sensor_data
+package tech.unfaehig_industries.tooz.araction.sensor_data
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
-import tech.tooz.bto.toozifier.examples.R
+import tech.unfaehig_industries.tooz.araction.R
 import timber.log.Timber
 
 class LogSensorDataAdapter : RecyclerView.Adapter<LogSensorDataAdapter.ScrollByHeadMotionViewHOlder>() {

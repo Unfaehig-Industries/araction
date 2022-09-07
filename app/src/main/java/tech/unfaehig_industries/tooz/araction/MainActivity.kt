@@ -1,4 +1,4 @@
-package tech.tooz.bto.toozifier.examples
+package tech.unfaehig_industries.tooz.araction
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import tech.tooz.bto.toozifier.examples.databinding.ActivityMainBinding
+import tech.unfaehig_industries.tooz.araction.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package tech.tooz.bto.toozifier.examples
+package tech.unfaehig_industries.tooz.araction
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import tech.tooz.bto.toozifier.examples.databinding.ExampleListFragmentBinding
+import tech.unfaehig_industries.tooz.araction.databinding.ExampleListFragmentBinding
 
 class ExampleListFragment : Fragment() {
 
@@ -42,7 +42,8 @@ class ExampleListFragment : Fragment() {
         binding.recyclerviewExample.addItemDecoration(dividerItemDecoration)
         binding.recyclerviewExample.adapter = ExamplesAdapter(
             items = arrayListOf(
-                Example.SENSOR
+                Example.SENSOR,
+                Example.DIRECTION
             ),
             parentFragment = this
         )
@@ -76,6 +77,15 @@ class ExampleListFragment : Fragment() {
                         }
                     )
                 }
+                Example.DIRECTION.ordinal -> {
+                    bindItem(
+                        holder = holder,
+                        text = parentFragment.requireContext().getString(R.string.direction_example_name),
+                        clickListener = {
+                            parentFragment.findNavController().navigate(R.id.direction_action)
+                        }
+                    )
+                }
             }
         }
 
@@ -90,7 +100,7 @@ class ExampleListFragment : Fragment() {
     }
 
     enum class Example {
-        SENSOR
+        SENSOR, DIRECTION
     }
 
 }
