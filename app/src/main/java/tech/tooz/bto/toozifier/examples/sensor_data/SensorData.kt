@@ -1,11 +1,11 @@
-package tech.tooz.bto.toozifier.examples.sensor
+package tech.tooz.bto.toozifier.examples.sensor_data
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import tech.tooz.bto.toozifier.examples.R
-import tech.tooz.bto.toozifier.examples.databinding.LayoutSensorBinding
+import tech.tooz.bto.toozifier.examples.databinding.SensorDataLayoutBinding
 import tooz.bto.toozifier.Toozifier
 
 class SensorData (private val toozifier: Toozifier) {
@@ -52,7 +52,7 @@ class SensorData (private val toozifier: Toozifier) {
     }
 
     fun inflateSensorView(context: Context) {
-        sensorDataView = LayoutSensorBinding.inflate(LayoutInflater.from(context)).root
+        sensorDataView = SensorDataLayoutBinding.inflate(LayoutInflater.from(context)).root
         nameText = sensorDataView?.findViewById(R.id.sensor_name)
         xText = sensorDataView?.findViewById(R.id.sensor_x)
         yText = sensorDataView?.findViewById(R.id.sensor_y)

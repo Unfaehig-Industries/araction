@@ -1,4 +1,4 @@
-package tech.tooz.bto.toozifier.examples.sensor
+package tech.tooz.bto.toozifier.examples.sensor_data
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import tech.tooz.bto.toozifier.examples.R
 import timber.log.Timber
 
-class ScrollByHeadMotionAdapter : RecyclerView.Adapter<ScrollByHeadMotionAdapter.ScrollByHeadMotionViewHOlder>() {
+class LogSensorDataAdapter : RecyclerView.Adapter<LogSensorDataAdapter.ScrollByHeadMotionViewHOlder>() {
 
     private var items: MutableList<String>
 
@@ -17,7 +17,7 @@ class ScrollByHeadMotionAdapter : RecyclerView.Adapter<ScrollByHeadMotionAdapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScrollByHeadMotionViewHOlder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_scroll_by_head_motion, parent, false) as AppCompatTextView
+            .inflate(R.layout.sensor_data_item, parent, false) as AppCompatTextView
         return ScrollByHeadMotionViewHOlder(view)
     }
 

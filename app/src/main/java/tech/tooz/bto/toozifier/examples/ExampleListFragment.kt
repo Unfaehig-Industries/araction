@@ -10,11 +10,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import tech.tooz.bto.toozifier.examples.databinding.FragmentExampleListBinding
+import tech.tooz.bto.toozifier.examples.databinding.ExampleListFragmentBinding
 
 class ExampleListFragment : Fragment() {
 
-    private var _binding: FragmentExampleListBinding? = null
+    private var _binding: ExampleListFragmentBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -22,7 +22,7 @@ class ExampleListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentExampleListBinding.inflate(inflater, container, false)
+        _binding = ExampleListFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -42,9 +42,7 @@ class ExampleListFragment : Fragment() {
         binding.recyclerviewExample.addItemDecoration(dividerItemDecoration)
         binding.recyclerviewExample.adapter = ExamplesAdapter(
             items = arrayListOf(
-                Example.PROMPT,
-                Example.SENSOR,
-                Example.WEB_VIEW
+                Example.SENSOR
             ),
             parentFragment = this
         )
@@ -55,7 +53,7 @@ class ExampleListFragment : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExampleViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_example, parent, false)
+                .inflate(R.layout.example_list_item, parent, false)
             return ExampleViewHolder(view)
         }
 
@@ -69,30 +67,12 @@ class ExampleListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
             when (getItemViewType(position)) {
-                Example.PROMPT.ordinal -> {
-                    bindItem(
-                        holder = holder,
-                        text = parentFragment.requireContext().getString(R.string.prompt_example),
-                        clickListener = {
-                            parentFragment.findNavController().navigate(R.id.fragment_prompt_action)
-                        }
-                    )
-                }
                 Example.SENSOR.ordinal -> {
                     bindItem(
                         holder = holder,
-                        text = parentFragment.requireContext().getString(R.string.scrolling_by_head_motion),
+                        text = parentFragment.requireContext().getString(R.string.sensor_data_example_name),
                         clickListener = {
-                            parentFragment.findNavController().navigate(R.id.fragment_sensor_action)
-                        }
-                    )
-                }
-                Example.WEB_VIEW.ordinal -> {
-                    bindItem(
-                        holder = holder,
-                        text = parentFragment.requireContext().getString(R.string.webview_example),
-                        clickListener = {
-                            parentFragment.findNavController().navigate(R.id.fragment_webview_action)
+                            parentFragment.findNavController().navigate(R.id.sensor_data_action)
                         }
                     )
                 }
@@ -110,7 +90,7 @@ class ExampleListFragment : Fragment() {
     }
 
     enum class Example {
-        PROMPT, HEARTBEAT, SENSOR, WEB_VIEW
+        SENSOR
     }
 
 }

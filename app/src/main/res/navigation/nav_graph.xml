@@ -2,71 +2,24 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragment_example_list">
+    app:startDestination="@id/example_list_fragment">
 
     <fragment
-        android:id="@+id/fragment_example_list"
+        android:id="@+id/example_list_fragment"
         android:name="tech.tooz.bto.toozifier.examples.ExampleListFragment"
-        android:label="Toozer Examples">
+        android:label="@string/app_name">
 
         <action
-            android:id="@+id/fragment_heartbeat_action"
-            app:destination="@+id/fragment_heartbeat"
+            android:id="@+id/sensor_data_action"
+            app:destination="@+id/sensor_data_fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/fragment_prompt_action"
-            app:destination="@+id/fragment_prompt"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/fragment_sensor_action"
-            app:destination="@+id/fragment_sensor"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/fragment_webview_action"
-            app:destination="@+id/fragment_webview"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_prompt"
-        android:name="tech.tooz.bto.toozifier.examples.prompt.PromptFragment"
-        android:label="Prompt" />
-
-    <fragment
-        android:id="@+id/fragment_sensor"
-        android:name="tech.tooz.bto.toozifier.examples.sensor.SensorFragment"
-        android:label="@string/scrolling_by_head_motion" />
-
-    <fragment
-        android:id="@+id/fragment_webview"
-        android:name="tech.tooz.bto.toozifier.examples.webview.WebViewFragment"
-        android:label="@string/webview_example" />
-
-    <fragment
-        android:id="@+id/fragment_heartbeat"
-        android:name="tech.tooz.bto.toozifier.examples.heartbeat.HeartBeatFragment"
-        android:label="Heartbeat">
-        <action
-            android:id="@+id/fragment_heartbeat_to_self"
-            app:destination="@+id/fragment_heartbeat"
-            app:popUpTo="@id/fragment_heartbeat"
-            app:popUpToInclusive="true" />
-    </fragment>
-
+        android:id="@+id/sensor_data_fragment"
+        android:name="tech.tooz.bto.toozifier.examples.sensor_data.SensorDataFragment"
+        android:label="@string/sensor_data_example_name" />
 </navigation>

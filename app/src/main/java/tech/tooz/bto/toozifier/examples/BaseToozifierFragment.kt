@@ -10,5 +10,5 @@ open class BaseToozifierFragment : Fragment() {
         const val BUTTON_EVENT = "Button event:"
     }
 
-    protected val toozifier = ExampleApplication.getExampleApplication().toozifier
+    protected val toozifier = BaseApplication.getBaseApplication().toozifier
 }

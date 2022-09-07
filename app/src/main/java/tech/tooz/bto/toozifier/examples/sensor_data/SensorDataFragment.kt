@@ -1,4 +1,4 @@
-package tech.tooz.bto.toozifier.examples.sensor
+package tech.tooz.bto.toozifier.examples.sensor_data
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import tech.tooz.bto.toozifier.examples.BaseToozifierFragment
 import tech.tooz.bto.toozifier.examples.R
-import tech.tooz.bto.toozifier.examples.databinding.FragmentSensorBinding
+import tech.tooz.bto.toozifier.examples.databinding.SensorDataFragmentBinding
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
@@ -21,14 +21,14 @@ import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
 import tooz.bto.toozifier.sensors.SensorDataListener
 
-class SensorFragment : BaseToozifierFragment() {
+class SensorDataFragment : BaseToozifierFragment() {
 
     // The binding contains the views that are part of this fragment
-    private var _binding: FragmentSensorBinding? = null
+    private var _binding: SensorDataFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val sensorData: SensorData = SensorData(toozifier)
-    private var adapter: ScrollByHeadMotionAdapter? = null
+    private var adapter: LogSensorDataAdapter? = null
 
     private val dataSensors: Array<Sensor> = arrayOf(Sensor.acceleration, Sensor.gyroscope, Sensor.rotation, Sensor.gameRotation, Sensor.geomagRotation, Sensor.light, Sensor.temperature, Sensor.magneticField)
     private var activeSensor = 0
@@ -157,14 +157,14 @@ class SensorFragment : BaseToozifierFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSensorBinding.inflate(inflater, container, false)
+        _binding = SensorDataFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ScrollByHeadMotionAdapter()
+        adapter = LogSensorDataAdapter()
         setupRecyclerView()
 
         // Get the view which is supposed to be shown on the glasses

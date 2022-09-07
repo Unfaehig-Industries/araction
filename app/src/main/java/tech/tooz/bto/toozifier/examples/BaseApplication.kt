@@ -5,11 +5,11 @@ import timber.log.Timber
 import tooz.bto.toozifier.ToozifierFactory
 
 @Suppress("unused")
-class ExampleApplication : Application() {
+class BaseApplication : Application() {
 
     companion object {
-        private lateinit var instance: ExampleApplication
-        fun getExampleApplication(): ExampleApplication = instance
+        private lateinit var instance: BaseApplication
+        fun getBaseApplication(): BaseApplication = instance
     }
 
     val toozifier = ToozifierFactory.getInstance()
