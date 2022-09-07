@@ -42,7 +42,8 @@ class ExampleListFragment : Fragment() {
         binding.recyclerviewExample.addItemDecoration(dividerItemDecoration)
         binding.recyclerviewExample.adapter = ExamplesAdapter(
             items = arrayListOf(
-                Example.SENSOR
+                Example.SENSOR,
+                Example.DIRECTION
             ),
             parentFragment = this
         )
@@ -76,6 +77,15 @@ class ExampleListFragment : Fragment() {
                         }
                     )
                 }
+                Example.DIRECTION.ordinal -> {
+                    bindItem(
+                        holder = holder,
+                        text = parentFragment.requireContext().getString(R.string.direction_example_name),
+                        clickListener = {
+                            parentFragment.findNavController().navigate(R.id.direction_action)
+                        }
+                    )
+                }
             }
         }
 
@@ -90,7 +100,7 @@ class ExampleListFragment : Fragment() {
     }
 
     enum class Example {
-        SENSOR
+        SENSOR, DIRECTION
     }
 
 }

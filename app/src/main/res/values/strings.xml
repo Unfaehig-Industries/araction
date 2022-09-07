@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">AR Action</string>
     <string name="sensor_data_example_name">Sensor Data</string>
+    <string name="direction_example_name">Direction</string>
     <string name="error">Could not connect with glasses\nBluetooth and the glasses must be active\nUse Tooz OS to pair with glasses</string>
     <string name="sensor_data_sensor_placeholder">sensor</string>
     <string name="sensor_data_x_placeholder">x</string>

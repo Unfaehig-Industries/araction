@@ -16,10 +16,21 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/direction_action"
+            app:destination="@+id/direction_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
         android:id="@+id/sensor_data_fragment"
         android:name="tech.tooz.bto.toozifier.examples.sensor_data.SensorDataFragment"
         android:label="@string/sensor_data_example_name" />
+    <fragment
+        android:id="@+id/direction_fragment"
+        android:name="tech.tooz.bto.toozifier.examples.direction.DirectionFragment"
+        android:label="@string/direction_example_name" />
 </navigation>
