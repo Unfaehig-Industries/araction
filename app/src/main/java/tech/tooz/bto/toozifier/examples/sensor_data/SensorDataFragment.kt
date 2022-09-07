@@ -86,6 +86,10 @@ class SensorDataFragment : BaseToozifierFragment() {
 
     private val sensorDataListener = object : SensorDataListener {
 
+        override fun onSensorDataRegistered() {
+            Timber.d("$SENSOR_EVENT onSensorDataRegistered")
+        }
+
         override fun onSensorDataDeregistered(sensor: Sensor) {
             Timber.d("$SENSOR_EVENT onSensorDataDeregistered sensor: $sensor")
         }
