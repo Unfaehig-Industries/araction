@@ -25,6 +25,8 @@ class DirectionFragment : BaseToozifierFragment() {
     private var _binding: DirectionFragmentBinding? = null
     private val binding get() = _binding!!
 
+    private val layout: DirectionLayout = DirectionLayout(toozifier)
+
     private val dataSensors: Array<Sensor> = arrayOf(Sensor.geomagRotation)
     private val sensorReadingInterval = 100
 
@@ -95,7 +97,8 @@ class DirectionFragment : BaseToozifierFragment() {
 
             when(sensorReading.name) {
                 "geomagRotation" -> {
-                    val sensorDataReading: ToozServiceMessage.Sensor.GeomagRotation? = sensorReading.reading.geomagRotation
+                    //val sensorDataReading: ToozServiceMessage.Sensor.GeomagRotation? = sensorReading.reading.geomagRotation
+                    layout.sendFrame()
                 }
             }
         }
@@ -115,6 +118,7 @@ class DirectionFragment : BaseToozifierFragment() {
     private val buttonEventListener = object : ButtonEventListener {
         override fun onButtonEvent(button: Button) {
             Timber.d("$BUTTON_EVENT $button")
+            layout.sendRootFrame()
         }
     }
 
@@ -130,5 +134,7 @@ class DirectionFragment : BaseToozifierFragment() {
     @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.d("Test")
+        layout.inflateSensorView(requireContext())
     }
 }

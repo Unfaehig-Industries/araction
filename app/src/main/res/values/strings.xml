@@ -7,4 +7,6 @@
     <string name="sensor_data_x_placeholder">x</string>
     <string name="sensor_data_y_placeholder">y</string>
     <string name="sensor_data_z_placeholder">z</string>
+    <string name="direction_arrow_description">Arrow to show the direction, where the user is looking.</string>
+    <string name="direction_button_prompt">Press the button to fix a new root position.</string>
 </resources>
