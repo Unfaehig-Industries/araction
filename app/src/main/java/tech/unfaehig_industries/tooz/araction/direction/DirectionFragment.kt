@@ -28,7 +28,8 @@ class DirectionFragment : BaseToozifierFragment() {
     private val layout: DirectionLayout = DirectionLayout(toozifier)
 
     private val dataSensors: Array<Sensor> = arrayOf(Sensor.geomagRotation)
-    private val sensorReadingInterval = 100
+    private val sensorReadingInterval = 10
+    private var rotation: Float = 0F
 
     override fun onResume() {
         super.onResume()
@@ -98,7 +99,8 @@ class DirectionFragment : BaseToozifierFragment() {
             when(sensorReading.name) {
                 "geomagRotation" -> {
                     //val sensorDataReading: ToozServiceMessage.Sensor.GeomagRotation? = sensorReading.reading.geomagRotation
-                    layout.sendFrame()
+                    rotation = rotation.plus(1F)
+                    layout.sendFrame(rotation)
                 }
             }
         }

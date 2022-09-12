@@ -14,10 +14,10 @@ class DirectionLayout (private val toozifier: Toozifier) {
     // These are the views that are displayed in this view
     private var arrow : ImageView? = null
 
-    fun sendFrame () {
+    fun sendFrame (rotation: Float) {
         //needs a float
         arrow?.setImageResource(R.drawable.arrow_96)
-        arrow?.rotation = arrow?.rotation!!.plus(5F)
+        arrow?.rotation = rotation
         directionView?.run {
             toozifier.sendFrame(this.root)
         }
