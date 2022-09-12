@@ -33,12 +33,16 @@ class RotationalPosition(private val x: Double = 0.0,
         val facingZeroVectorY = zeroPointY - facingPointY
         val facingZeroVectorZ = zeroPointZ - facingPointZ
 
-        // TODO calc angle between facingZeroVector and Vector that points up (0,0,1)
+        // calc angle between facingZeroVector and Vector that points up (0,0,1)
+        val angle = Math.acos(facingZeroVectorZ /
+                (Math.sqrt(facingZeroVectorX * facingZeroVectorX
+                        + facingZeroVectorY * facingZeroVectorY
+                        + facingZeroVectorZ * facingZeroVectorZ)))
+
+
         // TODO adjust angle vor head jaw
 
-
-
-        return 0.0
+        return angle
     }
 
 }
