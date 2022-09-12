@@ -28,7 +28,7 @@ class SensorDataFragment : BaseToozifierFragment() {
     private var _binding: SensorDataFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val sensorData: SensorData = SensorData(toozifier)
+    private val sensorDataLayout: SensorDataLayout = SensorDataLayout(toozifier)
     private var adapter: LogSensorDataAdapter? = null
 
     private val dataSensors: Array<Sensor> = arrayOf(Sensor.acceleration, Sensor.gyroscope, Sensor.rotation, Sensor.gameRotation, Sensor.geomagRotation, Sensor.light, Sensor.temperature, Sensor.magneticField)
@@ -41,11 +41,18 @@ class SensorDataFragment : BaseToozifierFragment() {
     override fun onResume() {
         super.onResume()
         registerToozer()
+        sensorDataLayout.resumeJob()
     }
 
     override fun onPause() {
         super.onPause()
         deregisterToozer()
+        sensorDataLayout.pauseJob()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        sensorDataLayout.cancelJob()
     }
 
     private fun registerToozer() {
@@ -172,7 +179,7 @@ class SensorDataFragment : BaseToozifierFragment() {
         setupRecyclerView()
 
         // Get the view which is supposed to be shown on the glasses
-        sensorData.inflateSensorView(requireContext())
+        sensorDataLayout.inflateSensorView(requireContext())
         binding.recyclerViewScrollByHeadMotion.setOnTouchListener {v, event ->
             lastTouched = System.currentTimeMillis().toInt()
             false
@@ -194,7 +201,7 @@ class SensorDataFragment : BaseToozifierFragment() {
     }
 
     private fun cycleActiveSensor() {
-        sensorData.sendEmptyFrame()
+        sensorDataLayout.sendEmptyFrame()
         toozifier.deregisterFromSensorData(dataSensors[activeSensor])
 
         activeSensor += 1
@@ -210,7 +217,7 @@ class SensorDataFragment : BaseToozifierFragment() {
 
     fun tripleSensorData (sensor: String, x: Double?, y: Double?, z: Double?) {
         Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of $sensor: $x $y $z")
-        sensorData.sendFrame(sensor, x, y, z)
+        sensorDataLayout.sendFrame(sensor, x, y, z)
         adapter?.createItem("$sensor: $x $y $z")
 
         if((System.currentTimeMillis().toInt() - lastTouched) > TOUCH_COOLDOWN) {
@@ -223,7 +230,7 @@ class SensorDataFragment : BaseToozifierFragment() {
 
     fun singleSensorData (sensor: String, x: Double?) {
         Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of $sensor: $x")
-        sensorData.sendFrame(sensor, x)
+        sensorDataLayout.sendFrame(sensor, x)
         adapter?.createItem("$sensor: $x")
     }
 }

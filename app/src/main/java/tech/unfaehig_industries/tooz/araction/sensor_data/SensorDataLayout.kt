@@ -4,12 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
 import tech.unfaehig_industries.tooz.araction.R
 import tech.unfaehig_industries.tooz.araction.databinding.SensorDataLayoutBinding
 import tech.unfaehig_industries.tooz.araction.roundDecimal
+import timber.log.Timber
 import tooz.bto.toozifier.Toozifier
 
-class SensorData (private val toozifier: Toozifier) {
+class SensorDataLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
 
     // These are views that are displayed in the glasses
     private var sensorDataView: View? = null
@@ -26,7 +28,8 @@ class SensorData (private val toozifier: Toozifier) {
         zText?.text = z?.roundDecimal(2)
 
         sensorDataView?.run {
-            toozifier.sendFrame(this)
+            layoutView = this
+            Timber.d(layoutView.toString())
         }
     }
 
@@ -37,7 +40,8 @@ class SensorData (private val toozifier: Toozifier) {
         zText?.text = ""
 
         sensorDataView?.run {
-            toozifier.sendFrame(this)
+            layoutView = this
+            Timber.d(layoutView.toString())
         }
     }
 
@@ -48,7 +52,8 @@ class SensorData (private val toozifier: Toozifier) {
         zText?.text = ""
 
         sensorDataView?.run {
-            toozifier.sendFrame(this)
+            layoutView = this
+            Timber.d(layoutView.toString())
         }
     }
 
