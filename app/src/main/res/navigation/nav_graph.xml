@@ -10,6 +10,13 @@
         android:label="@string/app_name">
 
         <action
+            android:id="@+id/framerate_action"
+            app:destination="@+id/framerate_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
             android:id="@+id/sensor_data_action"
             app:destination="@+id/sensor_data_fragment"
             app:enterAnim="@anim/slide_in_right"
@@ -25,6 +32,10 @@
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
+    <fragment
+        android:id="@+id/framerate_fragment"
+        android:name="tech.unfaehig_industries.tooz.araction.frame_rate.FrameRateFragment"
+        android:label="@string/frame_rate_example_name" />
     <fragment
         android:id="@+id/sensor_data_fragment"
         android:name="tech.unfaehig_industries.tooz.araction.sensor_data.SensorDataFragment"
