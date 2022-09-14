@@ -33,7 +33,7 @@ class SensorDataFragment : BaseToozifierFragment() {
 
     private val dataSensors: Array<Sensor> = arrayOf(Sensor.acceleration, Sensor.gyroscope, Sensor.rotation, Sensor.gameRotation, Sensor.geomagRotation, Sensor.light, Sensor.temperature, Sensor.magneticField)
     private var activeSensor = 0
-    private val SENSOR_READING_INTERVAL = 100
+    private val SENSOR_READING_INTERVAL = 150
 
     private var lastTouched = 0
     private val TOUCH_COOLDOWN = 10000

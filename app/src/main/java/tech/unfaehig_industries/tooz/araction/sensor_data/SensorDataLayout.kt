@@ -14,7 +14,7 @@ import tooz.bto.toozifier.Toozifier
 class SensorDataLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
 
     // These are views that are displayed in the glasses
-    private var sensorDataView: View? = null
+    private var sensorDataView: SensorDataLayoutBinding? = null
     // These are the text fields that are displayed in this view
     private var nameText : TextView? = null
     private var xText : TextView? = null
@@ -28,8 +28,7 @@ class SensorDataLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
         zText?.text = z?.roundDecimal(2)
 
         sensorDataView?.run {
-            layoutView = this
-            Timber.d(layoutView.toString())
+            layoutView = this.root
         }
     }
 
@@ -40,8 +39,7 @@ class SensorDataLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
         zText?.text = ""
 
         sensorDataView?.run {
-            layoutView = this
-            Timber.d(layoutView.toString())
+            layoutView = this.root
         }
     }
 
@@ -52,16 +50,15 @@ class SensorDataLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
         zText?.text = ""
 
         sensorDataView?.run {
-            layoutView = this
-            Timber.d(layoutView.toString())
+            layoutView = this.root
         }
     }
 
     fun inflateSensorView(context: Context) {
-        sensorDataView = SensorDataLayoutBinding.inflate(LayoutInflater.from(context)).root
-        nameText = sensorDataView?.findViewById(R.id.sensor_name)
-        xText = sensorDataView?.findViewById(R.id.sensor_x)
-        yText = sensorDataView?.findViewById(R.id.sensor_y)
-        zText = sensorDataView?.findViewById(R.id.sensor_z)
+        sensorDataView = SensorDataLayoutBinding.inflate(LayoutInflater.from(context))
+        nameText = sensorDataView?.sensorName
+        xText = sensorDataView?.sensorX
+        yText = sensorDataView?.sensorY
+        zText = sensorDataView?.sensorZ
     }
 }

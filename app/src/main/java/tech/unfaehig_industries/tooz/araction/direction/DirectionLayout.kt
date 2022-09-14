@@ -3,11 +3,12 @@ package tech.unfaehig_industries.tooz.araction.direction
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.ImageView
+import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
 import tech.unfaehig_industries.tooz.araction.R
 import tech.unfaehig_industries.tooz.araction.databinding.DirectionLayoutBinding
 import tooz.bto.toozifier.Toozifier
 
-class DirectionLayout (private val toozifier: Toozifier) {
+class DirectionLayout (toozifier: Toozifier): BaseToozifierLayout(toozifier) {
 
     // These are views that are displayed in the glasses
     private var directionView: DirectionLayoutBinding? = null
@@ -16,11 +17,14 @@ class DirectionLayout (private val toozifier: Toozifier) {
 
     fun sendFrame (rotation: Float) {
         //needs a float
-        arrow?.setImageResource(R.drawable.arrow_96)
         arrow?.rotation = rotation
         directionView?.run {
-            toozifier.sendFrame(this.root)
+            layoutView = this.root
         }
+    }
+
+    fun setArrowImage() {
+        arrow?.setImageResource(R.drawable.arrow_96)
     }
 
     fun sendRootFrame () {
@@ -28,7 +32,7 @@ class DirectionLayout (private val toozifier: Toozifier) {
         arrow?.setImageResource(R.drawable.location_96)
         arrow?.rotation = 0F
         directionView?.run {
-            toozifier.sendFrame(this.root)
+            //layoutView = this.root
         }
     }
 

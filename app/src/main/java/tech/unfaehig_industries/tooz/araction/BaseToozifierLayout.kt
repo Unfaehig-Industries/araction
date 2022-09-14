@@ -2,10 +2,10 @@ package tech.unfaehig_industries.tooz.araction
 
 import android.view.View
 import kotlinx.coroutines.*
-import timber.log.Timber
 import tooz.bto.toozifier.Toozifier
 
 open class BaseToozifierLayout (toozifier: Toozifier){
+    private val delay: Long = 150
 
     var layoutView: View? = null
     private var isPaused: Boolean = false
@@ -14,12 +14,11 @@ open class BaseToozifierLayout (toozifier: Toozifier){
     private val job = GlobalScope.launch {
         while (isActive) {
             if (!isPaused) {
-                val view = layoutView
-                view?.run {
+
+                layoutView?.run {
                     toozifier.sendFrame(this)
                 }
-                Timber.d("Frame: send")
-                delay(33)
+                delay(delay)
             }
         }
     }

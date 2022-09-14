@@ -28,17 +28,24 @@ class DirectionFragment : BaseToozifierFragment() {
     private val layout: DirectionLayout = DirectionLayout(toozifier)
 
     private val dataSensors: Array<Sensor> = arrayOf(Sensor.geomagRotation)
-    private val sensorReadingInterval = 10
+    private val sensorReadingInterval = 150
     private var rotation: Float = 0F
 
     override fun onResume() {
         super.onResume()
         registerToozer()
+        layout.resumeJob()
     }
 
     override fun onPause() {
         super.onPause()
         deregisterToozer()
+        layout.pauseJob()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        layout.cancelJob()
     }
 
     private fun registerToozer() {
@@ -100,6 +107,7 @@ class DirectionFragment : BaseToozifierFragment() {
                 "geomagRotation" -> {
                     //val sensorDataReading: ToozServiceMessage.Sensor.GeomagRotation? = sensorReading.reading.geomagRotation
                     rotation = rotation.plus(1F)
+                    Timber.d("rotation: $rotation")
                     layout.sendFrame(rotation)
                 }
             }
@@ -136,7 +144,6 @@ class DirectionFragment : BaseToozifierFragment() {
     @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.d("Test")
         layout.inflateSensorView(requireContext())
     }
 }
