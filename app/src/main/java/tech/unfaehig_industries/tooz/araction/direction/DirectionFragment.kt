@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.R
 import tech.unfaehig_industries.tooz.araction.databinding.DirectionFragmentBinding
+import tech.unfaehig_industries.tooz.araction.positional_tracking.RotationalPosition
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
@@ -27,6 +28,10 @@ class DirectionFragment : BaseToozifierFragment() {
 
     private val dataSensors: Array<Sensor> = arrayOf(Sensor.geomagRotation)
     private val sensorReadingInterval = 100
+
+    private var zeroPosition: RotationalPosition = RotationalPosition()
+    private var currentPosition: RotationalPosition = RotationalPosition()
+    private var resetZeroPosition: Boolean = false
 
     override fun onResume() {
         super.onResume()
@@ -96,6 +101,17 @@ class DirectionFragment : BaseToozifierFragment() {
             when(sensorReading.name) {
                 "geomagRotation" -> {
                     val sensorDataReading: ToozServiceMessage.Sensor.GeomagRotation? = sensorReading.reading.geomagRotation
+
+                    sensorDataReading?.let {
+                        if (resetZeroPosition) {
+                            zeroPosition = RotationalPosition(it.x!!, it.y!!, it.z!!)
+                            resetZeroPosition = false
+                        }
+
+                        currentPosition = RotationalPosition(it.x!!, it.y!!, it.z!!)
+                        // TODO fix angle = NAN
+                        Timber.d("NEW ANGLE: ${currentPosition.calculateDirection(zeroPosition)}")
+                    }
                 }
             }
         }
@@ -130,5 +146,7 @@ class DirectionFragment : BaseToozifierFragment() {
     @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        resetZeroPosition = true
     }
+
 }
