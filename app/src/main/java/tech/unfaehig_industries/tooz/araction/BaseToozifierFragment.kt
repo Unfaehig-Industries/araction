@@ -11,4 +11,6 @@ open class BaseToozifierFragment : Fragment() {
     }
 
     protected val toozifier = BaseApplication.getBaseApplication().toozifier
+
+    protected val sensorReadingInterval = 150
 }

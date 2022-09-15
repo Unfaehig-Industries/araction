@@ -28,7 +28,7 @@ class FrameRateFragment : BaseToozifierFragment() {
     private val layout: FrameRateLayout = FrameRateLayout(toozifier)
 
     private val dataSensors: Array<Sensor> = arrayOf(Sensor.geomagRotation)
-    private var sensorReadingInterval = 250
+    var interval = 250
 
     override fun onResume() {
         super.onResume()
@@ -71,7 +71,7 @@ class FrameRateFragment : BaseToozifierFragment() {
 
             dataSensors.forEach { sensor ->
                 toozifier.registerForSensorData(
-                    Pair(sensor, sensorReadingInterval)
+                    Pair(sensor, interval)
                 )
             }
         }
@@ -126,7 +126,7 @@ class FrameRateFragment : BaseToozifierFragment() {
     private val buttonEventListener = object : ButtonEventListener {
         override fun onButtonEvent(button: Button) {
             Timber.d("$BUTTON_EVENT $button")
-            sensorReadingInterval -= 5
+            interval -= 5
             layout.delay -= 5
 
             layout.setInterval()

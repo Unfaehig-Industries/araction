@@ -33,7 +33,6 @@ class SensorDataFragment : BaseToozifierFragment() {
 
     private val dataSensors: Array<Sensor> = arrayOf(Sensor.acceleration, Sensor.gyroscope, Sensor.rotation, Sensor.gameRotation, Sensor.geomagRotation, Sensor.light, Sensor.temperature, Sensor.magneticField)
     private var activeSensor = 0
-    private val SENSOR_READING_INTERVAL = 150
 
     private var lastTouched = 0
     private val TOUCH_COOLDOWN = 10000
@@ -78,7 +77,7 @@ class SensorDataFragment : BaseToozifierFragment() {
             Timber.d("$TOOZ_EVENT onRegisterSuccess")
 
             toozifier.registerForSensorData(
-                Pair(dataSensors[activeSensor], SENSOR_READING_INTERVAL)
+                Pair(dataSensors[activeSensor], sensorReadingInterval)
             )
         }
 
@@ -211,7 +210,7 @@ class SensorDataFragment : BaseToozifierFragment() {
 
         Timber.d("Active Sensor: ${dataSensors[activeSensor]}")
         toozifier.registerForSensorData(
-            Pair(dataSensors[activeSensor], SENSOR_READING_INTERVAL)
+            Pair(dataSensors[activeSensor], sensorReadingInterval)
         )
     }
 
