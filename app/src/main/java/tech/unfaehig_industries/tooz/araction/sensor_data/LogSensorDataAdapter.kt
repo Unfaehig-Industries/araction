@@ -9,7 +9,7 @@ import timber.log.Timber
 
 class LogSensorDataAdapter : RecyclerView.Adapter<LogSensorDataAdapter.ScrollByHeadMotionViewHOlder>() {
 
-    private var items: MutableList<String>
+    private var items: MutableList<String> = mutableListOf()
 
     init {
         items = mutableListOf()
