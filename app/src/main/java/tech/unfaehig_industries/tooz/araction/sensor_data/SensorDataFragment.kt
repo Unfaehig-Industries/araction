@@ -179,7 +179,7 @@ class SensorDataFragment : BaseToozifierFragment() {
 
         // Get the view which is supposed to be shown on the glasses
         sensorDataLayout.inflateSensorView(requireContext())
-        binding.recyclerViewScrollByHeadMotion.setOnTouchListener {v, event ->
+        binding.recyclerViewScrollByHeadMotion.setOnTouchListener {_, _ ->
             lastTouched = System.currentTimeMillis().toInt()
             false
         }
