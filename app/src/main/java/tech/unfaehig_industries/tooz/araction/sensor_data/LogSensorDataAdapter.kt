@@ -7,13 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import tech.unfaehig_industries.tooz.araction.R
 import timber.log.Timber
 
-class LogSensorDataAdapter : RecyclerView.Adapter<LogSensorDataAdapter.ScrollByHeadMotionViewHOlder>() {
+class LogSensorDataAdapter : RecyclerView.Adapter<LogSensorDataAdapter.SensorDataViewHolder>() {
 
     private var items: MutableList<String> = mutableListOf()
 
-    init {
-        items = mutableListOf()
-    }
+    class SensorDataViewHolder(val view: AppCompatTextView) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScrollByHeadMotionViewHOlder {
         val view = LayoutInflater.from(parent.context)
@@ -25,11 +23,9 @@ class LogSensorDataAdapter : RecyclerView.Adapter<LogSensorDataAdapter.ScrollByH
         return items.size
     }
 
-    override fun onBindViewHolder(holder: ScrollByHeadMotionViewHOlder, position: Int) {
+    override fun onBindViewHolder(holder: SensorDataViewHolder, position: Int) {
         holder.view.text = items[position]
     }
-
-    class ScrollByHeadMotionViewHOlder(val view: AppCompatTextView) : RecyclerView.ViewHolder(view)
 
     fun createItem(name: String): List<String> {
         Timber.d("adding item: $name")
