@@ -26,7 +26,6 @@ class LogSensorDataAdapter : RecyclerView.Adapter<LogSensorDataAdapter.SensorDat
     }
 
     fun createItem(name: String): List<String> {
-        Timber.d("adding item: $name")
         items.add(name)
         notifyItemInserted(items.size - 1)
         return items
