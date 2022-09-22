@@ -27,6 +27,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'tech.unfaehig_industries.tooz.araction'
 }
 
 repositories {
