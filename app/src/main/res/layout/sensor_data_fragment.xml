@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_scroll_by_head_motion"
+        android:id="@+id/sensor_data_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"

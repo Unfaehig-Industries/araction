@@ -179,14 +179,14 @@ class SensorDataFragment : BaseToozifierFragment() {
 
         // Get the view which is supposed to be shown on the glasses
         sensorDataLayout.inflateSensorView(requireContext())
-        binding.recyclerViewScrollByHeadMotion.setOnTouchListener {_, _ ->
+        binding.sensorDataRecyclerView.setOnTouchListener {_, _ ->
             lastTouched = System.currentTimeMillis().toInt()
             false
         }
     }
 
     private fun setupRecyclerView() {
-        binding.recyclerViewScrollByHeadMotion.let {
+        binding.sensorDataRecyclerView.let {
             val layoutManager = LinearLayoutManager(requireContext())
             it.layoutManager = layoutManager
             it.adapter = adapter
@@ -221,9 +221,9 @@ class SensorDataFragment : BaseToozifierFragment() {
 
         if((System.currentTimeMillis().toInt() - lastTouched) > TOUCH_COOLDOWN) {
             adapter?.itemCount
-            ?.let {
-                binding.recyclerViewScrollByHeadMotion.smoothScrollToPosition(it)
-            }
+                ?.let {
+                    binding.sensorDataRecyclerView.smoothScrollToPosition(it)
+                }
         }
     }
 
