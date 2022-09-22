@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
-import tech.unfaehig_industries.tooz.araction.databinding.SensorDataFragmentBinding
+import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuFragmentBinding
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
@@ -19,7 +19,7 @@ import tooz.bto.toozifier.sensors.SensorDataListener
 class RadialMenuFragment() : BaseToozifierFragment() {
 
     // The binding contains the views that are part of this fragment
-    private var _binding: SensorDataFragmentBinding? = null
+    private var _binding: RadialMenuFragmentBinding? = null
     private val binding get() = _binding!!
 
     override val layout: RadialMenuLayout = RadialMenuLayout(toozifier)
@@ -81,7 +81,7 @@ class RadialMenuFragment() : BaseToozifierFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = SensorDataFragmentBinding.inflate(inflater, container, false)
+        _binding = RadialMenuFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
