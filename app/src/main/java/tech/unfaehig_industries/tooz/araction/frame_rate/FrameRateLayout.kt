@@ -11,21 +11,22 @@ class FrameRateLayout (toozifier: Toozifier) {
 
     // These are views that are displayed in the glasses
     private var frameRateView: FrameRateLayoutBinding? = null
-    // These are the views that are displayed in this view
+
+    private var frameCount = 0
     private var readingCount = 0
 
     private var isPaused: Boolean = false
     var delay: Long = 250
-    private var count = 0
+
 
     @OptIn(DelicateCoroutinesApi::class)
     private val job = GlobalScope.launch {
         while (isActive) {
             if (!isPaused) {
-                count += 1
+                frameCount += 1
 
                 frameRateView?.run {
-                    this.frameCounter.text = count.toString()
+                    this.frameCounter.text = frameCount.toString()
                     Timber.d("Frame rate: frame ${this.frameCounter.text} send")
                     toozifier.sendFrame(this.root)
                 }
