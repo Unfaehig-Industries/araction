@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
-import tech.unfaehig_industries.tooz.araction.R
+import tech.unfaehig_industries.tooz.araction.SafeSensorReading
 import tech.unfaehig_industries.tooz.araction.databinding.DirectionFragmentBinding
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
@@ -106,7 +106,7 @@ class DirectionFragment : BaseToozifierFragment() {
                     //val sensorDataReading: ToozServiceMessage.Sensor.GeomagRotation? = sensorReading.reading.geomagRotation
                     rotation = rotation.plus(1F)
                     Timber.d("rotation: $rotation")
-                    layout.sendFrame(rotation)
+                    layout.sendFrame(SafeSensorReading("rotation", rotation.toDouble()))
                 }
             }
         }

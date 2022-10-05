@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
-import tech.unfaehig_industries.tooz.araction.R
+import tech.unfaehig_industries.tooz.araction.SafeSensorReading
 import tech.unfaehig_industries.tooz.araction.databinding.SensorDataFragmentBinding
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage
@@ -109,36 +109,78 @@ class SensorDataFragment : BaseToozifierFragment() {
 
             when(sensorReading.name) {
                 "acceleration" -> {
-                    val sensorDataReading: ToozServiceMessage.Sensor.Acceleration? = sensorReading.reading.acceleration
-                    tripleSensorData(sensorReading.name, sensorDataReading?.x, sensorDataReading?.y, sensorDataReading?.z)
+                    val sensorDataReading: ToozServiceMessage.Sensor.Acceleration = sensorReading.reading.acceleration!!
+                    sensorDataReading.x?.let { x ->
+                        sensorDataReading.y?.let { y ->
+                            sensorDataReading.z?.let { z ->
+                                sendSensorData(SafeSensorReading(sensorReading.name, x, y, z))
+                            }
+                        }
+                    }
                 }
                 "gyroscope" -> {
-                    val sensorDataReading: ToozServiceMessage.Sensor.Gyroscope? = sensorReading.reading.gyroscope
-                    tripleSensorData(sensorReading.name, sensorDataReading?.x, sensorDataReading?.y, sensorDataReading?.z)
+                    val sensorDataReading: ToozServiceMessage.Sensor.Gyroscope = sensorReading.reading.gyroscope!!
+                    sensorDataReading.x?.let { x ->
+                        sensorDataReading.y?.let { y ->
+                            sensorDataReading.z?.let { z ->
+                                sendSensorData(SafeSensorReading(sensorReading.name, x, y, z))
+                            }
+                        }
+                    }
                 }
                 "rotation" -> {
-                    val sensorDataReading: ToozServiceMessage.Sensor.Rotation? = sensorReading.reading.rotation
-                    tripleSensorData(sensorReading.name, sensorDataReading?.x, sensorDataReading?.y, sensorDataReading?.z)
+                    val sensorDataReading: ToozServiceMessage.Sensor.Rotation = sensorReading.reading.rotation!!
+                    sensorDataReading.w?.let { w ->
+                        sensorDataReading.x?.let { x ->
+                            sensorDataReading.y?.let { y ->
+                                sensorDataReading.z?.let { z ->
+                                    sendSensorData(SafeSensorReading(sensorReading.name, w, x, y, z))
+                                }
+                            }
+                        }
+                    }
                 }
                 "gameRotation" -> {
-                    val sensorDataReading: ToozServiceMessage.Sensor.GameRotation? = sensorReading.reading.gameRotation
-                    tripleSensorData(sensorReading.name, sensorDataReading?.x, sensorDataReading?.y, sensorDataReading?.z)
+                    val sensorDataReading: ToozServiceMessage.Sensor.GameRotation = sensorReading.reading.gameRotation!!
+                    sensorDataReading.w?.let { w ->
+                        sensorDataReading.x?.let { x ->
+                            sensorDataReading.y?.let { y ->
+                                sensorDataReading.z?.let { z ->
+                                    sendSensorData(SafeSensorReading(sensorReading.name, w, x, y, z))
+                                }
+                            }
+                        }
+                    }
                 }
                 "geomagRotation" -> {
-                    val sensorDataReading: ToozServiceMessage.Sensor.GeomagRotation? = sensorReading.reading.geomagRotation
-                    tripleSensorData(sensorReading.name, sensorDataReading?.x, sensorDataReading?.y, sensorDataReading?.z)
+                    val sensorDataReading: ToozServiceMessage.Sensor.GeomagRotation = sensorReading.reading.geomagRotation!!
+                    sensorDataReading.w?.let { w ->
+                        sensorDataReading.x?.let { x ->
+                            sensorDataReading.y?.let { y ->
+                                sensorDataReading.z?.let { z ->
+                                    sendSensorData(SafeSensorReading(sensorReading.name, w, x, y, z))
+                                }
+                            }
+                        }
+                    }
                 }
                 "light" -> {
-                    val sensorDataReading: Double? = sensorReading.reading.light
-                    singleSensorData(sensorReading.name, sensorDataReading)
+                    val sensorDataReading: Double = sensorReading.reading.light!!
+                    sendSensorData(SafeSensorReading(sensorReading.name, sensorDataReading))
                 }
                 "temperature" -> {
-                    val sensorDataReading: Double? = sensorReading.reading.temperature
-                    singleSensorData(sensorReading.name, sensorDataReading)
+                    val sensorDataReading: Double = sensorReading.reading.temperature!!
+                    sendSensorData(SafeSensorReading(sensorReading.name, sensorDataReading))
                 }
                 "magneticField" -> {
-                    val sensorDataReading: ToozServiceMessage.Sensor.MagneticField? = sensorReading.reading.magneticField
-                    tripleSensorData(sensorReading.name, sensorDataReading?.x, sensorDataReading?.y, sensorDataReading?.z)
+                    val sensorDataReading: ToozServiceMessage.Sensor.MagneticField = sensorReading.reading.magneticField!!
+                    sensorDataReading.x?.let { x ->
+                        sensorDataReading.y?.let { y ->
+                            sensorDataReading.z?.let { z ->
+                                sendSensorData(SafeSensorReading(sensorReading.name, x, y, z))
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -214,10 +256,11 @@ class SensorDataFragment : BaseToozifierFragment() {
         )
     }
 
-    fun tripleSensorData (sensor: String, x: Double?, y: Double?, z: Double?) {
-        Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of $sensor: $x $y $z")
-        sensorDataLayout.sendFrame(sensor, x, y, z)
-        adapter?.createItem("$sensor: $x $y $z")
+    fun sendSensorData (reading: SafeSensorReading) {
+
+        Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of ".plus(reading.dataString()))
+        sensorDataLayout.sendFrame(reading)
+        adapter?.createItem(reading.dataString())
 
         if((System.currentTimeMillis().toInt() - lastTouched) > TOUCH_COOLDOWN) {
             adapter?.itemCount
@@ -225,11 +268,5 @@ class SensorDataFragment : BaseToozifierFragment() {
                     binding.sensorDataRecyclerView.smoothScrollToPosition(it)
                 }
         }
-    }
-
-    fun singleSensorData (sensor: String, x: Double?) {
-        Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of $sensor: $x")
-        sensorDataLayout.sendFrame(sensor, x)
-        adapter?.createItem("$sensor: $x")
     }
 }
