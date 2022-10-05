@@ -2,10 +2,10 @@ package tech.unfaehig_industries.tooz.araction.direction
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.util.Pair as AndroidPair
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
 import tech.unfaehig_industries.tooz.araction.SafeSensorReading
@@ -37,7 +37,7 @@ class DirectionFragment : BaseToozifierFragment() {
 
             dataSensors.forEach { sensor ->
                 toozifier.registerForSensorData(
-                    Pair(sensor, sensorReadingInterval)
+                    AndroidPair(sensor, sensorReadingInterval)
                 )
             }
         }

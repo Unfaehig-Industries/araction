@@ -2,7 +2,7 @@ package tech.unfaehig_industries.tooz.araction.sensor_data
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Pair
+import android.util.Pair as AndroidPair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +20,6 @@ import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
 import tooz.bto.toozifier.sensors.SensorDataListener
-
 
 class SensorDataFragment : BaseToozifierFragment() {
 
@@ -43,7 +42,7 @@ class SensorDataFragment : BaseToozifierFragment() {
             Timber.d("$TOOZ_EVENT onRegisterSuccess")
 
             toozifier.registerForSensorData(
-                Pair(dataSensors[activeSensor], sensorReadingInterval)
+                AndroidPair(dataSensors[activeSensor], sensorReadingInterval)
             )
         }
 
@@ -218,7 +217,7 @@ class SensorDataFragment : BaseToozifierFragment() {
 
         Timber.d("Active Sensor: ${dataSensors[activeSensor]}")
         toozifier.registerForSensorData(
-            Pair(dataSensors[activeSensor], sensorReadingInterval)
+            AndroidPair(dataSensors[activeSensor], sensorReadingInterval)
         )
     }
 
