@@ -28,50 +28,16 @@ class SensorDataFragment : BaseToozifierFragment() {
     private var _binding: SensorDataFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val sensorDataLayout: SensorDataLayout = SensorDataLayout(toozifier)
+    override val layout: SensorDataLayout = SensorDataLayout(toozifier)
     private var adapter: LogSensorDataAdapter? = null
 
-    private val dataSensors: Array<Sensor> = arrayOf(Sensor.acceleration, Sensor.gyroscope, Sensor.rotation, Sensor.gameRotation, Sensor.geomagRotation, Sensor.light, Sensor.temperature, Sensor.magneticField)
+    override val dataSensors: Array<Sensor> = arrayOf(Sensor.acceleration, Sensor.gyroscope, Sensor.rotation, Sensor.gameRotation, Sensor.geomagRotation, Sensor.light, Sensor.temperature, Sensor.magneticField)
     private var activeSensor = 0
 
     private var lastTouched = 0
     private val TOUCH_COOLDOWN = 10000
 
-    override fun onResume() {
-        super.onResume()
-        registerToozer()
-        sensorDataLayout.resumeJob()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        deregisterToozer()
-        sensorDataLayout.pauseJob()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        sensorDataLayout.cancelJob()
-    }
-
-    private fun registerToozer() {
-        toozifier.addListener(sensorDataListener)
-        toozifier.addListener(buttonEventListener)
-        toozifier.register(
-            requireContext(),
-            getString(R.string.app_name),
-            registrationListener
-        )
-    }
-
-    private fun deregisterToozer() {
-        toozifier.deregister()
-        toozifier.removeListener(sensorDataListener)
-        toozifier.removeListener(buttonEventListener)
-        toozifier.deregisterFromSensorData(Sensor.acceleration)
-    }
-
-    private val registrationListener = object : RegistrationListener {
+    override val registrationListener = object : RegistrationListener {
 
         override fun onRegisterSuccess() {
             Timber.d("$TOOZ_EVENT onRegisterSuccess")
@@ -94,7 +60,7 @@ class SensorDataFragment : BaseToozifierFragment() {
         }
     }
 
-    private val sensorDataListener = object : SensorDataListener {
+    override val sensorDataListener = object : SensorDataListener {
 
         override fun onSensorDataRegistered() {
             Timber.d("$SENSOR_EVENT onSensorDataRegistered")
@@ -197,7 +163,7 @@ class SensorDataFragment : BaseToozifierFragment() {
         }
     }
 
-    private val buttonEventListener = object : ButtonEventListener {
+    override val buttonEventListener = object : ButtonEventListener {
         override fun onButtonEvent(button: Button) {
             Timber.d("$BUTTON_EVENT $button")
             cycleActiveSensor()
@@ -220,7 +186,7 @@ class SensorDataFragment : BaseToozifierFragment() {
         setupRecyclerView()
 
         // Get the view which is supposed to be shown on the glasses
-        sensorDataLayout.inflateSensorView(requireContext())
+        layout.inflateView(requireContext())
         binding.sensorDataRecyclerView.setOnTouchListener {_, _ ->
             lastTouched = System.currentTimeMillis().toInt()
             false
@@ -242,7 +208,7 @@ class SensorDataFragment : BaseToozifierFragment() {
     }
 
     private fun cycleActiveSensor() {
-        sensorDataLayout.sendEmptyFrame()
+        layout.sendBlankFrame()
         toozifier.deregisterFromSensorData(dataSensors[activeSensor])
 
         activeSensor += 1
@@ -259,7 +225,7 @@ class SensorDataFragment : BaseToozifierFragment() {
     fun sendSensorData (reading: SafeSensorReading) {
 
         Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of ".plus(reading.dataString()))
-        sensorDataLayout.sendFrame(reading)
+        layout.sendFrame(reading)
         adapter?.createItem(reading.dataString())
 
         if((System.currentTimeMillis().toInt() - lastTouched) > TOUCH_COOLDOWN) {
