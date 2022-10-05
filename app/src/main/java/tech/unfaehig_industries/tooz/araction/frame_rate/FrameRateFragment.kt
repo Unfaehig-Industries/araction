@@ -6,7 +6,8 @@ import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
+import androidx.fragment.app.Fragment
+import tech.unfaehig_industries.tooz.araction.BaseApplication
 import tech.unfaehig_industries.tooz.araction.R
 import tech.unfaehig_industries.tooz.araction.databinding.DirectionFragmentBinding
 import timber.log.Timber
@@ -19,7 +20,9 @@ import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
 import tooz.bto.toozifier.sensors.SensorDataListener
 
-class FrameRateFragment : BaseToozifierFragment() {
+class FrameRateFragment : Fragment() {
+
+    private val toozifier = BaseApplication.getBaseApplication().toozifier
 
     // The binding contains the views that are part of this fragment
     private var _binding: DirectionFragmentBinding? = null
@@ -58,10 +61,12 @@ class FrameRateFragment : BaseToozifierFragment() {
     }
 
     private fun deregisterToozer() {
-        toozifier.deregister()
+        dataSensors.forEach { sensor ->
+            toozifier.deregisterFromSensorData(sensor)
+        }
         toozifier.removeListener(sensorDataListener)
         toozifier.removeListener(buttonEventListener)
-        toozifier.deregisterFromSensorData(Sensor.acceleration)
+        toozifier.deregister()
     }
 
     private val registrationListener = object : RegistrationListener {
@@ -123,7 +128,7 @@ class FrameRateFragment : BaseToozifierFragment() {
         }
     }
 
-    private val buttonEventListener = object : ButtonEventListener {
+    private val buttonEventListener = object: ButtonEventListener {
         override fun onButtonEvent(button: Button) {
             Timber.d("$BUTTON_EVENT $button")
             interval -= 5
@@ -146,6 +151,12 @@ class FrameRateFragment : BaseToozifierFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("Test")
-        layout.inflateSensorView(requireContext())
+        layout.inflateView(requireContext())
+    }
+
+    companion object {
+        const val TOOZ_EVENT = "Tooz event:"
+        const val SENSOR_EVENT = "Sensor event:"
+        const val BUTTON_EVENT = "Button event:"
     }
 }

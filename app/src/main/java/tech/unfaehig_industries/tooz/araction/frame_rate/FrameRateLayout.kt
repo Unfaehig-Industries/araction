@@ -54,7 +54,7 @@ class FrameRateLayout (toozifier: Toozifier) {
         }
     }
 
-    fun sendFrame () {
+    fun sendFrame() {
         readingCount += 1
         frameRateView?.run {
             this.readingCounter.text = readingCount.toString()
@@ -62,7 +62,7 @@ class FrameRateLayout (toozifier: Toozifier) {
         }
     }
 
-    fun inflateSensorView(context: Context) {
+    fun inflateView(context: Context) {
         frameRateView = FrameRateLayoutBinding.inflate(LayoutInflater.from(context))
     }
 }
