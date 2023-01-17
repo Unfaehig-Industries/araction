@@ -3,7 +3,7 @@ package tech.unfaehig_industries.tooz.araction.positional_tracking
 import timber.log.Timber
 import java.util.*
 
-class RotationalPosition(private val x: Double = 0.0,
+class FacingVector(private val x: Double = 0.0,
                          private val y: Double = 0.0,
                          private val z: Double = 0.0) {
 
@@ -45,7 +45,7 @@ class RotationalPosition(private val x: Double = 0.0,
         return zF
     }
 
-    fun calculateDirection(target: RotationalPosition): Double {
+    fun calculateDirection(target: FacingVector): Double {
 
         Timber.d("Calculating Direction... ${x}, ${y}, ${z}")
 
