@@ -8,11 +8,11 @@
 
     <tech.unfaehig_industries.tooz.araction.views.RadialMenu
         android:id="@+id/radial_menu"
-        android:layout_width="260dp"
-        android:layout_height="260dp"
-        app:circleColor="#ff0900"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:circleColor="#CD2010"
         app:circleBorderWidth="5"
-        app:borderColor="@color/colorPrimary"
+        app:borderColor="@color/background_prompt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

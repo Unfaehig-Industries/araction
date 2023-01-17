@@ -4,19 +4,26 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.RectF
 import android.graphics.drawable.ShapeDrawable
 import android.util.AttributeSet
 import android.view.View
 import tech.unfaehig_industries.tooz.araction.R
+import java.util.Vector
 
 class RadialMenu : View {
 
     private var mainButton: ShapeDrawable = ShapeDrawable()
     private var radialButtons: Array<ShapeDrawable> = arrayOf()
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private var halfWidth = 195 // Half width of recommended used area of tooz screen (390px)
-    private var halfHeight = 264 // Half height of recommended used area of tooz screen (264px)
-    private var radius = 48 // Circa eighth width of recommended used area of tooz screen (390px)
+    private val background: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var widthToozScreen = 390f
+    private var heightToozScreen = 528f
+    private var radialOuterPadding: Float = (heightToozScreen-widthToozScreen)/2
+    private var radialBoundingRect: RectF = RectF(0f, radialOuterPadding, widthToozScreen, widthToozScreen+radialOuterPadding)
+    private var radialInnerPadding: Float = widthToozScreen/4
+    private var radialInnerBoundingRect: RectF = RectF(radialInnerPadding, radialOuterPadding+radialInnerPadding, widthToozScreen-radialInnerPadding, widthToozScreen+radialOuterPadding-radialInnerPadding)
+    private var radius = widthToozScreen / 8
     private var circleColor : Int = Color.YELLOW
     private var borderColor : Int = Color.BLACK
     private var borderWidth : Float = 2F
@@ -43,12 +50,28 @@ class RadialMenu : View {
     }
 
     override fun onDraw(canvas: Canvas?){
-        //drawing the circle
         paint.apply { color = circleColor; style = Paint.Style.FILL }
-        canvas?.drawCircle(halfWidth.toFloat(), halfHeight.toFloat(), radius.toFloat(), paint)
-        //drawing circle border
-        paint.apply { color = borderColor; style = Paint.Style.STROKE; strokeWidth = borderWidth}
-        canvas?.drawCircle(halfWidth.toFloat(), halfHeight.toFloat(), radius.toFloat(), paint)
+        background.apply { color = borderColor; style = Paint.Style.FILL }
 
+        canvas?.run {
+
+            //drawing the radialButtons
+            drawRadialButton(this, 0f, 85f, paint, background)
+            paint.color = Color.YELLOW
+            drawRadialButton(this, 95f, 80f, paint, background)
+            paint.color = Color.BLUE
+            drawRadialButton(this, 185f, 80f, paint, background)
+            paint.color = Color.GREEN
+            drawRadialButton(this, 275f, 80f, paint, background)
+
+            //drawing the mainButton
+            paint.color = Color.RED
+            this.drawCircle(widthToozScreen/2, heightToozScreen/2, radius, paint)
+        }
+    }
+
+    fun drawRadialButton(canvas: Canvas, start_degrees: Float, length_degrees: Float, fill: Paint, background: Paint) {
+        canvas.drawArc(radialBoundingRect, start_degrees, length_degrees, true, fill)
+        canvas.drawArc(radialInnerBoundingRect, start_degrees, length_degrees, true, background)
     }
 }
