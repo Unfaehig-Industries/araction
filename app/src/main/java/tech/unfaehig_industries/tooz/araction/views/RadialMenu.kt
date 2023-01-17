@@ -14,9 +14,9 @@ class RadialMenu : View {
     private var mainButton: ShapeDrawable = ShapeDrawable()
     private var radialButtons: Array<ShapeDrawable> = arrayOf()
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private var halfWidth = 0
-    private var halfHeight = 0
-    private var radius = 0
+    private var halfWidth = 195 // Half width of recommended used area of tooz screen (390px)
+    private var halfHeight = 264 // Half height of recommended used area of tooz screen (264px)
+    private var radius = 48 // Circa eighth width of recommended used area of tooz screen (390px)
     private var circleColor : Int = Color.YELLOW
     private var borderColor : Int = Color.BLACK
     private var borderWidth : Float = 2F
@@ -50,13 +50,5 @@ class RadialMenu : View {
         paint.apply { color = borderColor; style = Paint.Style.STROKE; strokeWidth = borderWidth}
         canvas?.drawCircle(halfWidth.toFloat(), halfHeight.toFloat(), radius.toFloat(), paint)
 
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int){
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        halfHeight = measuredHeight / 2
-        halfWidth = measuredWidth / 2
-        radius = halfHeight.coerceAtMost(halfWidth) - borderWidth.toInt()
-        setMeasuredDimension(measuredWidth, measuredHeight)
     }
 }
