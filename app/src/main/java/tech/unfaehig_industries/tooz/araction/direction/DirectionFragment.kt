@@ -179,12 +179,18 @@ class DirectionFragment : BaseToozifierFragment() {
                 // that we received the proper event
                 if (event.sensor.type == TYPE_GAME_ROTATION_VECTOR) {
                     val values = event.values
-//                    Timber.d("SENSOR DEBUG: Sensor reading $values")
                     // convert the rotation-vector to a 4x4 matrix. the matrix
                     // is interpreted by Open GL as the inverse of the
                     // rotation-vector, which is what we want.
                     SensorManager.getQuaternionFromVector(currentRotation, values)
-//                    Timber.d("SENSOR DEBUG: $currentRotation")
+
+                    if (resetZeroPosition) {
+                        resetZeroPosition = false
+                        zeroRotation = currentRotation
+                    }
+
+
+                    Timber.d("SENSOR DEBUG: x ${currentRotation[0]}, y ${currentRotation[1]}, z ${currentRotation[2]}, w ${currentRotation[3]}")
                 }
             }
 
@@ -201,4 +207,12 @@ class DirectionFragment : BaseToozifierFragment() {
         super.onViewCreated(view, savedInstanceState)
         resetZeroPosition = true
     }
+
+    fun calcPointerRotation() {
+        vec.x=2*x*z - 2*y*w
+        vec.y=2*y*z + 2*x*w
+        vec.z=1 - 2*x*x - 2*y*y
+
+    }
 }
+
