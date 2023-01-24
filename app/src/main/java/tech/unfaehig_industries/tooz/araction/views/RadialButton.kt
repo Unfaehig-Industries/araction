@@ -18,12 +18,12 @@ class RadialButton : View {
     constructor(context: Context) : super(context) {
     }
 
-    constructor(context: Context, radialBoundingRect: RectF, radialInnerBoundingRect: RectF, start_degrees: Float, length_degrees: Float, fill: Paint, background: Paint) : super(context) {
+    constructor(context: Context, radialBoundingRect: RectF, radialInnerBoundingRect: RectF, start_degrees: Float, length_degrees: Float, fillColor: Int, background: Paint) : super(context) {
         this.radialBoundingRect = radialBoundingRect
         this.radialInnerBoundingRect = radialInnerBoundingRect
         this.startDegrees = start_degrees
         this.lengthDegrees = length_degrees
-        this.fill = fill
+        this.fill.apply { color= fillColor; style= Paint.Style.FILL }
         this.background = background
     }
 

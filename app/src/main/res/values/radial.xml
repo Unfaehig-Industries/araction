@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="RadialMenu">
-        <attr name="circleColor" format="color"/>
-        <attr name="borderColor" format="color"/>
-        <attr name="circleBorderWidth" format="float"/>
+        <attr name="mainColor" format="color"/>
+        <attr name="backgroundColor" format="color"/>
     </declare-styleable>
 </resources>

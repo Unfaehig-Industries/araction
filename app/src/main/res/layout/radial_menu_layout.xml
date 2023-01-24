@@ -3,21 +3,18 @@
     android:layout_width="@dimen/width_safe_area"
     android:layout_height="@dimen/height_safe_area"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    android:background="@color/background_prompt"
     android:orientation="vertical">
 
     <tech.unfaehig_industries.tooz.araction.views.RadialMenu
         android:id="@+id/radial_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:borderColor="@color/colorPrimary"
-        app:circleBorderWidth="5"
-        app:circleColor="#CD2010"
+        app:mainColor="#CD2010"
+        app:backgroundColor="@color/background_prompt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.495" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
