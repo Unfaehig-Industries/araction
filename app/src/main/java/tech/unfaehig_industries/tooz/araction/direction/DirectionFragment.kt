@@ -3,7 +3,6 @@ package tech.unfaehig_industries.tooz.araction.direction
 //import tooz.bto.toozifier.sensors.Sensor
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Context.SENSOR_SERVICE
 import android.hardware.Sensor
 import android.hardware.Sensor.TYPE_GAME_ROTATION_VECTOR
 import android.hardware.SensorEvent
@@ -13,7 +12,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.getSystemService
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.R
 import tech.unfaehig_industries.tooz.araction.databinding.DirectionFragmentBinding
@@ -23,6 +21,8 @@ import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
 import java.util.*
+import kotlin.math.acos
+import kotlin.math.sqrt
 
 
 class DirectionFragment : BaseToozifierFragment() {
@@ -34,8 +34,8 @@ class DirectionFragment : BaseToozifierFragment() {
 //    private val dataSensors: Array<Sensor> = arrayOf(Sensor.geomagRotation)
 //    private val sensorReadingInterval = 100
 
-    private var zeroRotation: FloatArray = floatArrayOf(0f, 1f, 0f, 0f)
-    private var currentRotation: FloatArray = floatArrayOf(0f, 1f, 0f, 0f)
+    private var zeroFacing: DoubleArray = DoubleArray(3)
+    private var currentFacing: DoubleArray = DoubleArray(3)
     private var resetZeroPosition: Boolean = false
 
     private lateinit var sensorManager : SensorManager
@@ -179,18 +179,30 @@ class DirectionFragment : BaseToozifierFragment() {
                 // that we received the proper event
                 if (event.sensor.type == TYPE_GAME_ROTATION_VECTOR) {
                     val values = event.values
-                    // convert the rotation-vector to a 4x4 matrix. the matrix
-                    // is interpreted by Open GL as the inverse of the
-                    // rotation-vector, which is what we want.
-                    SensorManager.getQuaternionFromVector(currentRotation, values)
+
+                    val currentRotation = FloatArray(9)
+
+                    SensorManager.getRotationMatrixFromVector (currentRotation, values)
+
+                    currentFacing = rotateVectorByMatrix((currentRotation.map { it.toDouble() }).toDoubleArray(), doubleArrayOf(0.0, 1.0, 0.0))
+//                    val currentUp = rotateVectorByMatrix((currentRotation.map { it.toDouble() }).toDoubleArray(), doubleArrayOf(0.0, 0.0, 1.0))
 
                     if (resetZeroPosition) {
                         resetZeroPosition = false
-                        zeroRotation = currentRotation
+                        zeroFacing = currentFacing
                     }
 
+                    val directionVector = doubleArrayOf(
+                        zeroFacing[0] - currentFacing[0],
+                        zeroFacing[1] - currentFacing[1],
+                        zeroFacing[2] - currentFacing[2]
+                    )
 
-                    Timber.d("SENSOR DEBUG: x ${currentRotation[0]}, y ${currentRotation[1]}, z ${currentRotation[2]}, w ${currentRotation[3]}")
+                    val angle = angleBetweenVectors(directionVector, doubleArrayOf(0.0, 0.0, 1.0))
+                    val dist = sqrt(directionVector.sumOf { it * it })
+
+//                    Timber.d("SENSOR DEBUG: x ${directionVector[0]}, y ${directionVector[1]}, z ${directionVector[2]}")
+                    Timber.d("angle: $angle, distance: $dist")
                 }
             }
 
@@ -208,11 +220,59 @@ class DirectionFragment : BaseToozifierFragment() {
         resetZeroPosition = true
     }
 
-    fun calcPointerRotation() {
-        vec.x=2*x*z - 2*y*w
-        vec.y=2*y*z + 2*x*w
-        vec.z=1 - 2*x*x - 2*y*y
+    fun calcPointerRotation(vector: FloatArray, quaternion: FloatArray) : FloatArray? {
 
+        require(vector.size == 3 && quaternion.size == 4) { "Matrix and vector must be 3x3 and 3D respectively" }
+
+        val num = quaternion[1] * 2.0
+        val num2 = quaternion[2] * 2.0
+        val num3 = quaternion[3] * 2.0
+        val num4 = quaternion[1] * num
+        val num5 = quaternion[2] * num2
+        val num6 = quaternion[3] * num3
+        val num7 = quaternion[1] * num2
+        val num8 = quaternion[1] * num3
+        val num9 = quaternion[2] * num3
+        val num10 = quaternion[0] * num
+        val num11 = quaternion[0] * num2
+        val num12 = quaternion[0] * num3
+        return floatArrayOf(
+            ((1.0 - (num5 + num6)) * vector[0] + (num7 - num12) * vector[1] + (num8 + num11) * vector[2]).toFloat(),
+            ((num7 + num12) * vector[0] + (1.0 - (num4 + num6)) * vector[1] + (num9 - num10) * vector[2]).toFloat(),
+            ((num8 - num11) * vector[0] + (num9 + num10) * vector[1] + (1.0 - (num4 + num5)) * vector[2]).toFloat()
+        )
     }
+
+    fun rotateVectorByMatrix(inputMatrix: DoubleArray, vector: DoubleArray): DoubleArray {
+        // check that the matrix and vector are conformable for matrix multiplication
+
+        require(inputMatrix.size == 9 && vector.size == 3) { "Matrix and vector must be 3x3 and 3D respectively" }
+
+        val matrix = arrayOf(
+            doubleArrayOf(inputMatrix[0], inputMatrix[1], inputMatrix[2]),
+            doubleArrayOf(inputMatrix[3], inputMatrix[4], inputMatrix[5]),
+            doubleArrayOf(inputMatrix[6], inputMatrix[7], inputMatrix[8])
+        )
+
+        // perform the matrix multiplication
+        val result = DoubleArray(3)
+        for (i in 0..2) {
+            for (j in 0..2) {
+                result[i] += matrix[i][j] * vector[j]
+            }
+        }
+        return result
+    }
+
+    fun angleBetweenVectors(vector1: DoubleArray, vector2: DoubleArray): Double {
+        require(vector1.size == 3 && vector2.size == 3) { "Vectors must be 3D" }
+        val dotProduct = vector1.zip(vector2) { a, b -> a * b }.sum()
+        val magnitude1 = sqrt(vector1.sumOf { it * it })
+        val magnitude2 = sqrt(vector2.sumOf { it * it })
+        return acos(dotProduct / (magnitude1 * magnitude2))
+    }
+
+
+
 }
 
