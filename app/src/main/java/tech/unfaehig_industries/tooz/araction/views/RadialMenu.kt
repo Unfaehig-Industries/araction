@@ -8,10 +8,11 @@ import android.graphics.RectF
 import android.graphics.drawable.ShapeDrawable
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 import tech.unfaehig_industries.tooz.araction.R
-import java.util.Vector
+import java.util.*
 
-class RadialMenu : View {
+class RadialMenu : ViewGroup {
 
     private var mainButton: ShapeDrawable = ShapeDrawable()
     private var radialButtons: Array<ShapeDrawable> = arrayOf()
@@ -52,17 +53,10 @@ class RadialMenu : View {
     override fun onDraw(canvas: Canvas?){
         paint.apply { color = circleColor; style = Paint.Style.FILL }
         background.apply { color = borderColor; style = Paint.Style.FILL }
-
         canvas?.run {
 
             //drawing the radialButtons
-            drawRadialButton(this, 0f, 85f, paint, background)
-            paint.color = Color.YELLOW
-            drawRadialButton(this, 95f, 80f, paint, background)
-            paint.color = Color.BLUE
-            drawRadialButton(this, 185f, 80f, paint, background)
-            paint.color = Color.GREEN
-            drawRadialButton(this, 275f, 80f, paint, background)
+            addRadialButtons(canvas, arrayOf("a", "b", "c", "a", "b", "c", "a", "b"))
 
             //drawing the mainButton
             paint.color = Color.RED
@@ -70,7 +64,25 @@ class RadialMenu : View {
         }
     }
 
-    fun drawRadialButton(canvas: Canvas, start_degrees: Float, length_degrees: Float, fill: Paint, background: Paint) {
+    override fun onLayout(p0: Boolean, p1: Int, p2: Int, p3: Int, p4: Int) {
+        TODO("Not yet implemented")
+    }
+
+    private fun addRadialButtons(canvas: Canvas, data: Array<String>) {
+        val count: Int = data.size
+        val length: Float = 360f / count
+        val rnd = Random()
+        background.apply { color = borderColor; style = Paint.Style.FILL }
+
+        for (i in 0 .. count) {
+            paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            //drawRadialButton(canvas, i*length, length, paint, background)
+            val radialButton: RadialButton = RadialButton(context, radialBoundingRect, radialInnerBoundingRect, i*length, length, paint, background)
+            this.addView(radialButton, this.layoutParams)
+        }
+    }
+
+    private fun drawRadialButton(canvas: Canvas, start_degrees: Float, length_degrees: Float, fill: Paint, background: Paint) {
         canvas.drawArc(radialBoundingRect, start_degrees, length_degrees, true, fill)
         canvas.drawArc(radialInnerBoundingRect, start_degrees, length_degrees, true, background)
     }
