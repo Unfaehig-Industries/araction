@@ -3,7 +3,6 @@ package tech.unfaehig_industries.tooz.araction
 import android.content.Context
 import android.view.View
 import kotlinx.coroutines.*
-import timber.log.Timber
 import tooz.bto.toozifier.Toozifier
 
 abstract class BaseToozifierLayout (toozifier: Toozifier){
@@ -15,7 +14,7 @@ abstract class BaseToozifierLayout (toozifier: Toozifier){
     @OptIn(DelicateCoroutinesApi::class)
     private val job = GlobalScope.launch {
         while (isActive) {
-            if (!isPaused) {
+            if (!isPaused && toozifier.isRegistered) {
 
                 layoutView?.run {
                     toozifier.sendFrame(this)
