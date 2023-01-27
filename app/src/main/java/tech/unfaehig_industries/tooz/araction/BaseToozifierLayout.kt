@@ -6,7 +6,7 @@ import kotlinx.coroutines.*
 import tooz.bto.toozifier.Toozifier
 
 abstract class BaseToozifierLayout (toozifier: Toozifier){
-    val delay: Long = 150
+    private val delay: Long = 150L
 
     var layoutView: View? = null
     private var isPaused: Boolean = false
