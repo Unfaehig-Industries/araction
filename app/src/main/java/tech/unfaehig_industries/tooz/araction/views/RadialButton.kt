@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
+import android.graphics.Typeface
+import android.text.TextPaint
 import android.view.View
 import kotlin.math.cos
 import kotlin.math.sin
@@ -16,9 +18,10 @@ class RadialButton : View {
     private var lengthDegrees: Float = 90f
     private var label: String = ""
     private var labelCoordinates: Pair<Float, Float> = Pair(0f, 0f)
-    private val textSize: Float = 40f
+    private val labelSize: Float = 60f
     private val fillPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val backgroundPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     constructor(context: Context) : super(context) {
     }
@@ -33,7 +36,9 @@ class RadialButton : View {
         this.labelCoordinates = calculateLabelCoordinates()
 
         this.fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
-        this.backgroundPaint.apply { color= background.color ; textSize= textSize }
+        this.backgroundPaint.apply { color= background.color }
+        val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+        this.labelPaint.apply { color= background.color ; typeface= labelTypeface; textSize= labelSize }
     }
 
     private fun calculateLabelCoordinates(): Pair<Float, Float> {
@@ -45,8 +50,8 @@ class RadialButton : View {
         var y: Double = radius * sin(angleInRadians)
         x += radialBoundingRect.centerX()
         y += radialBoundingRect.centerY()
-        x -= textSize / 4
-        y += textSize / 4
+        x -= labelSize / 4
+        y += labelSize / 4
 
         return Pair(x.toFloat(), y.toFloat())
     }
@@ -57,7 +62,7 @@ class RadialButton : View {
         canvas?.run {
             this.drawArc(radialBoundingRect, startDegrees, lengthDegrees, true, fillPaint)
             this.drawArc(radialInnerBoundingRect, startDegrees, lengthDegrees, true, backgroundPaint)
-            this.drawText(label, labelCoordinates.first, labelCoordinates.second, backgroundPaint)
+            this.drawText(label, labelCoordinates.first, labelCoordinates.second, labelPaint)
         }
     }
 }
