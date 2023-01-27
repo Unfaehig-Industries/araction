@@ -18,11 +18,12 @@ class RadialMenu : RelativeLayout {
     private val backgroundPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var widthToozScreen = 390f
     private var heightToozScreen = 528f
+    // With the prerequisite that the screen is higher than wide
     private var radialOuterPadding: Float = (heightToozScreen-widthToozScreen)/2
     private var radialBoundingRect: RectF = RectF(0f, radialOuterPadding, widthToozScreen, widthToozScreen+radialOuterPadding)
     private var radialInnerPadding: Float = widthToozScreen/4
     private var radialInnerBoundingRect: RectF = RectF(radialInnerPadding, radialOuterPadding+radialInnerPadding, widthToozScreen-radialInnerPadding, widthToozScreen+radialOuterPadding-radialInnerPadding)
-    private var radius = widthToozScreen / 8
+    private var mainButtonRadius = widthToozScreen / 8
 
     constructor(context:Context) : super(context) {
         init(null)
@@ -40,12 +41,12 @@ class RadialMenu : RelativeLayout {
         val backgroundColor: Int = typedArray.getColor(R.styleable.RadialMenu_backgroundColor, Color.BLACK)
         backgroundPaint.apply { color= backgroundColor; style= Paint.Style.FILL }
 
-        addRadialButtons(arrayOf("a", "b", "c", "a", "b", "c", "a", "b"))
+        addRadialButtons(arrayOf("a", "b", "c", "d"))
         addMainButton()
     }
 
     private fun addMainButton() {
-        mainButton = MainButton(context, radialBoundingRect, radius, mainColor)
+        mainButton = MainButton(context, radialBoundingRect, mainButtonRadius, mainColor)
         this.addView(mainButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
     }
 
@@ -54,10 +55,10 @@ class RadialMenu : RelativeLayout {
         val length: Float = 360f / data.size
         val rnd = Random()
 
-        for (i in 0 .. data.size) {
+        for (i in 0 until(data.size)) {
 
             val fillColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
-            val radialButton = RadialButton(context, radialBoundingRect, radialInnerBoundingRect, i*length, length, fillColor, backgroundPaint)
+            val radialButton = RadialButton(context, radialBoundingRect, radialInnerBoundingRect, i*length, length, data[i], fillColor, backgroundPaint)
             radialButtons.add(radialButton)
 
             this.addView(radialButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
