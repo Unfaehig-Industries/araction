@@ -42,6 +42,7 @@ class ExampleListFragment : Fragment() {
         binding.recyclerviewExample.addItemDecoration(dividerItemDecoration)
         binding.recyclerviewExample.adapter = ExamplesAdapter(
             items = arrayListOf(
+                Example.FRAMERATE,
                 Example.SENSOR,
                 Example.DIRECTION
             ),
@@ -68,6 +69,15 @@ class ExampleListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
             when (getItemViewType(position)) {
+                Example.FRAMERATE.ordinal -> {
+                    bindItem(
+                        holder = holder,
+                        text = parentFragment.requireContext().getString(R.string.frame_rate_example_name),
+                        clickListener = {
+                            parentFragment.findNavController().navigate(R.id.framerate_action)
+                        }
+                    )
+                }
                 Example.SENSOR.ordinal -> {
                     bindItem(
                         holder = holder,
@@ -100,7 +110,7 @@ class ExampleListFragment : Fragment() {
     }
 
     enum class Example {
-        SENSOR, DIRECTION
+        FRAMERATE, SENSOR, DIRECTION
     }
 
 }

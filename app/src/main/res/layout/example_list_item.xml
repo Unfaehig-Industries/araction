@@ -33,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_chevron_right_24px"
+        app:srcCompat="@drawable/arrow_round_24"
         app:tint="?android:textColorSecondary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

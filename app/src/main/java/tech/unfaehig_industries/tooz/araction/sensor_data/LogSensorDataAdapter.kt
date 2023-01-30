@@ -4,35 +4,28 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
-import tech.unfaehig_industries.tooz.araction.R
-import timber.log.Timber
+import tech.unfaehig_industries.tooz.araction.databinding.SensorDataItemBinding
 
-class LogSensorDataAdapter : RecyclerView.Adapter<LogSensorDataAdapter.ScrollByHeadMotionViewHOlder>() {
+class LogSensorDataAdapter : RecyclerView.Adapter<LogSensorDataAdapter.SensorDataViewHolder>() {
 
-    private var items: MutableList<String>
+    private var items: MutableList<String> = mutableListOf()
 
-    init {
-        items = mutableListOf()
-    }
+    class SensorDataViewHolder(val view: AppCompatTextView) : RecyclerView.ViewHolder(view)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScrollByHeadMotionViewHOlder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.sensor_data_item, parent, false) as AppCompatTextView
-        return ScrollByHeadMotionViewHOlder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SensorDataViewHolder {
+        val view: AppCompatTextView = SensorDataItemBinding.inflate(LayoutInflater.from(parent.context)).root
+        return SensorDataViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    override fun onBindViewHolder(holder: ScrollByHeadMotionViewHOlder, position: Int) {
+    override fun onBindViewHolder(holder: SensorDataViewHolder, position: Int) {
         holder.view.text = items[position]
     }
 
-    class ScrollByHeadMotionViewHOlder(val view: AppCompatTextView) : RecyclerView.ViewHolder(view)
-
     fun createItem(name: String): List<String> {
-        Timber.d("adding item: $name")
         items.add(name)
         notifyItemInserted(items.size - 1)
         return items

@@ -1,50 +1,57 @@
-package tech.unfaehig_industries.tooz.araction.direction
+package tech.unfaehig_industries.tooz.araction.frame_rate
 
-import CursorEventManager
-import CursorEventManager.SensorDataCallback
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.util.Pair as AndroidPair
-import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
-import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
+import androidx.fragment.app.Fragment
+import tech.unfaehig_industries.tooz.araction.BaseApplication
 import tech.unfaehig_industries.tooz.araction.R
 import tech.unfaehig_industries.tooz.araction.databinding.DirectionFragmentBinding
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage
+import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
 import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
 import tooz.bto.toozifier.sensors.SensorDataListener
-import java.util.*
 
-class DirectionFragment : BaseToozifierFragment() {
+class FrameRateFragment : Fragment() {
+
+    private val toozifier = BaseApplication.getBaseApplication().toozifier
 
     // The binding contains the views that are part of this fragment
     private var _binding: DirectionFragmentBinding? = null
     private val binding get() = _binding!!
 
-    override val dataSensors: Array<Sensor> = arrayOf()
-    private lateinit var cursorEventManager : CursorEventManager
-    override var layout: BaseToozifierLayout = DirectionLayout(toozifier)
+    private val layout: FrameRateLayout = FrameRateLayout(toozifier)
+
+    private val dataSensors: Array<Sensor> = arrayOf(Sensor.geomagRotation)
+    var interval = 250
 
     override fun onResume() {
         super.onResume()
         registerToozer()
-        cursorEventManager.start()
+        layout.resumeJob()
     }
 
     override fun onPause() {
         super.onPause()
         deregisterToozer()
-        cursorEventManager.stop()
+        layout.pauseJob()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        layout.cancelJob()
     }
 
     private fun registerToozer() {
+        toozifier.addListener(sensorDataListener)
         toozifier.addListener(buttonEventListener)
         toozifier.register(
             requireContext(),
@@ -54,18 +61,22 @@ class DirectionFragment : BaseToozifierFragment() {
     }
 
     private fun deregisterToozer() {
-        toozifier.deregister()
+        dataSensors.forEach { sensor ->
+            toozifier.deregisterFromSensorData(sensor)
+        }
+        toozifier.removeListener(sensorDataListener)
         toozifier.removeListener(buttonEventListener)
+        toozifier.deregister()
     }
 
-    override val registrationListener = object : RegistrationListener {
+    private val registrationListener = object : RegistrationListener {
 
         override fun onRegisterSuccess() {
             Timber.d("$TOOZ_EVENT onRegisterSuccess")
 
             dataSensors.forEach { sensor ->
                 toozifier.registerForSensorData(
-                    AndroidPair(sensor, sensorReadingInterval)
+                    Pair(sensor, interval)
                 )
             }
         }
@@ -83,7 +94,7 @@ class DirectionFragment : BaseToozifierFragment() {
         }
     }
 
-    override val sensorDataListener = object : SensorDataListener {
+    private val sensorDataListener = object : SensorDataListener {
 
         override fun onSensorDataRegistered() {
             Timber.d("$SENSOR_EVENT onSensorDataRegistered")
@@ -93,8 +104,16 @@ class DirectionFragment : BaseToozifierFragment() {
             Timber.d("$SENSOR_EVENT onSensorDataDeregistered sensor: $sensor")
         }
 
-        override fun onSensorDataReceived(sensorReading: ToozServiceMessage.Sensor.SensorReading) {
+        override fun onSensorDataReceived(sensorReading: SensorReading) {
             Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: ${sensorReading.name}")
+
+            when(sensorReading.name) {
+                "geomagRotation" -> {
+                    val sensorDataReading: ToozServiceMessage.Sensor.GeomagRotation? = sensorReading.reading.geomagRotation
+                    Timber.d("Frame rate: ${sensorDataReading?.x}")
+                    layout.sendFrame()
+                }
+            }
         }
 
         override fun onSensorError(sensor: Sensor, errorCause: ErrorCause) {
@@ -109,11 +128,13 @@ class DirectionFragment : BaseToozifierFragment() {
         }
     }
 
-    override val buttonEventListener = object : ButtonEventListener {
+    private val buttonEventListener = object: ButtonEventListener {
         override fun onButtonEvent(button: Button) {
             Timber.d("$BUTTON_EVENT $button")
-            cursorEventManager.resetZeroPosition()
-            layout.sendBlankFrame()
+            interval -= 5
+            layout.delay -= 5
+
+            layout.setInterval()
         }
     }
 
@@ -123,33 +144,19 @@ class DirectionFragment : BaseToozifierFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = DirectionFragmentBinding.inflate(inflater, container, false)
-
-        cursorEventManager =
-            CursorEventManager( object : SensorDataCallback {
-                override fun onCursorUpdate(angle: Double, dist: Double) {
-                    // Handle cursor data
-
-                    Timber.d("angle: $angle, distance: $dist")
-                }
-
-                override fun onAccuracyChanged(accuracy: Int) {
-                    // Handle accuracy change
-                }
-            }, activity)
-
-        cursorEventManager.start()
-        cursorEventManager.resetZeroPosition()
-
         return binding.root
     }
 
     @SuppressLint("InflateParams")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.d("Test")
         layout.inflateView(requireContext())
     }
 
-
-
+    companion object {
+        const val TOOZ_EVENT = "Tooz event:"
+        const val SENSOR_EVENT = "Sensor event:"
+        const val BUTTON_EVENT = "Button event:"
+    }
 }
-
