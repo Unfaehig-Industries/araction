@@ -1,5 +1,7 @@
 package tech.unfaehig_industries.tooz.araction.direction
 
+import CursorEventManager
+import CursorEventManager.SensorDataCallback
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,16 +10,17 @@ import android.view.ViewGroup
 import android.util.Pair as AndroidPair
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
-import tech.unfaehig_industries.tooz.araction.SafeSensorReading
+import tech.unfaehig_industries.tooz.araction.R
 import tech.unfaehig_industries.tooz.araction.databinding.DirectionFragmentBinding
 import timber.log.Timber
-import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
+import tooz.bto.common.ToozServiceMessage
 import tooz.bto.toozifier.button.Button
 import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
 import tooz.bto.toozifier.sensors.SensorDataListener
+import java.util.*
 
 class DirectionFragment : BaseToozifierFragment() {
 
@@ -25,21 +28,40 @@ class DirectionFragment : BaseToozifierFragment() {
     private var _binding: DirectionFragmentBinding? = null
     private val binding get() = _binding!!
 
+    override val dataSensors: Array<Sensor> = arrayOf()
+    private lateinit var cursorEventManager : CursorEventManager
     override var layout: BaseToozifierLayout = DirectionLayout(toozifier)
 
-    override val dataSensors: Array<Sensor> = arrayOf(Sensor.geomagRotation)
-    private var rotation: Float = 0F
+    override fun onResume() {
+        super.onResume()
+        registerToozer()
+        cursorEventManager.start()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        deregisterToozer()
+        cursorEventManager.stop()
+    }
+
+    private fun registerToozer() {
+        toozifier.addListener(buttonEventListener)
+        toozifier.register(
+            requireContext(),
+            getString(R.string.app_name),
+            registrationListener
+        )
+    }
+
+    private fun deregisterToozer() {
+        toozifier.deregister()
+        toozifier.removeListener(buttonEventListener)
+    }
 
     override val registrationListener = object : RegistrationListener {
 
         override fun onRegisterSuccess() {
             Timber.d("$TOOZ_EVENT onRegisterSuccess")
-
-            dataSensors.forEach { sensor ->
-                toozifier.registerForSensorData(
-                    AndroidPair(sensor, sensorReadingInterval)
-                )
-            }
         }
 
         override fun onDeregisterFailure(errorCause: ErrorCause) {
@@ -65,16 +87,8 @@ class DirectionFragment : BaseToozifierFragment() {
             Timber.d("$SENSOR_EVENT onSensorDataDeregistered sensor: $sensor")
         }
 
-        override fun onSensorDataReceived(sensorReading: SensorReading) {
+        override fun onSensorDataReceived(sensorReading: ToozServiceMessage.Sensor.SensorReading) {
             Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: ${sensorReading.name}")
-
-            when(sensorReading.name) {
-                "geomagRotation" -> {
-                    rotation = rotation.plus(1F)
-                    Timber.d("rotation: $rotation")
-                    layout.sendFrame(SafeSensorReading("rotation", rotation.toDouble()))
-                }
-            }
         }
 
         override fun onSensorError(sensor: Sensor, errorCause: ErrorCause) {
@@ -92,6 +106,7 @@ class DirectionFragment : BaseToozifierFragment() {
     override val buttonEventListener = object : ButtonEventListener {
         override fun onButtonEvent(button: Button) {
             Timber.d("$BUTTON_EVENT $button")
+            cursorEventManager.resetZeroPosition()
             layout.sendBlankFrame()
         }
     }
@@ -102,6 +117,23 @@ class DirectionFragment : BaseToozifierFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = DirectionFragmentBinding.inflate(inflater, container, false)
+
+        cursorEventManager =
+            CursorEventManager( object : SensorDataCallback {
+                override fun onCursorUpdate(angle: Double, dist: Double) {
+                    // Handle cursor data
+
+                    Timber.d("angle: $angle, distance: $dist")
+                }
+
+                override fun onAccuracyChanged(accuracy: Int) {
+                    // Handle accuracy change
+                }
+            }, activity)
+
+        cursorEventManager.start()
+        cursorEventManager.resetZeroPosition()
+
         return binding.root
     }
 
