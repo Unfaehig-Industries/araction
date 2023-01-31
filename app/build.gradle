@@ -5,7 +5,7 @@ android {
     compileSdkVersion 33
     defaultConfig {
         applicationId "tech.unfaehig_industries.tooz.araction"
-        minSdkVersion 24
+        minSdkVersion 29
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"

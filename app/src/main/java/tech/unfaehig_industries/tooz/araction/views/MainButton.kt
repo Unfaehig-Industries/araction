@@ -2,17 +2,20 @@ package tech.unfaehig_industries.tooz.araction.views
 
 import android.content.Context
 import android.graphics.*
-import android.view.View
+import androidx.core.graphics.ColorUtils
+import kotlinx.coroutines.*
+import java.time.Instant
 
-class MainButton : View {
+class MainButton : RadialMenuButton {
 
     private var radialBoundingRect: RectF = RectF(0f,0f,100f,100f)
-    var radius: Float = 5f
-    var fillPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var radius: Float = 5f
     private val radiusHighlight: Float = 5f
+    private var fillPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-    constructor(context: Context) : super(context) {
-    }
+    private lateinit var hoverJob: Job
+
+    constructor(context: Context) : super(context)
 
     constructor(context: Context, radialBoundingRect: RectF, radius: Float, fillColor: Int) : super(context) {
         this.radialBoundingRect = radialBoundingRect
@@ -28,14 +31,27 @@ class MainButton : View {
         }
     }
 
-    fun onHover(percent: Int) {
+    override fun onHover(durationInSeconds: Long) {
         radius += radiusHighlight
 
-        val gradientRadius: Float = radius * percent
-        fillPaint.shader = RadialGradient(radialBoundingRect.centerX(), radialBoundingRect.centerY(), gradientRadius, Color.BLACK, Color.WHITE, Shader.TileMode.CLAMP)
+        @OptIn(DelicateCoroutinesApi::class)
+        hoverJob = GlobalScope.launch {
+            val startTime = Instant.now().plusSeconds(durationInSeconds)
+            val delay: Long = 100L
+            var percent: Float = 0f
+            val step: Float = (1f / durationInSeconds) / (1000 / delay)
+
+            while (Instant.now().isBefore(startTime)) {
+                fillPaint.shader = RadialGradient(radialBoundingRect.centerX(), radialBoundingRect.centerY(), radius, intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.7f), fillPaint.color), floatArrayOf(percent, 1f), Shader.TileMode.CLAMP)
+                invalidate()
+                percent += step
+                delay(delay)
+            }
+        }
     }
 
-    fun onHoverLeave() {
+    override fun onHoverLeave() {
+        hoverJob.cancel("hover leave")
         radius -= radiusHighlight
         fillPaint.shader = null
     }
