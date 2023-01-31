@@ -29,34 +29,7 @@ class DirectionFragment : BaseToozifierFragment() {
     private val binding get() = _binding!!
 
     override val dataSensors: Array<Sensor> = arrayOf()
-    private lateinit var cursorEventManager : CursorEventManager
     override var layout: BaseToozifierLayout = DirectionLayout(toozifier)
-
-    override fun onResume() {
-        super.onResume()
-        registerToozer()
-        cursorEventManager.start()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        deregisterToozer()
-        cursorEventManager.stop()
-    }
-
-    private fun registerToozer() {
-        toozifier.addListener(buttonEventListener)
-        toozifier.register(
-            requireContext(),
-            getString(R.string.app_name),
-            registrationListener
-        )
-    }
-
-    private fun deregisterToozer() {
-        toozifier.deregister()
-        toozifier.removeListener(buttonEventListener)
-    }
 
     override val registrationListener = object : RegistrationListener {
 

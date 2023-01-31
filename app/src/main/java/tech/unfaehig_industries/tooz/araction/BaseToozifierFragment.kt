@@ -1,5 +1,6 @@
 package tech.unfaehig_industries.tooz.araction
 
+import CursorEventManager
 import androidx.fragment.app.Fragment
 import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.registration.RegistrationListener
@@ -9,6 +10,7 @@ import tooz.bto.toozifier.sensors.SensorDataListener
 abstract class BaseToozifierFragment : Fragment() {
 
     protected val toozifier = BaseApplication.getBaseApplication().toozifier
+    protected lateinit var cursorEventManager : CursorEventManager
     protected abstract val layout: BaseToozifierLayout
 
     protected abstract val dataSensors: Array<Sensor>
@@ -16,13 +18,15 @@ abstract class BaseToozifierFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        registerToozer()
+        //registerToozer()
+        cursorEventManager.start()
         layout.resumeJob()
     }
 
     override fun onPause() {
         super.onPause()
-        deregisterToozer()
+        //deregisterToozer()
+        cursorEventManager.stop()
         layout.pauseJob()
     }
 
