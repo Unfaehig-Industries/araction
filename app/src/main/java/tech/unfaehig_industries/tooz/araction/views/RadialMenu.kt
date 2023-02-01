@@ -7,6 +7,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.widget.RelativeLayout
 import tech.unfaehig_industries.tooz.araction.R
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -63,5 +64,9 @@ class RadialMenu : RelativeLayout {
 
             this.addView(radialButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         }
+    }
+
+    fun highlightButton(angle: Double, distance: Double) {
+        Timber.d("angle: $angle, distance: $distance")
     }
 }

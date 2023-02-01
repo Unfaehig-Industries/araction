@@ -1,5 +1,6 @@
 package tech.unfaehig_industries.tooz.araction.radial_menu
 
+import CursorEventManager
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -91,5 +92,21 @@ class RadialMenuFragment() : BaseToozifierFragment() {
 
         // Get the view which is supposed to be shown on the glasses
         layout.inflateView(requireContext())
+
+        //Initiate control through phone
+        cursorEventManager =
+            CursorEventManager( object : CursorEventManager.SensorDataCallback {
+                override fun onCursorUpdate(angle: Double, dist: Double) {
+                    // Handle cursor data
+                    binding.radialMenu.highlightButton(angle, dist)
+                }
+
+                override fun onAccuracyChanged(accuracy: Int) {
+                    // Handle accuracy change
+                }
+            }, activity)
+
+        cursorEventManager.start()
+        cursorEventManager.resetZeroPosition()
     }
 }
