@@ -67,7 +67,7 @@ class RadialButton : RadialMenuButton {
         }
     }
 
-    override fun onHover(durationInSeconds: Long) {
+    override fun animateHover(durationInSeconds: Long) {
         radialBoundingRect.inset(-boundingRectInsetHighlight, -boundingRectInsetHighlight)
         radialInnerBoundingRect.inset(boundingRectInsetHighlight, boundingRectInsetHighlight)
 
@@ -87,11 +87,19 @@ class RadialButton : RadialMenuButton {
         }
     }
 
-    override fun onHoverLeave() {
+    override fun cancelHover() {
         hoverJob.cancel("hover leave")
 
         radialBoundingRect.inset(boundingRectInsetHighlight, boundingRectInsetHighlight)
         radialInnerBoundingRect.inset(-boundingRectInsetHighlight, -boundingRectInsetHighlight)
         fillPaint.shader = null
+    }
+
+    fun isOnButton(degrees: Double): Boolean {
+        if (startDegrees < degrees && degrees < (startDegrees+lengthDegrees)) {
+            return true
+        }
+
+        return false
     }
 }

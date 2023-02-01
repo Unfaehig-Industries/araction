@@ -15,6 +15,7 @@ class RadialMenu : RelativeLayout {
 
     private lateinit var mainButton: MainButton
     private lateinit var radialButtons: ArrayList<RadialButton>
+    private var hoveredButton: RadialMenuButton? = null
     private var mainColor: Int = Color.CYAN
     private val backgroundPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var widthToozScreen = 390f
@@ -67,6 +68,33 @@ class RadialMenu : RelativeLayout {
     }
 
     fun highlightButton(angle: Double, distance: Double) {
+        if (distance <= ( radialInnerBoundingRect.width() / 2) ) {
+            if (hoveredButton != mainButton) {
+                hoveredButton?.isHovered = false
+                mainButton.isHovered = true
+
+                hoveredButton = mainButton
+            }
+
+            return
+        }
+
+        var degrees: Double = ( angle * (180 / Math.PI) ) - 90
+        if (degrees < 0) degrees += 360
+
+        for (button in radialButtons) {
+            if (button.isOnButton(degrees)) {
+                if (hoveredButton != button) {
+                    hoveredButton?.isHovered = false
+                    button.isHovered = true
+
+                    hoveredButton = button
+                }
+
+                break
+            }
+        }
+
         Timber.d("angle: $angle, distance: $distance")
     }
 }

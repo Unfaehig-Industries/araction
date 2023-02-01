@@ -31,7 +31,7 @@ class MainButton : RadialMenuButton {
         }
     }
 
-    override fun onHover(durationInSeconds: Long) {
+    override fun animateHover(durationInSeconds: Long) {
         radius += radiusHighlight
 
         @OptIn(DelicateCoroutinesApi::class)
@@ -50,7 +50,7 @@ class MainButton : RadialMenuButton {
         }
     }
 
-    override fun onHoverLeave() {
+    override fun cancelHover() {
         hoverJob.cancel("hover leave")
         radius -= radiusHighlight
         fillPaint.shader = null
