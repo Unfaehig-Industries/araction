@@ -11,6 +11,7 @@ import android.util.Pair as AndroidPair
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
 import tech.unfaehig_industries.tooz.araction.R
+import tech.unfaehig_industries.tooz.araction.SafeSensorReading
 import tech.unfaehig_industries.tooz.araction.databinding.DirectionFragmentBinding
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage
@@ -128,6 +129,8 @@ class DirectionFragment : BaseToozifierFragment() {
             CursorEventManager( object : SensorDataCallback {
                 override fun onCursorUpdate(angle: Double, dist: Double) {
                     // Handle cursor data
+
+                    layout.sendFrame(SafeSensorReading("angle", angle * 57.29578))
 
                     Timber.d("angle: $angle, distance: $dist")
                 }
