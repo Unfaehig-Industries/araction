@@ -53,20 +53,23 @@ class CursorEventManager : SensorEventListener {
 
         currentFacing = rotateVectorByMatrix((currentRotation.map { it.toDouble() }).toDoubleArray(), doubleArrayOf(0.0, 1.0, 0.0))
 
+        if (currentFacing[0] == 0.0 &&
+            currentFacing[1] == 1.0 &&
+            currentFacing[2] == 0.0) {
+
+            return
+        }
+
+        if(resetZeroPosition) {
+            zeroFacing = currentFacing
+            resetZeroPosition = false
+        }
+
         val vectorRight = doubleArrayOf(
             currentFacing[1] * vectorUp[2] - currentFacing[2] * vectorUp[1],
             currentFacing[2] * vectorUp[0] - currentFacing[0] * vectorUp[2],
             currentFacing[0] * vectorUp[1] - currentFacing[1] * vectorUp[0]
         )
-
-        if (resetZeroPosition &&
-            currentFacing[0] != 0.0 &&
-            currentFacing[1] != 1.0 &&
-            currentFacing[2] != 0.0) {
-
-            resetZeroPosition = false
-            zeroFacing = currentFacing
-        }
 
         val directionVector = doubleArrayOf(
             zeroFacing[0] - currentFacing[0],
