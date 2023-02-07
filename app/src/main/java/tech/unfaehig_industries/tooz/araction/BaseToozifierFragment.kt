@@ -1,7 +1,7 @@
 package tech.unfaehig_industries.tooz.araction
 
-import CursorEventManager
 import androidx.fragment.app.Fragment
+import tech.unfaehig_industries.tooz.araction.positional_tracking.CursorEventManager
 import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor

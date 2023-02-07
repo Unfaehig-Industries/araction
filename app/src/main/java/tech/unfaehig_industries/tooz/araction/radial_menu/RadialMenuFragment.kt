@@ -1,6 +1,7 @@
 package tech.unfaehig_industries.tooz.araction.radial_menu
 
-import CursorEventManager
+import tech.unfaehig_industries.tooz.araction.positional_tracking.CursorEventManager
+import tech.unfaehig_industries.tooz.araction.positional_tracking.SensorDataCallback
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
