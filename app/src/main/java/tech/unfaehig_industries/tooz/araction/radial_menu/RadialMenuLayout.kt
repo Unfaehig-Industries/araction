@@ -1,19 +1,18 @@
 package tech.unfaehig_industries.tooz.araction.radial_menu
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
 import tech.unfaehig_industries.tooz.araction.SafeSensorReading
 import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuLayoutBinding
+import tech.unfaehig_industries.tooz.araction.views.RadialMenu
 import tooz.bto.toozifier.Toozifier
 
 class RadialMenuLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
 
     // These are views that are displayed in the glasses
     private var radialMenuView: RadialMenuLayoutBinding? = null
+    val radialMenu: RadialMenu get() = radialMenuView!!.radialMenu
 
     override fun sendFrame() {
         sendBlankFrame()
