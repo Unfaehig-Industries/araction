@@ -18,14 +18,14 @@ abstract class BaseToozifierFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        //registerToozer()
+        registerToozer()
         cursorEventManager.start()
         layout.resumeJob()
     }
 
     override fun onPause() {
         super.onPause()
-        //deregisterToozer()
+        deregisterToozer()
         cursorEventManager.stop()
         layout.pauseJob()
     }
