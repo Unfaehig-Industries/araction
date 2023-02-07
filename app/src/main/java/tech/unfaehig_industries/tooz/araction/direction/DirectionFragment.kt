@@ -93,7 +93,6 @@ class DirectionFragment : BaseToozifierFragment() {
             CursorEventManager( object : SensorDataCallback {
                 override fun onCursorUpdate(angle: Double, dist: Double) {
                     // Handle cursor data
-
                     Timber.d("angle: $angle, distance: $dist")
                 }
 

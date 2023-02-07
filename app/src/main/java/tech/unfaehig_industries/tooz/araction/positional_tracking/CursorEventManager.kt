@@ -11,7 +11,6 @@ import android.hardware.SensorManager
 import kotlin.math.acos
 import kotlin.math.sqrt
 
-
 class CursorEventManager : SensorEventListener {
     private var sensorManager: SensorManager
     private var sensor: Sensor
@@ -49,9 +48,22 @@ class CursorEventManager : SensorEventListener {
 
         SensorManager.getRotationMatrixFromVector (currentRotation, values)
 
+        val vectorUp = doubleArrayOf(0.0, 0.0, 1.0)
+        val vectorDown = doubleArrayOf(0.0, 0.0, -1.0)
+
         currentFacing = rotateVectorByMatrix((currentRotation.map { it.toDouble() }).toDoubleArray(), doubleArrayOf(0.0, 1.0, 0.0))
 
-        if (resetZeroPosition) {
+        val vectorRight = doubleArrayOf(
+            currentFacing[1] * vectorUp[2] - currentFacing[2] * vectorUp[1],
+            currentFacing[2] * vectorUp[0] - currentFacing[0] * vectorUp[2],
+            currentFacing[0] * vectorUp[1] - currentFacing[1] * vectorUp[0]
+        )
+
+        if (resetZeroPosition &&
+            currentFacing[0] != 0.0 &&
+            currentFacing[1] != 1.0 &&
+            currentFacing[2] != 0.0) {
+
             resetZeroPosition = false
             zeroFacing = currentFacing
         }
@@ -62,9 +74,15 @@ class CursorEventManager : SensorEventListener {
             zeroFacing[2] - currentFacing[2]
         )
 
-        val angle = angleBetweenVectors(directionVector, doubleArrayOf(0.0, 0.0, 1.0))
+        val angle = if (angleBetweenVectors(vectorRight, directionVector) < Math.PI/2) {
+            2 * Math.PI - angleBetweenVectors(directionVector, vectorDown)
+        } else {
+            angleBetweenVectors(directionVector, vectorDown)
+        }
+
         val dist = sqrt(directionVector.sumOf { it * it }) * distanceScaler * distanceSensitivity
 
+        // angle returns the angle in radians clockwise with the circle origin on top (12 o'clock)
         callback.onCursorUpdate(angle, dist)
     }
 
