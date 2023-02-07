@@ -29,7 +29,6 @@ class CursorEventManager(callback: SensorDataCallback, activity: Activity?) :
 
     fun start() {
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
-        resetZeroPosition = true
     }
 
     fun stop() {
@@ -49,10 +48,23 @@ class CursorEventManager(callback: SensorDataCallback, activity: Activity?) :
 
         SensorManager.getRotationMatrixFromVector (currentRotation, values)
 
+        val vectorUp = doubleArrayOf(0.0, 0.0, 1.0)
+        val vectorDown = doubleArrayOf(0.0, 0.0, -1.0)
+
         currentFacing = rotateVectorByMatrix((currentRotation.map { it.toDouble() }).toDoubleArray(), doubleArrayOf(0.0, 1.0, 0.0))
 //        val currentUp = rotateVectorByMatrix((currentRotation.map { it.toDouble() }).toDoubleArray(), doubleArrayOf(0.0, 0.0, 1.0))
 
-        if (resetZeroPosition) {
+        val vectorRight = doubleArrayOf(
+            currentFacing[1] * vectorUp[2] - currentFacing[2] * vectorUp[1],
+            currentFacing[2] * vectorUp[0] - currentFacing[0] * vectorUp[2],
+            currentFacing[0] * vectorUp[1] - currentFacing[1] * vectorUp[0]
+        )
+
+        if (resetZeroPosition &&
+            currentFacing[0] != 0.0 &&
+            currentFacing[1] != 1.0 &&
+            currentFacing[2] != 0.0) {
+
             resetZeroPosition = false
             zeroFacing = currentFacing
         }
@@ -63,9 +75,21 @@ class CursorEventManager(callback: SensorDataCallback, activity: Activity?) :
             zeroFacing[2] - currentFacing[2]
         )
 
-        val angle = angleBetweenVectors(directionVector, doubleArrayOf(0.0, 0.0, 1.0))
+
+
+        var angle = 0.0;
+
+        if (angleBetweenVectors(vectorRight, directionVector) < Math.PI/2) {
+            angle = 2 * Math.PI - angleBetweenVectors(directionVector, vectorDown)
+        }
+        else {
+            angle = angleBetweenVectors(directionVector, vectorDown)
+        }
+
+
         val dist = sqrt(directionVector.sumOf { it * it })
 
+        // angle returns the angle in radians clockwise with the circle origin on top (12 o'clock)
         callback.onCursorUpdate(angle, dist)
     }
 

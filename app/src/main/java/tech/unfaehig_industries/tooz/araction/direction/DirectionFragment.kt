@@ -37,6 +37,7 @@ class DirectionFragment : BaseToozifierFragment() {
         super.onResume()
         registerToozer()
         cursorEventManager.start()
+        cursorEventManager.resetZeroPosition()
     }
 
     override fun onPause() {
@@ -132,7 +133,7 @@ class DirectionFragment : BaseToozifierFragment() {
 
                     layout.sendFrame(SafeSensorReading("angle", angle * 57.29578))
 
-                    Timber.d("angle: $angle, distance: $dist")
+//                    Timber.d("angle: $angle, distance: $dist")
                 }
 
                 override fun onAccuracyChanged(accuracy: Int) {
@@ -150,6 +151,7 @@ class DirectionFragment : BaseToozifierFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         layout.inflateView(requireContext())
+        cursorEventManager.resetZeroPosition()
     }
 
 
