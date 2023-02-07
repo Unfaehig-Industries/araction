@@ -23,7 +23,7 @@ class RadialButton : RadialMenuButton {
     private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     private lateinit var hoverJob: Job
-    private val boundingRectInsetHighlight: Float = 20f
+    private val boundingRectInsetHighlight: Float = 5f
 
     constructor(context: Context) : super(context)
 
@@ -79,7 +79,7 @@ class RadialButton : RadialMenuButton {
             val step: Float = (1f / durationInSeconds) / (1000 / delay)
 
             while (Instant.now().isBefore(startTime)) {
-                fillPaint.shader = RadialGradient(radialBoundingRect.centerX(), radialBoundingRect.centerY(), ( radialBoundingRect.width() / 2 ), intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.7f), fillPaint.color), floatArrayOf(percent, 1f), Shader.TileMode.CLAMP)
+                fillPaint.shader = RadialGradient(radialBoundingRect.centerX(), radialBoundingRect.centerY(), ( radialBoundingRect.width() / 2 ), intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.6f), fillPaint.color), floatArrayOf(percent, 1f), Shader.TileMode.CLAMP)
                 invalidate()
                 percent += step
                 delay(delay)
@@ -93,6 +93,7 @@ class RadialButton : RadialMenuButton {
         radialBoundingRect.inset(boundingRectInsetHighlight, boundingRectInsetHighlight)
         radialInnerBoundingRect.inset(-boundingRectInsetHighlight, -boundingRectInsetHighlight)
         fillPaint.shader = null
+        invalidate()
     }
 
     fun isOnButton(degrees: Double): Boolean {

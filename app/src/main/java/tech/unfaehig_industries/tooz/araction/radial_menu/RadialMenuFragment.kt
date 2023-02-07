@@ -84,6 +84,7 @@ class RadialMenuFragment() : BaseToozifierFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = RadialMenuFragmentBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
@@ -94,9 +95,9 @@ class RadialMenuFragment() : BaseToozifierFragment() {
         // Get the view which is supposed to be shown on the glasses
         layout.inflateView(requireContext())
 
-        //Initiate control through phone
+        // Initialize phone positional tracking
         cursorEventManager =
-            CursorEventManager( object : CursorEventManager.SensorDataCallback {
+            CursorEventManager( object : SensorDataCallback {
                 override fun onCursorUpdate(angle: Double, dist: Double) {
                     // Handle cursor data
                     binding.radialMenu.highlightButton(angle, dist)

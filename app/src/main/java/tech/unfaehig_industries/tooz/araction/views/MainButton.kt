@@ -10,7 +10,7 @@ class MainButton : RadialMenuButton {
 
     private var radialBoundingRect: RectF = RectF(0f,0f,100f,100f)
     private var radius: Float = 5f
-    private val radiusHighlight: Float = 5f
+    private val radiusHighlight: Float = 1f
     private var fillPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private lateinit var hoverJob: Job
@@ -38,13 +38,13 @@ class MainButton : RadialMenuButton {
         hoverJob = GlobalScope.launch {
             val startTime = Instant.now().plusSeconds(durationInSeconds)
             val delay: Long = 100L
-            var percent: Float = 0f
+            var innerPercent: Float = 0f
             val step: Float = (1f / durationInSeconds) / (1000 / delay)
 
             while (Instant.now().isBefore(startTime)) {
-                fillPaint.shader = RadialGradient(radialBoundingRect.centerX(), radialBoundingRect.centerY(), radius, intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.7f), fillPaint.color), floatArrayOf(percent, 1f), Shader.TileMode.CLAMP)
+                fillPaint.shader = RadialGradient(radialBoundingRect.centerX(), radialBoundingRect.centerY(), radius, intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.6f), fillPaint.color), floatArrayOf(innerPercent, (innerPercent+0.1f).coerceAtMost(1f) ), Shader.TileMode.CLAMP)
                 invalidate()
-                percent += step
+                innerPercent += step
                 delay(delay)
             }
         }
@@ -54,5 +54,6 @@ class MainButton : RadialMenuButton {
         hoverJob.cancel("hover leave")
         radius -= radiusHighlight
         fillPaint.shader = null
+        invalidate()
     }
 }

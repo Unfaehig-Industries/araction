@@ -8,7 +8,9 @@ abstract class RadialMenuButton(context: Context) : View(context) {
     override fun onHoverChanged(hovered: Boolean) {
         super.onHoverChanged(hovered)
 
-        if (hovered) animateHover()
+        if (hovered) {
+            animateHover()
+        }
         else {
             cancelHover()
         }
