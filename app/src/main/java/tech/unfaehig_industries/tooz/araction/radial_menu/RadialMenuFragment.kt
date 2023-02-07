@@ -101,6 +101,7 @@ class RadialMenuFragment() : BaseToozifierFragment() {
                 override fun onCursorUpdate(angle: Double, dist: Double) {
                     // Handle cursor data
                     binding.radialMenu.highlightButton(angle, dist)
+                    layout.radialMenu.highlightButton(angle, dist)
                 }
 
                 override fun onAccuracyChanged(accuracy: Int) {
