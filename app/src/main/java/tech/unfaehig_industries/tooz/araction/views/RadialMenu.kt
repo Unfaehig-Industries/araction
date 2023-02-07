@@ -68,8 +68,6 @@ class RadialMenu : RelativeLayout {
     }
 
     fun highlightButton(angle: Double, distance: Double) {
-        Timber.d("angle: $angle, distance: $distance")
-
         if (distance <= (radialInnerBoundingRect.width() / 2) ) {
             if (hoveredButton != mainButton) {
                 hoveredButton?.isHovered = false
@@ -82,7 +80,7 @@ class RadialMenu : RelativeLayout {
         }
 
         var degrees: Double = ( angle * (180 / Math.PI) ) - 90
-        if (degrees < 0) degrees += 360
+        degrees = degrees.mod(360f)
 
         for (button in radialButtons) {
             if (button.isOnButton(degrees)) {
