@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
 import tech.unfaehig_industries.tooz.araction.SafeSensorReading
 import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuLayoutBinding
-import tech.unfaehig_industries.tooz.araction.views.RadialMenu
+import tech.unfaehig_industries.tooz.araction.radial_views.RadialMenu
 import tooz.bto.toozifier.Toozifier
 
 class RadialMenuLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {

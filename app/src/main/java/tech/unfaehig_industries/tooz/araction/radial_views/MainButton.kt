@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.views
+package tech.unfaehig_industries.tooz.araction.radial_views
 
 import android.content.Context
 import android.graphics.*

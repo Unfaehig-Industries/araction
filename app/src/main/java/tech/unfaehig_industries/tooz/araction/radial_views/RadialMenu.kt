@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.views
+package tech.unfaehig_industries.tooz.araction.radial_views
 
 import android.content.Context
 import android.graphics.Color
@@ -7,7 +7,6 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.widget.RelativeLayout
 import tech.unfaehig_industries.tooz.araction.R
-import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
