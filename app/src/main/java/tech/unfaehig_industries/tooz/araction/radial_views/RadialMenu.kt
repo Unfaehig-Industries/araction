@@ -35,11 +35,11 @@ class RadialMenu : RelativeLayout {
     }
 
     private fun init(attr: AttributeSet?) {
-        val typedArray = context.theme.obtainStyledAttributes(attr, R.styleable.RadialMenu, 0, 0)
+        val typedArray = context.theme.obtainStyledAttributes(attr, R.styleable.ToozMenuStyleable, 0, 0)
 
-        mainColor = typedArray.getColor(R.styleable.RadialMenu_mainColor, Color.CYAN)
+        mainColor = typedArray.getColor(R.styleable.ToozMenuStyleable_mainColor, Color.CYAN)
 
-        val backgroundColor: Int = typedArray.getColor(R.styleable.RadialMenu_backgroundColor, Color.BLACK)
+        val backgroundColor: Int = typedArray.getColor(R.styleable.ToozMenuStyleable_backgroundColor, Color.BLACK)
         backgroundPaint.apply { color= backgroundColor; style= Paint.Style.FILL }
 
         addRadialButtons(arrayOf("a", "b", "c", "d"))
