@@ -1,1 +1,2 @@
 include ':app'
+include ':tooz_IMU_tracking'
