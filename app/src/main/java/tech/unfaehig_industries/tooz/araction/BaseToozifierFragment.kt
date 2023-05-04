@@ -1,7 +1,7 @@
 package tech.unfaehig_industries.tooz.araction
 
 import androidx.fragment.app.Fragment
-import tech.unfaehig_industries.tooz.araction.positional_tracking.CursorEventManager
+import com.example.tooz_imu_tracking.TrackingEventManager
 import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
@@ -10,7 +10,7 @@ import tooz.bto.toozifier.sensors.SensorDataListener
 abstract class BaseToozifierFragment : Fragment() {
 
     protected val toozifier = BaseApplication.getBaseApplication().toozifier
-    protected lateinit var cursorEventManager : CursorEventManager
+    protected lateinit var trackingEventManager: TrackingEventManager
     protected abstract val layout: BaseToozifierLayout
 
     protected abstract val dataSensors: Array<Sensor>
@@ -19,14 +19,14 @@ abstract class BaseToozifierFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         registerToozer()
-        cursorEventManager.start()
+        trackingEventManager.start()
         layout.resumeJob()
     }
 
     override fun onPause() {
         super.onPause()
         deregisterToozer()
-        cursorEventManager.stop()
+        trackingEventManager.stop()
         layout.pauseJob()
     }
 

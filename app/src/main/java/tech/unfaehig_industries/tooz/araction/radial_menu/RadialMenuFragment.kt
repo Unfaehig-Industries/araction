@@ -24,8 +24,6 @@ class RadialMenuFragment() : BaseToozifierFragment() {
     private var _binding: RadialMenuFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var trackingEventManager: TrackingEventManager;
-
     override val layout: RadialMenuLayout = RadialMenuLayout(toozifier)
     override val dataSensors: Array<Sensor> = arrayOf()
 
