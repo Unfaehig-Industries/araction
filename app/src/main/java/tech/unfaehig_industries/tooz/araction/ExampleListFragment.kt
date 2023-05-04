@@ -45,7 +45,8 @@ class ExampleListFragment : Fragment() {
                 Example.FRAMERATE,
                 Example.SENSOR,
                 Example.DIRECTION,
-                Example.Radial
+                Example.RADIAL,
+                Example.TILE
             ),
             parentFragment = this
         )
@@ -97,12 +98,21 @@ class ExampleListFragment : Fragment() {
                         }
                     )
                 }
-                Example.Radial.ordinal -> {
+                Example.RADIAL.ordinal -> {
                     bindItem(
                         holder = holder,
                         text = parentFragment.requireContext().getString(R.string.radial_menu_example_name),
                         clickListener = {
                             parentFragment.findNavController().navigate(R.id.radial_action)
+                        }
+                    )
+                }
+                Example.TILE.ordinal -> {
+                    bindItem(
+                        holder = holder,
+                        text = parentFragment.requireContext().getString(R.string.tile_menu_example_name),
+                        clickListener = {
+                            parentFragment.findNavController().navigate(R.id.tile_action)
                         }
                     )
                 }
@@ -120,7 +130,7 @@ class ExampleListFragment : Fragment() {
     }
 
     enum class Example {
-        FRAMERATE, SENSOR, DIRECTION, Radial
+        FRAMERATE, SENSOR, DIRECTION, RADIAL, TILE
     }
 
 }

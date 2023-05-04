@@ -4,6 +4,7 @@
     <string name="direction_example_name">Direction</string>
     <string name="frame_rate_example_name">Frame Rate</string>
     <string name="radial_menu_example_name">Radial Menu</string>
+    <string name="tile_menu_example_name">Tile Menu</string>
     <string name="error">Could not connect with glasses\nBluetooth and the glasses must be active\nUse Tooz OS to pair with glasses</string>
     <string name="sensor_data_sensor_placeholder">sensor</string>
     <string name="sensor_data_x_placeholder">x</string>
