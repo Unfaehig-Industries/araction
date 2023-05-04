@@ -78,6 +78,10 @@ class RadialMenu : RelativeLayout {
             return
         }
 
+        if (angle.isNaN()) {
+            return
+        }
+
         var degrees: Double = ( angle * (180 / Math.PI) ) - 90
         degrees = degrees.mod(360f)
 
