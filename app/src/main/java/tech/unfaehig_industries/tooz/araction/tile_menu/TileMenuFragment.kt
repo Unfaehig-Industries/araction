@@ -99,7 +99,8 @@ class TileMenuFragment() : BaseToozifierFragment() {
         cursorEventManager =
             CursorEventManager( object : SensorDataCallback {
                 override fun onCursorUpdate(angle: Double, dist: Double) {
-                    // TODO: Handle cursor data
+                    binding.tileMenu.moveView(angle, dist)
+                    layout.tileMenu.moveView(angle, dist)
                 }
 
                 override fun onAccuracyChanged(accuracy: Int) {

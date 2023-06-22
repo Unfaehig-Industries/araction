@@ -3,17 +3,19 @@ package tech.unfaehig_industries.tooz.araction.tile_views
 import android.content.Context
 import android.graphics.*
 import android.text.TextPaint
+import android.view.View
 import androidx.core.graphics.ColorUtils
 import kotlinx.coroutines.*
+import timber.log.Timber
 import java.time.Instant
 
-class TileButton : TileMenuButton {
+class TileButton : View {
 
     private var rect: RectF = RectF(0f,0f,10f,10f)
     private val rectInsetHighlight: Float = 5f
-    private var label: String = ""
+    var label: String = ""
     private val labelSize: Float = 60f
-    private var children: ArrayList<TileButton> = ArrayList()
+    var children: ArrayList<TileButton> = ArrayList()
     private val fillPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
@@ -23,6 +25,10 @@ class TileButton : TileMenuButton {
 
     constructor(context: Context, rect: RectF, label: String, children: ArrayList<TileButton>, fillColor: Int, labelColor: Int) : super(context) {
         this.rect = RectF(rect)
+        this.left = rect.left.toInt()
+        this.right = rect.right.toInt()
+        this.top = rect.top.toInt()
+        this.bottom = rect.bottom.toInt()
 
         this.label = label
 
@@ -42,7 +48,18 @@ class TileButton : TileMenuButton {
         }
     }
 
-    override fun animateHover(durationInSeconds: Long) {
+    override fun onHoverChanged(hovered: Boolean) {
+        super.onHoverChanged(hovered)
+
+        if (hovered) {
+            animateHover()
+        }
+        else {
+            cancelHover()
+        }
+    }
+
+    private fun animateHover(durationInSeconds: Long = 3L) {
         rect.inset(-rectInsetHighlight, -rectInsetHighlight)
 
         @OptIn(DelicateCoroutinesApi::class)
@@ -61,11 +78,25 @@ class TileButton : TileMenuButton {
         }
     }
 
-    override fun cancelHover() {
+    private fun cancelHover() {
         hoverJob.cancel("hover leave")
 
         rect.inset(rectInsetHighlight, rectInsetHighlight)
         fillPaint.shader = null
         invalidate()
+    }
+
+    fun isOnButton(menu: View, screen: RectF, buttonRect: RectF): Boolean {
+        Timber.d("menu x: ${menu.translationX}")
+        Timber.d("menu y: ${menu.translationY}")
+        Timber.d("screen -x: ${screen.centerX() - ( buttonRect.width() / 2 )}")
+        Timber.d("screen +x: ${screen.centerX() + ( buttonRect.width() / 2 )}")
+        Timber.d("screen -y: ${screen.centerY() - ( buttonRect.height() / 2 )}")
+        Timber.d("screen +y: ${screen.centerY() + ( buttonRect.height() / 2 )}")
+
+        return menu.translationX + this.left >= screen.centerX() - ( buttonRect.width() / 2 ) &&
+                menu.translationX + this.right <= screen.centerX() + ( buttonRect.width() / 2 ) &&
+                menu.translationY + this.top >= screen.centerY() - ( buttonRect.height() / 2 ) &&
+                menu.translationY + this.bottom <= screen.centerY() + ( buttonRect.height() / 2 )
     }
 }

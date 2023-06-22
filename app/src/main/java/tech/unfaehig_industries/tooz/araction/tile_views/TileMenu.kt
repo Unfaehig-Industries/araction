@@ -6,18 +6,23 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.widget.RelativeLayout
 import tech.unfaehig_industries.tooz.araction.R
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class TileMenu : RelativeLayout {
 
     private lateinit var tileButtons: ArrayList<TileButton>
-    private var hoveredButton: TileMenuButton? = null
+    private var hoveredButton: TileButton? = null
     private var mainColor: Int = Color.CYAN
     private var backgroundColor: Int = Color.BLACK
     private val screen = RectF(0f, 0f, 390f, 528f)
     private val buttonRect = RectF(0f, 0f, (screen.width() / 3.5f), (screen.height() / 5))
+    private val VIEWMOVEMENTFACTOR: Float = 2f
 
     constructor(context:Context) : super(context) {
         init(null)
@@ -88,5 +93,44 @@ class TileMenu : RelativeLayout {
         val fillColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
 
         return TileButton(context, RectF(boundingRect), label, children, fillColor, backgroundColor)
+    }
+
+    fun moveView(angle: Double, distance: Double) {
+        if (angle.isNaN()) {
+            return
+        }
+
+        // TODO: Make sure on top row only horizontal and on all other rows only vertical movement is allowed
+        val distX: Float = (distance * sin(angle)).toFloat()
+        val distY: Float = - (distance * cos(angle)).toFloat()
+
+        // TODO: Maybe move buttons instead of the whole view
+        this.animate().translationX(distX * VIEWMOVEMENTFACTOR)
+        this.animate().translationY(distY * VIEWMOVEMENTFACTOR)
+
+        highlightButton()
+    }
+
+    private fun highlightButton() {
+        val buttons = ArrayList<TileButton>()
+
+        tileButtons.forEach { button -> buttons.add(button) }
+        tileButtons.forEach { button ->
+            button.children.forEach { child -> buttons.add(child)}
+        }
+
+        for (button in buttons) {
+            if (button.isOnButton(this, screen, buttonRect)) {
+                if (hoveredButton != button) {
+                    hoveredButton?.isHovered = false
+                    button.isHovered = true
+
+                    hoveredButton = button
+                    Timber.d(button.label)
+                }
+
+                break
+            }
+        }
     }
 }
