@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.SafeSensorReading
 import tech.unfaehig_industries.tooz.araction.databinding.SensorDataFragmentBinding
+import tech.unfaehig_industries.tooz.araction.positional_tracking.CursorEventManager
+import tech.unfaehig_industries.tooz.araction.positional_tracking.SensorDataCallback
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
@@ -190,6 +192,17 @@ class SensorDataFragment : BaseToozifierFragment() {
             lastTouched = System.currentTimeMillis().toInt()
             false
         }
+
+        // Initialize phone positional tracking
+        cursorEventManager =
+            CursorEventManager(object : SensorDataCallback {
+                override fun onCursorUpdate(angle: Double, dist: Double) {
+                }
+
+                override fun onAccuracyChanged(accuracy: Int) {
+                    // Handle accuracy change
+                }
+            }, activity)
     }
 
     private fun setupRecyclerView() {
