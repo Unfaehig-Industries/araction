@@ -207,7 +207,7 @@ class SensorDataFragment : BaseToozifierFragment() {
     }
 
     private fun cycleActiveSensor() {
-        layout.sendBlankFrame()
+        layout.setBlankFrame()
         toozifier.deregisterFromSensorData(dataSensors[activeSensor])
 
         activeSensor += 1
@@ -224,7 +224,7 @@ class SensorDataFragment : BaseToozifierFragment() {
     fun sendSensorData (reading: SafeSensorReading) {
 
         Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of ".plus(reading.dataString()))
-        layout.sendFrame(reading)
+        layout.updateFrame(reading)
         adapter?.createItem(reading.dataString())
 
         if((System.currentTimeMillis().toInt() - lastTouched) > TOUCH_COOLDOWN) {

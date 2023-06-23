@@ -14,17 +14,17 @@ class RadialMenuLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
     private var radialMenuView: RadialMenuLayoutBinding? = null
     val radialMenu: RadialMenu get() = radialMenuView!!.radialMenu
 
-    override fun sendFrame() {
-        sendBlankFrame()
+    override fun updateFrame() {
+        setBlankFrame()
     }
 
-    override fun sendFrame (reading: SafeSensorReading) {
+    override fun updateFrame (reading: SafeSensorReading) {
         radialMenuView?.run {
             layoutView = this.root
         }
     }
 
-    override fun sendBlankFrame() {
+    override fun setBlankFrame() {
         radialMenuView?.run {
             layoutView = this.root
         }
@@ -32,6 +32,6 @@ class RadialMenuLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
 
     override fun inflateView(context: Context) {
         radialMenuView = RadialMenuLayoutBinding.inflate(LayoutInflater.from(context))
-        sendBlankFrame()
+        setBlankFrame()
     }
 }

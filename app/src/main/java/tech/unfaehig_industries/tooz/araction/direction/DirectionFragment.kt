@@ -78,7 +78,7 @@ class DirectionFragment : BaseToozifierFragment() {
         override fun onButtonEvent(button: Button) {
             Timber.d("$BUTTON_EVENT $button")
             cursorEventManager.resetZeroPosition()
-            layout.sendBlankFrame()
+            layout.setBlankFrame()
         }
     }
 

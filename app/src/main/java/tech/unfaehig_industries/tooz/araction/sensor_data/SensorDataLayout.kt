@@ -19,11 +19,11 @@ class SensorDataLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
     private var yText : TextView? = null
     private var zText : TextView? = null
 
-    override fun sendFrame() {
-        sendBlankFrame()
+    override fun updateFrame() {
+        setBlankFrame()
     }
 
-    override fun sendFrame (reading: SafeSensorReading) {
+    override fun updateFrame (reading: SafeSensorReading) {
         nameText?.text = reading.sensor
         xText?.text = (reading.data["x"] as Double).roundDecimal(2)
         yText?.text = (reading.data["y"] as Double).roundDecimal(2)
@@ -34,7 +34,7 @@ class SensorDataLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
         }
     }
 
-    override fun sendBlankFrame() {
+    override fun setBlankFrame() {
         nameText?.text = ""
         xText?.text = ""
         yText?.text = ""
