@@ -16,11 +16,7 @@ class DirectionLayout (toozifier: Toozifier): BaseToozifierLayout(toozifier) {
     // These are the views that are displayed in this view
     private var arrow : ImageView? = null
 
-    override fun updateFrame () {
-        setBlankFrame()
-    }
-
-    override fun updateFrame (reading: SafeSensorReading) {
+    fun updateFrame (reading: SafeSensorReading) {
         //needs a float
         reading.data["x"]?.run {
             arrow?.rotation = this.toFloat()
@@ -35,7 +31,7 @@ class DirectionLayout (toozifier: Toozifier): BaseToozifierLayout(toozifier) {
         arrow?.setImageResource(R.drawable.arrow_96)
     }
 
-    override fun setBlankFrame() {
+    override fun setLayout() {
         //needs a float
         arrow?.setImageResource(R.drawable.location_96)
         arrow?.rotation = 0F

@@ -36,9 +36,7 @@ abstract class BaseToozifierLayout (toozifier: Toozifier){
         job.cancel("View destroyed")
     }
 
-    abstract fun updateFrame()
-    abstract fun updateFrame(reading: SafeSensorReading)
-    abstract fun setBlankFrame()
+    abstract fun setLayout()
 
     abstract fun inflateView(context: Context)
 }

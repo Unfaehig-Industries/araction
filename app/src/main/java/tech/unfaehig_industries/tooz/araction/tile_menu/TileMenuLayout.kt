@@ -14,17 +14,17 @@ class TileMenuLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
     private var tileMenuView: TileMenuLayoutBinding? = null
     val tileMenu: TileMenu get() = tileMenuView!!.tileMenu
 
-    override fun updateFrame() {
-        setBlankFrame()
-    }
+    fun updateFrame(angle: Double, distance: Double) {
+        this.tileMenu?.run {
+            this.moveButtons(angle, distance)
+        }
 
-    override fun updateFrame (reading: SafeSensorReading) {
-        tileMenuView?.run {
+        this.tileMenuView?.run {
             layoutView = this.root
         }
     }
 
-    override fun setBlankFrame() {
+    override fun setLayout() {
         tileMenuView?.run {
             layoutView = this.root
         }
@@ -32,6 +32,6 @@ class TileMenuLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
 
     override fun inflateView(context: Context) {
         tileMenuView = TileMenuLayoutBinding.inflate(LayoutInflater.from(context))
-        setBlankFrame()
+        setLayout()
     }
 }

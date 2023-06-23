@@ -207,7 +207,7 @@ class SensorDataFragment : BaseToozifierFragment() {
     }
 
     private fun cycleActiveSensor() {
-        layout.setBlankFrame()
+        layout.resetFrame()
         toozifier.deregisterFromSensorData(dataSensors[activeSensor])
 
         activeSensor += 1
