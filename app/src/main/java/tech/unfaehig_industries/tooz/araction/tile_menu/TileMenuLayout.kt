@@ -14,16 +14,6 @@ class TileMenuLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
     private var tileMenuView: TileMenuLayoutBinding? = null
     val tileMenu: TileMenu get() = tileMenuView!!.tileMenu
 
-    fun updateFrame(angle: Double, distance: Double) {
-        this.tileMenu?.run {
-            this.moveButtons(angle, distance)
-        }
-
-        this.tileMenuView?.run {
-            layoutView = this.root
-        }
-    }
-
     override fun setLayout() {
         tileMenuView?.run {
             layoutView = this.root
