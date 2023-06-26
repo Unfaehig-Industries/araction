@@ -12,7 +12,6 @@ import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
 import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.math.sqrt
 
 class TileMenu : RelativeLayout {
 
@@ -59,6 +58,7 @@ class TileMenu : RelativeLayout {
             val tileButton: TileButton = createTileButton(label, childrenButtons, boundingRect)
 
             buttonsArray.add(tileButton)
+            buttonsArray.addAll(childrenButtons)
             this.addView(tileButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
 
             boundingRect.offsetTo(boundingRect.left + horizontalSpacing, boundingRect.top)
@@ -88,11 +88,11 @@ class TileMenu : RelativeLayout {
         return buttonsArray
     }
 
-    private fun createTileButton(label: String, children: ArrayList<TileButton>, boundingRect: RectF): TileButton {
+    private fun createTileButton(label: String, children: ArrayList<TileButton>, positionRect: RectF): TileButton {
         val rnd = Random()
         val fillColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
 
-        return TileButton(context, RectF(boundingRect), label, children, fillColor, backgroundColor)
+        return TileButton(context, positionRect, RectF(buttonRect), label, children, fillColor, backgroundColor)
     }
 
     fun moveView(angle: Double, distance: Double) {
@@ -100,13 +100,13 @@ class TileMenu : RelativeLayout {
             return
         }
 
-        // TODO: Make sure on top row only horizontal and on all other rows only vertical movement is allowed
         val distX: Float = (distance * sin(angle)).toFloat()
         val distY: Float = (distance * cos(angle)).toFloat()
 
-        // TODO: Maybe move buttons instead of the whole view
-        this.animate().translationX(distX * VIEWMOVEMENTFACTOR)
-        this.animate().translationY(distY * VIEWMOVEMENTFACTOR)
+        tileButtons.forEach { button: TileButton ->
+            button.animate().translationX(button.baseX + distX * VIEWMOVEMENTFACTOR)
+            button.animate().translationY(button.baseY + distY * VIEWMOVEMENTFACTOR)
+        }
 
         highlightButton()
     }
@@ -115,9 +115,6 @@ class TileMenu : RelativeLayout {
         val buttons = ArrayList<TileButton>()
 
         tileButtons.forEach { button -> buttons.add(button) }
-        tileButtons.forEach { button ->
-            button.children.forEach { child -> buttons.add(child)}
-        }
 
         for (button in buttons) {
             if (button.isOnButton(this, screen, buttonRect)) {

@@ -90,11 +90,11 @@ class TileLockedMenu : RelativeLayout {
         return buttonsArray
     }
 
-    private fun createTileButton(label: String, children: ArrayList<TileButton>, boundingRect: RectF): TileButton {
+    private fun createTileButton(label: String, children: ArrayList<TileButton>, positionRect: RectF): TileButton {
         val rnd = Random()
         val fillColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
 
-        return TileButton(context, RectF(boundingRect), label, children, fillColor, backgroundColor)
+        return TileButton(context, positionRect, RectF(buttonRect), label, children, fillColor, backgroundColor)
     }
 
     fun moveView(angle: Double, distance: Double) {
@@ -117,8 +117,10 @@ class TileLockedMenu : RelativeLayout {
             Timber.d("distX: $distX")
         }
 
-        this.animate().translationX(distX * VIEWMOVEMENTFACTOR)
-        this.animate().translationY(distY * VIEWMOVEMENTFACTOR)
+        tileButtons.forEach { button: TileButton ->
+            button.animate().translationX(button.baseX + distX * VIEWMOVEMENTFACTOR)
+            button.animate().translationY(button.baseY + distY * VIEWMOVEMENTFACTOR)
+        }
 
         //highlightButton()
     }

@@ -11,7 +11,10 @@ import java.time.Instant
 
 class TileButton : View {
 
-    private var rect: RectF = RectF(0f,0f,10f,10f)
+    private lateinit var positionRect: RectF
+    val baseX: Float get() = positionRect.left
+    val baseY: Float get() = positionRect.top
+    private lateinit var boundingRect: RectF
     private val rectInsetHighlight: Float = 5f
     var label: String = ""
     private val labelSize: Float = 60f
@@ -23,12 +26,16 @@ class TileButton : View {
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, rect: RectF, label: String, children: ArrayList<TileButton>, fillColor: Int, labelColor: Int) : super(context) {
-        this.rect = RectF(rect)
-        this.left = rect.left.toInt()
-        this.right = rect.right.toInt()
-        this.top = rect.top.toInt()
-        this.bottom = rect.bottom.toInt()
+    constructor(context: Context, positionRect: RectF, boundingRect: RectF, label: String, children: ArrayList<TileButton>, fillColor: Int, labelColor: Int) : super(context) {
+        this.boundingRect = RectF(boundingRect)
+        this.left = boundingRect.left.toInt()
+        this.right = boundingRect.right.toInt()
+        this.top = boundingRect.top.toInt()
+        this.bottom = boundingRect.bottom.toInt()
+
+        this.positionRect = RectF(positionRect)
+        this.translationX = baseX
+        this.translationY = baseY
 
         this.label = label
 
@@ -43,8 +50,8 @@ class TileButton : View {
         super.onDraw(canvas)
 
         canvas?.run {
-            this.drawRect(rect, fillPaint)
-            this.drawText(label, rect.centerX(), rect.centerY(), labelPaint)
+            this.drawRect(boundingRect, fillPaint)
+            this.drawText(label, boundingRect.centerX(), boundingRect.centerY(), labelPaint)
         }
     }
 
@@ -60,7 +67,7 @@ class TileButton : View {
     }
 
     private fun animateHover(durationInSeconds: Long = 3L) {
-        rect.inset(-rectInsetHighlight, -rectInsetHighlight)
+        boundingRect.inset(-rectInsetHighlight, -rectInsetHighlight)
 
         @OptIn(DelicateCoroutinesApi::class)
         hoverJob = GlobalScope.launch {
@@ -70,7 +77,7 @@ class TileButton : View {
             val step: Float = (1f / durationInSeconds) / (1000 / delay)
 
             while (Instant.now().isBefore(startTime)) {
-                fillPaint.shader = RadialGradient(rect.centerX(), rect.centerY(), ( rect.width() / 2 ), intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.6f), fillPaint.color), floatArrayOf(percent, 1f), Shader.TileMode.CLAMP)
+                fillPaint.shader = RadialGradient(boundingRect.centerX(), boundingRect.centerY(), ( boundingRect.width() / 2 ), intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.6f), fillPaint.color), floatArrayOf(percent, 1f), Shader.TileMode.CLAMP)
                 invalidate()
                 percent += step
                 delay(delay)
@@ -81,7 +88,7 @@ class TileButton : View {
     private fun cancelHover() {
         hoverJob.cancel("hover leave")
 
-        rect.inset(rectInsetHighlight, rectInsetHighlight)
+        boundingRect.inset(rectInsetHighlight, rectInsetHighlight)
         fillPaint.shader = null
         invalidate()
     }
