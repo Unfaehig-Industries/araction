@@ -77,7 +77,7 @@ class TileButton : View {
             val step: Float = (1f / durationInSeconds) / (1000 / delay)
 
             while (Instant.now().isBefore(startTime)) {
-                fillPaint.shader = RadialGradient(boundingRect.centerX(), boundingRect.centerY(), ( boundingRect.width() / 2 ), intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.6f), fillPaint.color), floatArrayOf(percent, 1f), Shader.TileMode.CLAMP)
+                fillPaint.shader = RadialGradient(boundingRect.centerX(), boundingRect.centerY(), boundingRect.width(), intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.6f), fillPaint.color), floatArrayOf(percent, (percent+0.1f).coerceAtMost(1f)), Shader.TileMode.CLAMP)
                 invalidate()
                 percent += step
                 delay(delay)
@@ -93,10 +93,10 @@ class TileButton : View {
         invalidate()
     }
 
-    fun isOnButton(menu: View, screen: RectF, buttonRect: RectF): Boolean {
-        return menu.translationX + this.left >= screen.centerX() - ( buttonRect.width() / 2 ) &&
-                menu.translationX + this.right <= screen.centerX() + ( buttonRect.width() / 2 ) &&
-                menu.translationY + this.top >= screen.centerY() - ( buttonRect.height() / 2 ) &&
-                menu.translationY + this.bottom <= screen.centerY() + ( buttonRect.height() / 2 )
+    fun isInCenter(screen: RectF): Boolean {
+        return this.translationX <= screen.centerX() &&
+                this.translationX + this.boundingRect.width() >= screen.centerX() &&
+                this.translationY <= screen.centerY() &&
+                this.translationY + this.boundingRect.height() >= screen.centerY()
     }
 }
