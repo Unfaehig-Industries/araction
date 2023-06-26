@@ -101,7 +101,7 @@ open class TileMenu : RelativeLayout {
             return
         }
 
-        val distX: Float = (distance * sin(angle)).toFloat() * viewMovementFactorX
+        val distX: Float = -(distance * sin(angle)).toFloat() * viewMovementFactorX
         val distY: Float = (distance * cos(angle)).toFloat() * viewMovementFactorY
 
         tileButtons.forEach { button: TileButton ->

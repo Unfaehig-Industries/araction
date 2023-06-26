@@ -25,7 +25,7 @@ class TileLockedMenu : TileMenu {
             return
         }
 
-        var distX: Float = (distance * sin(angle)).toFloat() * viewMovementFactorX
+        var distX: Float = -(distance * sin(angle)).toFloat() * viewMovementFactorX
         var distY: Float = (distance * cos(angle)).toFloat() * viewMovementFactorY
 
         // Make sure one can't go above the home row (y=0 is at center of home row
