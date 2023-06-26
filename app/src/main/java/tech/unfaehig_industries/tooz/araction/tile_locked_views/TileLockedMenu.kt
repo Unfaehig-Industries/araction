@@ -10,6 +10,8 @@ import kotlin.math.sin
 
 class TileLockedMenu : TileMenu {
 
+    private var lastDistX: Float = 0F
+
     constructor(context:Context) : super(context) {
         init(null)
     }
@@ -34,8 +36,10 @@ class TileLockedMenu : TileMenu {
         // Enforce that in all rows, but the base row, no horizontal movement is possible
         Timber.d("distY: ${distY * VIEWMOVEMENTFACTOR} threshold: ${-(screen.height() / 4)}")
         if (distY * VIEWMOVEMENTFACTOR <= -buttonRect.height() ) {
-            distX = 0F
+            distX = distX
         }
+
+        lastDistX = distX
 
         tileButtons.forEach { button: TileButton ->
             button.animate().translationX(button.baseX + distX * VIEWMOVEMENTFACTOR)
