@@ -25,25 +25,25 @@ class TileLockedMenu : TileMenu {
             return
         }
 
-        var distX: Float = (distance * sin(angle)).toFloat()
-        var distY: Float = (distance * cos(angle)).toFloat()
+        var distX: Float = (distance * sin(angle)).toFloat() * viewMovementFactorX
+        var distY: Float = (distance * cos(angle)).toFloat() * viewMovementFactorY
 
-        // Make sure one can't go above the home row
-        if (distY > 0F) {
-            distY = 0F
+        // Make sure one can't go above the home row (y=0 is at center of home row
+        if (distY > ( buttonRect.height() / 2) ) {
+            distY = ( buttonRect.height() / 2)
         }
 
         // Enforce that in all rows, but the base row, no horizontal movement is possible
-        Timber.d("distY: ${distY * VIEWMOVEMENTFACTOR} threshold: ${-(screen.height() / 4)}")
-        if (distY * VIEWMOVEMENTFACTOR <= -buttonRect.height() ) {
+        Timber.d("distY: $distY threshold: ${-(screen.height() / 5)}")
+        if (distY <= -( buttonRect.height() / 2) ) {
             distX = lastDistX
         }
 
         lastDistX = distX
 
         tileButtons.forEach { button: TileButton ->
-            button.animate().translationX(button.baseX + distX * VIEWMOVEMENTFACTOR)
-            button.animate().translationY(button.baseY + distY * VIEWMOVEMENTFACTOR)
+            button.animate().translationX(button.baseX + distX)
+            button.animate().translationY(button.baseY + distY)
         }
 
         highlightButton()

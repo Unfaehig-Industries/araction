@@ -21,7 +21,8 @@ open class TileMenu : RelativeLayout {
     private var backgroundColor: Int = Color.BLACK
     protected val screen = RectF(0f, 0f, 390f, 528f)
     protected val buttonRect = RectF(0f, 0f, (screen.width() / 3.5f), (screen.height() / 5))
-    protected val VIEWMOVEMENTFACTOR: Float = 2f
+    protected val viewMovementFactorX: Float = 4f
+    protected val viewMovementFactorY: Float = 4f
 
     constructor(context:Context) : super(context) {
         init(null)
@@ -50,7 +51,7 @@ open class TileMenu : RelativeLayout {
         val buttonsArray = ArrayList<TileButton>(data.size)
         val boundingRect = RectF(buttonRect)
         val horizontalSpacing: Float = screen.width() / 2.5f
-        boundingRect.offsetTo((horizontalSpacing / 3), screen.centerY() - (buttonRect.height() / 2))
+        boundingRect.offsetTo(screen.centerX() - (buttonRect.width() / 2), screen.centerY() - (buttonRect.height() / 2))
 
         data.forEach { (label, children) ->
             val childrenButtons = addTileButtons(children, boundingRect)
@@ -100,12 +101,12 @@ open class TileMenu : RelativeLayout {
             return
         }
 
-        val distX: Float = (distance * sin(angle)).toFloat()
-        val distY: Float = (distance * cos(angle)).toFloat()
+        val distX: Float = (distance * sin(angle)).toFloat() * viewMovementFactorX
+        val distY: Float = (distance * cos(angle)).toFloat() * viewMovementFactorY
 
         tileButtons.forEach { button: TileButton ->
-            button.animate().translationX(button.baseX + distX * VIEWMOVEMENTFACTOR)
-            button.animate().translationY(button.baseY + distY * VIEWMOVEMENTFACTOR)
+            button.animate().translationX(button.baseX + distX)
+            button.animate().translationY(button.baseY + distY)
         }
 
         highlightButton()
