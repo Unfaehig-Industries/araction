@@ -37,7 +37,7 @@ open class TileMenu : RelativeLayout {
         init()
     }
 
-    protected fun init() {
+    private fun init() {
         val menuMap = LinkedHashMap<String, Array<String>>()
         menuMap["1"] = arrayOf("a", "b", "c", "d")
         menuMap["2"] = arrayOf("a", "b", "c", "d")

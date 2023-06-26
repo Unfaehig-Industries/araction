@@ -5,7 +5,6 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import tech.unfaehig_industries.tooz.araction.tile_views.TileButton
 import tech.unfaehig_industries.tooz.araction.tile_views.TileMenu
-import timber.log.Timber
 import kotlin.math.cos
 import kotlin.math.sin
 
