@@ -111,19 +111,21 @@ class TileMenu : RelativeLayout {
         highlightButton()
     }
 
-    private fun highlightButton() {
-        val buttons = ArrayList<TileButton>()
+    protected fun highlightButton() {
+        if (hoveredButton?.isInCenter(screen) == true) {
+            return
+        }
 
-        tileButtons.forEach { button -> buttons.add(button) }
+        hoveredButton?.isHovered = false
+        hoveredButton = null
 
-        for (button in buttons) {
-            if (button.isOnButton(this, screen, buttonRect)) {
+        for (button in tileButtons) {
+            if (button.isInCenter(screen)) {
                 if (hoveredButton != button) {
-                    hoveredButton?.isHovered = false
                     button.isHovered = true
 
                     hoveredButton = button
-                    Timber.d(button.label)
+                    Timber.d("hovered: ${button.label}")
                 }
 
                 break
