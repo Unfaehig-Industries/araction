@@ -13,15 +13,15 @@ import kotlin.collections.LinkedHashMap
 import kotlin.math.cos
 import kotlin.math.sin
 
-class TileMenu : RelativeLayout {
+open class TileMenu : RelativeLayout {
 
-    private lateinit var tileButtons: ArrayList<TileButton>
+    protected lateinit var tileButtons: ArrayList<TileButton>
     private var hoveredButton: TileButton? = null
     private var mainColor: Int = Color.CYAN
     private var backgroundColor: Int = Color.BLACK
-    private val screen = RectF(0f, 0f, 390f, 528f)
-    private val buttonRect = RectF(0f, 0f, (screen.width() / 3.5f), (screen.height() / 5))
-    private val VIEWMOVEMENTFACTOR: Float = 2f
+    protected val screen = RectF(0f, 0f, 390f, 528f)
+    protected val buttonRect = RectF(0f, 0f, (screen.width() / 3.5f), (screen.height() / 5))
+    protected val VIEWMOVEMENTFACTOR: Float = 2f
 
     constructor(context:Context) : super(context) {
         init(null)
@@ -31,7 +31,7 @@ class TileMenu : RelativeLayout {
         init(attrs)
     }
 
-    private fun init(attr: AttributeSet?) {
+    protected fun init(attr: AttributeSet?) {
         val typedArray = context.theme.obtainStyledAttributes(attr, R.styleable.ToozMenuStyleable, 0, 0)
 
         mainColor = typedArray.getColor(R.styleable.ToozMenuStyleable_mainColor, Color.CYAN)
@@ -95,7 +95,7 @@ class TileMenu : RelativeLayout {
         return TileButton(context, positionRect, RectF(buttonRect), label, children, fillColor, backgroundColor)
     }
 
-    fun moveView(angle: Double, distance: Double) {
+    open fun moveView(angle: Double, distance: Double) {
         if (angle.isNaN()) {
             return
         }
