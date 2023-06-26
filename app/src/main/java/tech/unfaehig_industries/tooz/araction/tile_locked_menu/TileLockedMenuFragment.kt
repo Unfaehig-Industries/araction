@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.TileLockedMenuFragmentBinding
-import tech.unfaehig_industries.tooz.araction.databinding.TileMenuFragmentBinding
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
@@ -19,7 +18,7 @@ import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
 import tooz.bto.toozifier.sensors.SensorDataListener
 
-class TileLockedMenuFragment() : BaseToozifierFragment() {
+class TileLockedMenuFragment : BaseToozifierFragment() {
 
     // The binding contains the views that are part of this fragment
     private var _binding: TileLockedMenuFragmentBinding? = null
