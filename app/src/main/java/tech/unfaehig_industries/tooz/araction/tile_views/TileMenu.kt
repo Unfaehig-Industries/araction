@@ -25,19 +25,19 @@ open class TileMenu : RelativeLayout {
     protected val viewMovementFactorY: Float = 4f
 
     constructor(context:Context) : super(context) {
-        init(null)
+        init()
     }
 
     constructor(context:Context, attrs:AttributeSet) : super(context, attrs) {
-        init(attrs)
-    }
-
-    protected fun init(attr: AttributeSet?) {
-        val typedArray = context.theme.obtainStyledAttributes(attr, R.styleable.ToozMenuStyleable, 0, 0)
+        val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.ToozMenuStyleable, 0, 0)
 
         mainColor = typedArray.getColor(R.styleable.ToozMenuStyleable_mainColor, Color.CYAN)
         backgroundColor = typedArray.getColor(R.styleable.ToozMenuStyleable_backgroundColor, Color.BLACK)
 
+        init()
+    }
+
+    protected fun init() {
         val menuMap = LinkedHashMap<String, Array<String>>()
         menuMap["1"] = arrayOf("a", "b", "c", "d")
         menuMap["2"] = arrayOf("a", "b", "c", "d")
