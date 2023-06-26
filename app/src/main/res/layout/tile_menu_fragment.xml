@@ -8,9 +8,9 @@
 
     <tech.unfaehig_industries.tooz.araction.tile_views.TileMenu
         android:id="@+id/tile_menu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:mainColor="#CD2010"
+        android:layout_width="@dimen/width_safe_area"
+        android:layout_height="@dimen/height_safe_area"
+        android:background="#C33232"
         app:backgroundColor="@color/background_prompt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
