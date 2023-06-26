@@ -102,7 +102,7 @@ class TileMenu : RelativeLayout {
 
         // TODO: Make sure on top row only horizontal and on all other rows only vertical movement is allowed
         val distX: Float = (distance * sin(angle)).toFloat()
-        val distY: Float = - (distance * cos(angle)).toFloat()
+        val distY: Float = (distance * cos(angle)).toFloat()
 
         // TODO: Maybe move buttons instead of the whole view
         this.animate().translationX(distX * VIEWMOVEMENTFACTOR)

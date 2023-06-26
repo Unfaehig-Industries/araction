@@ -103,16 +103,16 @@ class TileLockedMenu : RelativeLayout {
         }
 
         var distX: Float = (distance * sin(angle)).toFloat()
-        var distY: Float = - (distance * cos(angle)).toFloat()
+        var distY: Float = (distance * cos(angle)).toFloat()
 
         // Make sure one can't go above the home row
-        if (distY < 0F) {
+        if (distY > 0F) {
             distY = 0F
         }
 
         // Enforce that in all rows, but the base row, no horizontal movement is possible
         Timber.d("distY: $distY threshold: $SPACING")
-        if (distY >= SPACING) {
+        if (distY <= -SPACING) {
             distX = 0F
             Timber.d("distX: $distX")
         }
