@@ -87,13 +87,6 @@ class TileButton : View {
     }
 
     fun isOnButton(menu: View, screen: RectF, buttonRect: RectF): Boolean {
-        Timber.d("menu x: ${menu.translationX}")
-        Timber.d("menu y: ${menu.translationY}")
-        Timber.d("screen -x: ${screen.centerX() - ( buttonRect.width() / 2 )}")
-        Timber.d("screen +x: ${screen.centerX() + ( buttonRect.width() / 2 )}")
-        Timber.d("screen -y: ${screen.centerY() - ( buttonRect.height() / 2 )}")
-        Timber.d("screen +y: ${screen.centerY() + ( buttonRect.height() / 2 )}")
-
         return menu.translationX + this.left >= screen.centerX() - ( buttonRect.width() / 2 ) &&
                 menu.translationX + this.right <= screen.centerX() + ( buttonRect.width() / 2 ) &&
                 menu.translationY + this.top >= screen.centerY() - ( buttonRect.height() / 2 ) &&
