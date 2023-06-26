@@ -36,7 +36,7 @@ class TileLockedMenu : TileMenu {
         // Enforce that in all rows, but the base row, no horizontal movement is possible
         Timber.d("distY: ${distY * VIEWMOVEMENTFACTOR} threshold: ${-(screen.height() / 4)}")
         if (distY * VIEWMOVEMENTFACTOR <= -buttonRect.height() ) {
-            distX = distX
+            distX = lastDistX
         }
 
         lastDistX = distX
