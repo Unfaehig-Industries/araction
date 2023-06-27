@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.SafeSensorReading
 import tech.unfaehig_industries.tooz.araction.databinding.SensorDataFragmentBinding
-import com.example.tooz_imu_tracking.SensorDataCallback
-import com.example.tooz_imu_tracking.TrackingEventManager
+import tech.unfaehig_industries.tooz.imu_tracking.SensorDataCallback
+import tech.unfaehig_industries.tooz.imu_tracking.TrackingEventManager
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading

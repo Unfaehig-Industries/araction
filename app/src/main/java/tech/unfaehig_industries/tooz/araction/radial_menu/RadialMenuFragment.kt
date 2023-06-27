@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.tooz_imu_tracking.SensorDataCallback
-import com.example.tooz_imu_tracking.TrackingEventManager
+import tech.unfaehig_industries.tooz.imu_tracking.SensorDataCallback
+import tech.unfaehig_industries.tooz.imu_tracking.TrackingEventManager
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuFragmentBinding
 import timber.log.Timber
