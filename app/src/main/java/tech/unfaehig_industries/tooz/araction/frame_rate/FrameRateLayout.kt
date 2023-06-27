@@ -54,7 +54,7 @@ class FrameRateLayout (toozifier: Toozifier) {
         }
     }
 
-    fun sendFrame() {
+    fun updateFrame() {
         readingCount += 1
         frameRateView?.run {
             this.readingCounter.text = readingCount.toString()

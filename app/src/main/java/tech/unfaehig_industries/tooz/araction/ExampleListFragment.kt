@@ -45,7 +45,9 @@ class ExampleListFragment : Fragment() {
                 Example.FRAMERATE,
                 Example.SENSOR,
                 Example.DIRECTION,
-                Example.Radial
+                Example.RADIAL,
+                Example.TILE,
+                Example.TILE_LOCKED
             ),
             parentFragment = this
         )
@@ -97,12 +99,30 @@ class ExampleListFragment : Fragment() {
                         }
                     )
                 }
-                Example.Radial.ordinal -> {
+                Example.RADIAL.ordinal -> {
                     bindItem(
                         holder = holder,
                         text = parentFragment.requireContext().getString(R.string.radial_menu_example_name),
                         clickListener = {
                             parentFragment.findNavController().navigate(R.id.radial_action)
+                        }
+                    )
+                }
+                Example.TILE.ordinal -> {
+                    bindItem(
+                        holder = holder,
+                        text = parentFragment.requireContext().getString(R.string.tile_menu_example_name),
+                        clickListener = {
+                            parentFragment.findNavController().navigate(R.id.tile_action)
+                        }
+                    )
+                }
+                Example.TILE_LOCKED.ordinal -> {
+                    bindItem(
+                        holder = holder,
+                        text = parentFragment.requireContext().getString(R.string.tile_locked_menu_example_name),
+                        clickListener = {
+                            parentFragment.findNavController().navigate(R.id.tile_locked_action)
                         }
                     )
                 }
@@ -120,7 +140,7 @@ class ExampleListFragment : Fragment() {
     }
 
     enum class Example {
-        FRAMERATE, SENSOR, DIRECTION, Radial
+        FRAMERATE, SENSOR, DIRECTION, RADIAL, TILE, TILE_LOCKED
     }
 
 }

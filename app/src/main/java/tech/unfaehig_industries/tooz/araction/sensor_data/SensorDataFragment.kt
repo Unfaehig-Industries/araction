@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.SafeSensorReading
 import tech.unfaehig_industries.tooz.araction.databinding.SensorDataFragmentBinding
+import com.example.tooz_imu_tracking.SensorDataCallback
+import com.example.tooz_imu_tracking.TrackingEventManager
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
@@ -190,6 +192,17 @@ class SensorDataFragment : BaseToozifierFragment() {
             lastTouched = System.currentTimeMillis().toInt()
             false
         }
+
+        // Initialize phone positional tracking
+        trackingEventManager =
+            TrackingEventManager(object : SensorDataCallback {
+                override fun onCursorUpdate(angle: Double, dist: Double) {
+                }
+
+                override fun onAccuracyChanged(accuracy: Int) {
+                    // Handle accuracy change
+                }
+            }, activity)
     }
 
     private fun setupRecyclerView() {
@@ -207,7 +220,7 @@ class SensorDataFragment : BaseToozifierFragment() {
     }
 
     private fun cycleActiveSensor() {
-        layout.sendBlankFrame()
+        layout.resetFrame()
         toozifier.deregisterFromSensorData(dataSensors[activeSensor])
 
         activeSensor += 1
@@ -224,7 +237,7 @@ class SensorDataFragment : BaseToozifierFragment() {
     fun sendSensorData (reading: SafeSensorReading) {
 
         Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of ".plus(reading.dataString()))
-        layout.sendFrame(reading)
+        layout.updateFrame(reading)
         adapter?.createItem(reading.dataString())
 
         if((System.currentTimeMillis().toInt() - lastTouched) > TOUCH_COOLDOWN) {

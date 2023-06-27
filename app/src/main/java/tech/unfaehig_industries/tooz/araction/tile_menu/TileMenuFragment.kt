@@ -1,33 +1,31 @@
-package tech.unfaehig_industries.tooz.araction.direction
+package tech.unfaehig_industries.tooz.araction.tile_menu
 
+import com.example.tooz_imu_tracking.TrackingEventManager
+import com.example.tooz_imu_tracking.SensorDataCallback
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.tooz_imu_tracking.SensorDataCallback
-import com.example.tooz_imu_tracking.TrackingEventManager
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
-import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
-import tech.unfaehig_industries.tooz.araction.databinding.DirectionFragmentBinding
+import tech.unfaehig_industries.tooz.araction.databinding.TileMenuFragmentBinding
 import timber.log.Timber
-import tooz.bto.common.ToozServiceMessage
+import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
 import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.error.ErrorCause
 import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
 import tooz.bto.toozifier.sensors.SensorDataListener
-import java.util.*
 
-class DirectionFragment : BaseToozifierFragment() {
+class TileMenuFragment() : BaseToozifierFragment() {
 
     // The binding contains the views that are part of this fragment
-    private var _binding: DirectionFragmentBinding? = null
+    private var _binding: TileMenuFragmentBinding? = null
     private val binding get() = _binding!!
 
+    override val layout: TileMenuLayout = TileMenuLayout(toozifier)
     override val dataSensors: Array<Sensor> = arrayOf()
-    override var layout: BaseToozifierLayout = DirectionLayout(toozifier)
 
     override val registrationListener = object : RegistrationListener {
 
@@ -58,7 +56,7 @@ class DirectionFragment : BaseToozifierFragment() {
             Timber.d("$SENSOR_EVENT onSensorDataDeregistered sensor: $sensor")
         }
 
-        override fun onSensorDataReceived(sensorReading: ToozServiceMessage.Sensor.SensorReading) {
+        override fun onSensorDataReceived(sensorReading: SensorReading) {
             Timber.d("$SENSOR_EVENT onSensorDataReceived sensorReading of sensor: ${sensorReading.name}")
         }
 
@@ -77,8 +75,6 @@ class DirectionFragment : BaseToozifierFragment() {
     override val buttonEventListener = object : ButtonEventListener {
         override fun onButtonEvent(button: Button) {
             Timber.d("$BUTTON_EVENT $button")
-            trackingEventManager.resetZeroPosition()
-            layout.setLayout()
         }
     }
 
@@ -87,14 +83,24 @@ class DirectionFragment : BaseToozifierFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DirectionFragmentBinding.inflate(inflater, container, false)
+        _binding = TileMenuFragmentBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    @SuppressLint("InflateParams", "ClickableViewAccessibility")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Get the view which is supposed to be shown on the glasses
+        layout.inflateView(requireContext())
+
+        // Initialize phone positional tracking
         trackingEventManager =
             TrackingEventManager( object : SensorDataCallback {
                 override fun onCursorUpdate(angle: Double, dist: Double) {
-                    // Handle cursor data
-                    // TODO: make this do something
-                    Timber.d("angle: $angle, distance: $dist")
+                    binding.tileMenu.moveView(angle, dist)
+                    layout.tileMenu.moveView(angle, dist)
                 }
 
                 override fun onAccuracyChanged(accuracy: Int) {
@@ -104,13 +110,5 @@ class DirectionFragment : BaseToozifierFragment() {
 
         trackingEventManager.start()
         trackingEventManager.resetZeroPosition()
-
-        return binding.root
-    }
-
-    @SuppressLint("InflateParams")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        layout.inflateView(requireContext())
     }
 }
