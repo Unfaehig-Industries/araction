@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.imu_tracking
+package tech.unfaehig_industries.tooz.phone_tracking
 
 import android.app.Activity
 import android.content.Context

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'tech.unfaehig_industries.tooz.imu_tracking'
+    namespace 'tech.unfaehig_industries.tooz.phone_tracking'
     compileSdk 33
 
     defaultConfig {

@@ -1,7 +1,7 @@
 package tech.unfaehig_industries.tooz.araction.tile_menu
 
-import tech.unfaehig_industries.tooz.imu_tracking.TrackingEventManager
-import tech.unfaehig_industries.tooz.imu_tracking.SensorDataCallback
+import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
+import tech.unfaehig_industries.tooz.phone_tracking.SensorDataCallback
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,7 +1,7 @@
 package tech.unfaehig_industries.tooz.araction
 
 import androidx.fragment.app.Fragment
-import tech.unfaehig_industries.tooz.imu_tracking.TrackingEventManager
+import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
 import tooz.bto.toozifier.button.ButtonEventListener
 import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
