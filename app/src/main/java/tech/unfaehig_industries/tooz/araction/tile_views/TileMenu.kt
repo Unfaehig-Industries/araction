@@ -17,7 +17,7 @@ open class TileMenu : RelativeLayout {
     private var hoveredButton: TileButton? = null
     private var mainColor: Int = Color.CYAN
     private var backgroundColor: Int = Color.BLACK
-    protected lateinit var screenRect: RectF
+    private lateinit var screenRect: RectF
     protected lateinit var buttonRect: RectF
     protected var sensitivityX: Float = 4f
     protected var sensitivityY: Float = 4f
