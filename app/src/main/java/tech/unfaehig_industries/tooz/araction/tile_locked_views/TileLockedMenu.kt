@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.RectF
 import android.util.AttributeSet
 import tech.unfaehig_industries.tooz.araction.tile_views.TileButton
+import tech.unfaehig_industries.tooz.araction.tile_views.TileData
 import tech.unfaehig_industries.tooz.araction.tile_views.TileMenu
 import kotlin.math.cos
 import kotlin.math.sin
@@ -11,17 +12,22 @@ import kotlin.math.sin
 class TileLockedMenu : TileMenu {
 
     private var lastDistX: Float = 0F
-    private val menuRect: RectF = RectF(0f, 0f, screen.width(), screen.height())
+    private val menuRect: RectF = RectF(0f, 0f, 0f, 0f)
 
     constructor(context:Context) : super(context) {
-        setBoundaries()
     }
 
     constructor(context:Context, attrs:AttributeSet) : super(context, attrs) {
-        setBoundaries()
     }
 
-    private fun setBoundaries() {
+    override fun populate(
+        tiles: List<TileData>,
+        screen: RectF,
+        _sensitivityX: Float,
+        _sensitivityY: Float
+    ) {
+        super.populate(tiles, screen, _sensitivityX, _sensitivityY)
+
         for (button in tileButtons) {
 
             if (button.translationX > menuRect.right) {
@@ -39,8 +45,8 @@ class TileLockedMenu : TileMenu {
             return
         }
 
-        var distX: Float = (distance * sin(angle)).toFloat() * viewMovementFactorX
-        var distY: Float = -(distance * cos(angle)).toFloat() * viewMovementFactorY
+        var distX: Float = (distance * sin(angle)).toFloat() * sensitivityX
+        var distY: Float = -(distance * cos(angle)).toFloat() * sensitivityY
 
         // Make sure one can't go left of the first column (x=0 is at center of first column)
         if (distX < ( -buttonRect.width() / 2) ) {
