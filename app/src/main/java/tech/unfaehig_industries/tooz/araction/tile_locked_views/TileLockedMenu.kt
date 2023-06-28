@@ -68,10 +68,12 @@ class TileLockedMenu : TileMenu {
             distY = menuRect.bottom
         }
 
-        // Enforce that in all rows, but the base row, no horizontal movement is possible
+        // Enforce that in all rows, but the home row, no horizontal movement is possible
+        // TODO: Make it so x does not jump, when going back into the home row
         if (distY >= ( buttonRect.height() / 2) ) {
             distX = lastDistX
         }
+        // TODO: else and then compare current distX with lastDistX and add/subtract the difference
 
         lastDistX = distX
 
