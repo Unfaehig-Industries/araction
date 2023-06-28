@@ -31,11 +31,11 @@ class TileLockedMenu : TileMenu {
         for (button in tileButtons) {
 
             if (button.translationX > menuRect.right) {
-                menuRect.right = button.translationX - ( buttonRect.width() / 2 )
+                menuRect.right = button.translationX - buttonRect.width()
             }
 
             if (button.translationY > menuRect.bottom) {
-                menuRect.bottom = button.translationY  - ( buttonRect.height() / 2 )
+                menuRect.bottom = button.translationY  - buttonRect.height()
             }
         }
     }
