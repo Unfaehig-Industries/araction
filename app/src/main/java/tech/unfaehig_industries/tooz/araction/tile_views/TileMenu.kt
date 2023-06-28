@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.widget.RelativeLayout
 import tech.unfaehig_industries.tooz.araction.R
 import timber.log.Timber
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.cos
 import kotlin.math.sin
@@ -139,6 +138,8 @@ open class TileMenu : RelativeLayout {
         }
     }
 }
+
+class TileData(val title: String, val color: Int, val callback: Any?, val children: List<TileData>)
 
 enum class Direction {
     HORIZONTAL, VERTICAL
