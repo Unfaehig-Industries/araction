@@ -70,12 +70,12 @@ class TileButton : View {
 
         @OptIn(DelicateCoroutinesApi::class)
         hoverJob = GlobalScope.launch {
-            val startTime = Instant.now().plusSeconds(durationInSeconds)
+            val endTime = Instant.now().plusSeconds(durationInSeconds)
             val delay = 100L
             var percent = 0f
             val step: Float = (1f / durationInSeconds) / (1000 / delay)
 
-            while (Instant.now().isBefore(startTime)) {
+            while (Instant.now().isBefore(endTime)) {
                 fillPaint.shader = RadialGradient(boundingRect.centerX(), boundingRect.centerY(), boundingRect.width(), intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.6f), fillPaint.color), floatArrayOf(percent, (percent+0.1f).coerceAtMost(1f)), Shader.TileMode.CLAMP)
                 invalidate()
                 percent += step
