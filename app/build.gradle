@@ -53,9 +53,9 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'androidx.databinding:viewbinding:7.3.0'
     implementation 'com.ramotion.circlemenu:circle-menu:0.3.2'
-    implementation project(path: ':tooz_IMU_tracking')
-    implementation project(path: ':tooz_IMU_tracking')
-    implementation project(path: ':tooz_IMU_tracking')
+    implementation project(path: ':phone_tracking')
+    implementation project(path: ':phone_tracking')
+    implementation project(path: ':phone_tracking')
 
     testImplementation 'junit:junit:4.13.2'
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
