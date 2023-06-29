@@ -13,6 +13,8 @@ class TileLockedMenu : TileMenu {
 
     private var lastDistX: Float = 0F
     private val menuRect: RectF = RectF(0f, 0f, 0f, 0f)
+    private var lockedMovement: Boolean = false
+    private var translationX: Float = 0f
 
     constructor(context:Context) : super(context) {
     }
@@ -48,6 +50,18 @@ class TileLockedMenu : TileMenu {
         var distX: Float = (distance * sin(angle)).toFloat() * sensitivityX
         var distY: Float = -(distance * cos(angle)).toFloat() * sensitivityY
 
+        // Enforce that in all rows, but the home row, no horizontal movement is possible
+        if (distY >= ( buttonRect.height() / 2) ) {
+            distX = lastDistX
+            lockedMovement = true
+        } else if (lockedMovement) {
+            lockedMovement = false
+            translationX = distX - lastDistX
+        }
+
+        lastDistX = distX
+        distX -= translationX
+
         // Make sure one can't go left of the first column (x=0 is at center of first column)
         if (distX < ( -buttonRect.width() / 2) ) {
             distX = ( -buttonRect.width() / 2)
@@ -67,15 +81,6 @@ class TileLockedMenu : TileMenu {
         if (distY > menuRect.bottom ) {
             distY = menuRect.bottom
         }
-
-        // Enforce that in all rows, but the home row, no horizontal movement is possible
-        // TODO: Make it so x does not jump, when going back into the home row
-        if (distY >= ( buttonRect.height() / 2) ) {
-            distX = lastDistX
-        }
-        // TODO: else and then compare current distX with lastDistX and add/subtract the difference
-
-        lastDistX = distX
 
         tileButtons.forEach { button: TileButton ->
             button.animate().translationX(button.baseX - distX)
