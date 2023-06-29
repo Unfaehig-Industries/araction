@@ -51,12 +51,13 @@ class TileLockedMenu : TileMenu {
         var distY: Float = -(distance * cos(angle)).toFloat() * sensitivityY
 
         // Enforce that in all rows, but the home row, no horizontal movement is possible
+        // (y=0 is at center of home row)
         if (distY >= ( buttonRect.height() / 2) ) {
             distX = lastDistX
             lockedMovement = true
         } else if (lockedMovement) {
             lockedMovement = false
-            translationX = distX - lastDistX
+            translationX += distX - lastDistX
         }
 
         lastDistX = distX
