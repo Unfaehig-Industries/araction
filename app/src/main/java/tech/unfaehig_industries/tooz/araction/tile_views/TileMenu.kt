@@ -48,7 +48,7 @@ open class TileMenu : RelativeLayout {
         hoveredButton = tileButtons.first()
     }
 
-    private fun addTileButtons(tiles: List<TileData>, direction: Direction, boundingRect: RectF): ArrayList<TileButton> {
+    private fun addTileButtons(tiles: List<TileData>, direction: Direction, boundingRect: RectF, level: Int = 0): ArrayList<TileButton> {
         val buttonsArray = ArrayList<TileButton>(tiles.size)
 
         val horizontalSpacing: Float = screenRect.width() / 2.5f
@@ -61,23 +61,22 @@ open class TileMenu : RelativeLayout {
 
         tiles.forEachIndexed { i, tile ->
 
-            if (i > 0) {
-                when (direction) {
-
-                    Direction.HORIZONTAL -> {
+            when (direction) {
+                Direction.HORIZONTAL -> {
+                    if (i > 0 || level > 0) {
                         boundingRect.offsetTo(
                             boundingRect.left + horizontalSpacing,
                             boundingRect.top
                         )
                     }
+                }
 
-                    Direction.VERTICAL -> {
-                        boundingRect.offsetTo(boundingRect.left, boundingRect.top + verticalSpacing)
-                    }
+                Direction.VERTICAL -> {
+                    boundingRect.offsetTo(boundingRect.left, boundingRect.top + verticalSpacing)
                 }
             }
 
-            val children = addTileButtons(tile.children, otherDirection, RectF(boundingRect))
+            val children = addTileButtons(tile.children, otherDirection, RectF(boundingRect), level+1)
             var callback: Any? = tile.callback
 
             if(callback === null) {
