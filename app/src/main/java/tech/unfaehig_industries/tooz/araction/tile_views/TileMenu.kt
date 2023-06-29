@@ -78,12 +78,18 @@ open class TileMenu : RelativeLayout {
             }
 
             val children = addTileButtons(tile.children, otherDirection, RectF(boundingRect))
+            var callback: Any? = tile.callback
+
+            if(callback === null) {
+                callback = {}
+            }
+
             val tileButton = TileButton(
                 context,
                 boundingRect,
                 RectF(buttonRect),
                 tile.title,
-                tile.callback!!,
+                callback,
                 children,
                 tile.color,
                 backgroundColor
