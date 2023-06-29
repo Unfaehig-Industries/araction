@@ -26,7 +26,7 @@ class TileButton : View {
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, _positionRect: RectF, _boundingRect: RectF, _label: String, _callback: Any?, _children: ArrayList<TileButton>, fillColor: Int, labelColor: Int) : super(context) {
+    constructor(context: Context, _positionRect: RectF, _boundingRect: RectF, _label: String, _callback: Any, _children: ArrayList<TileButton>, fillColor: Int, labelColor: Int) : super(context) {
         boundingRect = RectF(_boundingRect)
         left = boundingRect.left.toInt()
         right = boundingRect.right.toInt()
