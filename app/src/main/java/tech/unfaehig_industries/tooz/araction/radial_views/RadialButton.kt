@@ -25,9 +25,11 @@ class RadialButton : RadialMenuButton {
     private lateinit var hoverJob: Job
     private val boundingRectInsetHighlight: Float = 5f
 
+    private lateinit var callback: Any
+
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, radialBoundingRect: RectF, radialInnerBoundingRect: RectF, start_degrees: Float, length_degrees: Float, label: String, fillColor: Int, background: Paint) : super(context) {
+    constructor(context: Context, radialBoundingRect: RectF, radialInnerBoundingRect: RectF, start_degrees: Float, length_degrees: Float, label: String, _callback: Any, fillColor: Int, background: Paint) : super(context) {
         this.radialBoundingRect = RectF(radialBoundingRect)
         this.radialInnerBoundingRect = RectF(radialInnerBoundingRect)
         this.startDegrees = start_degrees
@@ -35,6 +37,8 @@ class RadialButton : RadialMenuButton {
 
         this.label = label
         this.labelCoordinates = calculateLabelCoordinates()
+
+        callback = _callback
 
         this.fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
         this.backgroundPaint.apply { color= background.color }
