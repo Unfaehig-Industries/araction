@@ -13,6 +13,7 @@
     <string name="sensor_data_z_placeholder">z</string>
     <string name="direction_arrow_description">Arrow to show the direction, where the user is looking.</string>
     <string name="direction_button_prompt">Press the button to fix a new root position.</string>
+    <string name="direction_warning">This example does not do anything.</string>
     <string name="frame_rate_frame_counter_label">frame</string>
     <string name="frame_rate_reading_counter_label">reading</string>
     <string name="frame_rate_starting_count">0</string>

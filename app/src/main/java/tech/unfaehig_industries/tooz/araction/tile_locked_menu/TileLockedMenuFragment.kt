@@ -3,12 +3,14 @@ package tech.unfaehig_industries.tooz.araction.tile_locked_menu
 import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
 import tech.unfaehig_industries.tooz.phone_tracking.SensorDataCallback
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.TileLockedMenuFragmentBinding
+import tech.unfaehig_industries.tooz.araction.tile_views.TileData
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
@@ -94,6 +96,37 @@ class TileLockedMenuFragment : BaseToozifierFragment() {
 
         // Get the view which is supposed to be shown on the glasses
         layout.inflateView(requireContext())
+
+        //Initialize TileMenu
+        val tiles = listOf(
+            TileData("1", Color.BLUE, null,
+                listOf(
+                    TileData("a", Color.GREEN, null, listOf()),
+                    TileData("b", Color.GREEN, null, listOf()),
+                    TileData("c", Color.GREEN, null, listOf()),
+                    TileData("d", Color.GREEN, null, listOf()),
+                )
+            ),
+            TileData("2", Color.BLUE, null,
+                listOf(
+                    TileData("a", Color.GREEN, null, listOf()),
+                    TileData("b", Color.GREEN, null, listOf()),
+                    TileData("c", Color.GREEN, null, listOf()),
+                    TileData("d", Color.GREEN, null, listOf()),
+                )
+            ),
+            TileData("3", Color.BLUE, null,
+                listOf(
+                    TileData("a", Color.GREEN, null, listOf()),
+                    TileData("b", Color.GREEN, null, listOf()),
+                    TileData("c", Color.GREEN, null, listOf()),
+                    TileData("d", Color.GREEN, null, listOf()),
+                )
+            )
+        )
+
+        binding.tileLockedMenu.populate(tiles)
+        layout.tileLockedMenu.populate(tiles)
 
         // Initialize phone positional tracking
         trackingEventManager =

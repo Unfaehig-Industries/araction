@@ -22,27 +22,29 @@ class TileButton : View {
     private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     private lateinit var hoverJob: Job
+    private lateinit var callback: Any
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, positionRect: RectF, boundingRect: RectF, label: String, children: ArrayList<TileButton>, fillColor: Int, labelColor: Int) : super(context) {
-        this.boundingRect = RectF(boundingRect)
-        this.left = boundingRect.left.toInt()
-        this.right = boundingRect.right.toInt()
-        this.top = boundingRect.top.toInt()
-        this.bottom = boundingRect.bottom.toInt()
+    constructor(context: Context, _positionRect: RectF, _boundingRect: RectF, _label: String, _callback: Any, _children: ArrayList<TileButton>, fillColor: Int, labelColor: Int) : super(context) {
+        boundingRect = RectF(_boundingRect)
+        left = boundingRect.left.toInt()
+        right = boundingRect.right.toInt()
+        top = boundingRect.top.toInt()
+        bottom = boundingRect.bottom.toInt()
 
-        this.positionRect = RectF(positionRect)
-        this.translationX = baseX
-        this.translationY = baseY
+        positionRect = RectF(_positionRect)
+        translationX = baseX
+        translationY = baseY
 
-        this.label = label
+        label = _label
+        callback = _callback
 
-        this.children = children
+        children = _children
 
-        this.fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
+        fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
         val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-        this.labelPaint.apply { color= labelColor; typeface= labelTypeface; textSize= labelSize }
+        labelPaint.apply { color= labelColor; typeface= labelTypeface; textSize= labelSize }
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -70,16 +72,20 @@ class TileButton : View {
 
         @OptIn(DelicateCoroutinesApi::class)
         hoverJob = GlobalScope.launch {
-            val startTime = Instant.now().plusSeconds(durationInSeconds)
+            val endTime = Instant.now().plusSeconds(durationInSeconds)
             val delay = 100L
             var percent = 0f
             val step: Float = (1f / durationInSeconds) / (1000 / delay)
 
-            while (Instant.now().isBefore(startTime)) {
+            while (Instant.now().isBefore(endTime)) {
                 fillPaint.shader = RadialGradient(boundingRect.centerX(), boundingRect.centerY(), boundingRect.width(), intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.6f), fillPaint.color), floatArrayOf(percent, (percent+0.1f).coerceAtMost(1f)), Shader.TileMode.CLAMP)
                 invalidate()
                 percent += step
                 delay(delay)
+            }
+
+            if(isHovered) {
+                callback
             }
         }
     }
