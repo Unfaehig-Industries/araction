@@ -83,6 +83,7 @@ open class TileMenu : RelativeLayout {
                 boundingRect,
                 RectF(buttonRect),
                 tile.title,
+                tile.callback,
                 children,
                 tile.color,
                 backgroundColor
