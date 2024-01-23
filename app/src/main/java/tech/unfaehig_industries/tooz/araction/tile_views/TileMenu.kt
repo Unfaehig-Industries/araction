@@ -7,129 +7,150 @@ import android.util.AttributeSet
 import android.widget.RelativeLayout
 import tech.unfaehig_industries.tooz.araction.R
 import timber.log.Timber
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.LinkedHashMap
 import kotlin.math.cos
 import kotlin.math.sin
 
-class TileMenu : RelativeLayout {
+open class TileMenu : RelativeLayout {
 
-    private lateinit var tileButtons: ArrayList<TileButton>
+    protected var tileButtons: ArrayList<TileButton> = ArrayList()
     private var hoveredButton: TileButton? = null
     private var mainColor: Int = Color.CYAN
     private var backgroundColor: Int = Color.BLACK
-    private val screen = RectF(0f, 0f, 390f, 528f)
-    //private val buttonRect = RectF(0f, 0f, (screen.width() / 3.5f), (screen.height() / 5))
-    private val buttonRect = RectF(0f, 0f, 200f, (screen.height() / 5))
-    private val VIEWMOVEMENTFACTOR: Float = 2f
+    private lateinit var screenRect: RectF
+    protected lateinit var buttonRect: RectF
+    protected var sensitivityX: Float = 4f
+    protected var sensitivityY: Float = 4f
 
-    constructor(context:Context) : super(context) {
-        init(null)
-    }
+    constructor(context: Context) : super(context)
 
-    constructor(context:Context, attrs:AttributeSet) : super(context, attrs) {
-        init(attrs)
-    }
-
-    private fun init(attr: AttributeSet?) {
-        val typedArray = context.theme.obtainStyledAttributes(attr, R.styleable.ToozMenuStyleable, 0, 0)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.ToozMenuStyleable, 0, 0)
 
         mainColor = typedArray.getColor(R.styleable.ToozMenuStyleable_mainColor, Color.CYAN)
         backgroundColor = typedArray.getColor(R.styleable.ToozMenuStyleable_backgroundColor, Color.BLACK)
 
-        val menuMap = LinkedHashMap<String, Array<String>>()
-        val actionArray = arrayOf("Vitalwerte", "Medikation", "Anamnese", "Aufenthalt")
-        menuMap["Karin Jager"] = actionArray
-        menuMap["Philipp Wexler"] = actionArray
-        menuMap["Marcel Gärtner"] = actionArray
-        menuMap["Christin Pabst"] = actionArray
-        tileButtons = addTileButtons(menuMap)
+//        val menuMap = LinkedHashMap<String, Array<String>>()
+//        val actionArray = arrayOf("Vitalwerte", "Medikation", "Anamnese", "Aufenthalt")
+//        menuMap["Karin Jager"] = actionArray
+//        menuMap["Philipp Wexler"] = actionArray
+//        menuMap["Marcel Gärtner"] = actionArray
+//        menuMap["Christin Pabst"] = actionArray
     }
 
-    private fun addTileButtons(data: LinkedHashMap<String, Array<String>>): ArrayList<TileButton> {
-        val buttonsArray = ArrayList<TileButton>(data.size)
+    open fun populate(
+        tiles: List<TileData>,
+        screen: RectF = RectF(0f, 0f, 390f, 528f),
+        _sensitivityX: Float = 4f,
+        _sensitivityY: Float = 4f
+    ) {
+        screenRect = RectF(screen)
+        buttonRect = RectF(0f, 0f, 200f, (screen.height() / 5))
+        sensitivityX = _sensitivityX
+        sensitivityY = _sensitivityY
+
         val boundingRect = RectF(buttonRect)
-        val horizontalSpacing: Float = buttonRect.width() + (buttonRect.width() / 5)
-        //val horizontalSpacing: Float = screen.width() / 2.5f
-        boundingRect.offsetTo((horizontalSpacing / 3), screen.centerY() - (buttonRect.height() / 2))
 
-        data.forEach { (label, children) ->
-            val fillColor = Color.argb(255, Random().nextInt(256), Random().nextInt(256), Random().nextInt(256))
-            val childrenButtons = addTileButtons(children, boundingRect, fillColor)
+        boundingRect.offsetTo(screenRect.centerX() - (buttonRect.width() / 2), screenRect.centerY() - (buttonRect.height() / 2))
+        tileButtons = addTileButtons(tiles, Direction.HORIZONTAL, boundingRect)
+        hoveredButton = tileButtons.first()
+    }
 
-            val tileButton: TileButton = createTileButton(label, childrenButtons, boundingRect, fillColor)
+    private fun addTileButtons(tiles: List<TileData>, direction: Direction, boundingRect: RectF, level: Int = 0): ArrayList<TileButton> {
+        val buttonsArray = ArrayList<TileButton>(tiles.size)
+
+        val horizontalSpacing: Float = screenRect.width() / 2.5f
+        val verticalSpacing: Float = (screenRect.height() / 4)
+
+        val otherDirection = when (direction) {
+            Direction.HORIZONTAL -> Direction.VERTICAL
+            Direction.VERTICAL ->  Direction.HORIZONTAL
+        }
+
+        tiles.forEachIndexed { i, tile ->
+
+            when (direction) {
+                Direction.HORIZONTAL -> {
+                    if (i > 0 || level > 0) {
+                        boundingRect.offsetTo(
+                            boundingRect.left + horizontalSpacing,
+                            boundingRect.top
+                        )
+                    }
+                }
+
+                Direction.VERTICAL -> {
+                    boundingRect.offsetTo(boundingRect.left, boundingRect.top + verticalSpacing)
+                }
+            }
+
+            val children = addTileButtons(tile.children, otherDirection, RectF(boundingRect), level+1)
+            val callback: Any = tile.callback ?: {}
+
+            val tileButton = TileButton(
+                context,
+                boundingRect,
+                RectF(buttonRect),
+                tile.title,
+                callback,
+                children,
+                tile.color,
+                backgroundColor
+            )
 
             buttonsArray.add(tileButton)
-            this.addView(tileButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+            buttonsArray.addAll(children)
 
-            boundingRect.offsetTo(boundingRect.left + horizontalSpacing, boundingRect.top)
+            this.addView(
+                tileButton,
+                LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            )
         }
 
         return buttonsArray
     }
 
-    private fun addTileButtons(data: Array<String>, originRect: RectF = RectF(), fillColor: Int = Color.CYAN): ArrayList<TileButton> {
-        val buttonsArray = ArrayList<TileButton>(data.size)
-        val boundingRect = RectF(originRect)
-        val verticalSpacing: Float = (screen.height() / 4)
-
-        if (boundingRect.isEmpty) {
-            boundingRect.offsetTo(screen.centerX() - (buttonRect.width() / 2), screen.centerY() - (buttonRect.height() / 2))
-        }
-
-        for (i in 0 until(data.size)) {
-            boundingRect.offsetTo(boundingRect.left, boundingRect.top + verticalSpacing)
-
-            val tileButton = createTileButton(data[i], ArrayList(), boundingRect, fillColor)
-
-            buttonsArray.add(tileButton)
-            this.addView(tileButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        }
-
-        return buttonsArray
-    }
-
-    private fun createTileButton(label: String, children: ArrayList<TileButton>, boundingRect: RectF, fillColor: Int = Color.CYAN): TileButton {
-        return TileButton(context, RectF(boundingRect), label, children, fillColor, backgroundColor)
-    }
-
-    fun moveView(angle: Double, distance: Double) {
+    open fun moveView(angle: Double, distance: Double) {
         if (angle.isNaN()) {
             return
         }
 
-        // TODO: Make sure on top row only horizontal and on all other rows only vertical movement is allowed
-        val distX: Float = (distance * sin(angle)).toFloat()
-        val distY: Float = - (distance * cos(angle)).toFloat()
+        val distX: Float = -(distance * sin(angle)).toFloat() * sensitivityX
+        val distY: Float = (distance * cos(angle)).toFloat() * sensitivityY
 
-        // TODO: Maybe move buttons instead of the whole view
-        this.animate().translationX(distX * VIEWMOVEMENTFACTOR)
-        this.animate().translationY(distY * VIEWMOVEMENTFACTOR)
+        tileButtons.forEach { button: TileButton ->
+            button.animate().translationX(button.baseX + distX)
+            button.animate().translationY(button.baseY + distY)
+        }
 
         highlightButton()
     }
 
-    private fun highlightButton() {
-        val buttons = ArrayList<TileButton>()
-
-        tileButtons.forEach { button -> buttons.add(button) }
-        tileButtons.forEach { button ->
-            button.children.forEach { child -> buttons.add(child)}
+    protected fun highlightButton() {
+        if (hoveredButton?.isInCenter(screenRect) == true) {
+            return
         }
 
-        for (button in buttons) {
-            if (button.isOnButton(this, screen, buttonRect)) {
+        hoveredButton?.isHovered = false
+        hoveredButton = null
+
+        for (button in tileButtons) {
+            if (button.isInCenter(screenRect)) {
                 if (hoveredButton != button) {
-                    hoveredButton?.isHovered = false
                     button.isHovered = true
 
                     hoveredButton = button
-                    Timber.d(button.label)
+                    Timber.d("hovered: ${button.label}")
                 }
 
                 break
             }
         }
     }
+}
+
+class TileData(val title: String, val color: Int, val callback: Any?, val children: List<TileData>)
+
+enum class Direction {
+    HORIZONTAL, VERTICAL
 }

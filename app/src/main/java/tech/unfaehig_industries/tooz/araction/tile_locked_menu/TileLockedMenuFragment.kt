@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.tile_menu
+package tech.unfaehig_industries.tooz.araction.tile_locked_menu
 
 import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
 import tech.unfaehig_industries.tooz.phone_tracking.SensorDataCallback
@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
-import tech.unfaehig_industries.tooz.araction.databinding.TileMenuFragmentBinding
+import tech.unfaehig_industries.tooz.araction.databinding.TileLockedMenuFragmentBinding
 import tech.unfaehig_industries.tooz.araction.tile_views.TileData
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
@@ -20,13 +20,13 @@ import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
 import tooz.bto.toozifier.sensors.SensorDataListener
 
-class TileMenuFragment : BaseToozifierFragment() {
+class TileLockedMenuFragment : BaseToozifierFragment() {
 
     // The binding contains the views that are part of this fragment
-    private var _binding: TileMenuFragmentBinding? = null
+    private var _binding: TileLockedMenuFragmentBinding? = null
     private val binding get() = _binding!!
 
-    override val layout: TileMenuLayout = TileMenuLayout(toozifier)
+    override val layout: TileLockedMenuLayout = TileLockedMenuLayout(toozifier)
     override val dataSensors: Array<Sensor> = arrayOf()
 
     override val registrationListener = object : RegistrationListener {
@@ -85,7 +85,7 @@ class TileMenuFragment : BaseToozifierFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = TileMenuFragmentBinding.inflate(inflater, container, false)
+        _binding = TileLockedMenuFragmentBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -125,15 +125,15 @@ class TileMenuFragment : BaseToozifierFragment() {
             )
         )
 
-        binding.tileMenu.populate(tiles)
-        layout.tileMenu.populate(tiles)
+        binding.tileLockedMenu.populate(tiles)
+        layout.tileLockedMenu.populate(tiles)
 
         // Initialize phone positional tracking
         trackingEventManager =
             TrackingEventManager( object : SensorDataCallback {
                 override fun onCursorUpdate(angle: Double, dist: Double) {
-                    binding.tileMenu.moveView(angle, dist)
-                    layout.tileMenu.moveView(angle, dist)
+                    binding.tileLockedMenu.moveView(angle, dist)
+                    layout.tileLockedMenu.moveView(angle, dist)
                 }
 
                 override fun onAccuracyChanged(accuracy: Int) {

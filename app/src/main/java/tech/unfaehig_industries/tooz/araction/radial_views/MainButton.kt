@@ -47,8 +47,8 @@ class MainButton : RadialMenuButton {
         @OptIn(DelicateCoroutinesApi::class)
         hoverJob = GlobalScope.launch {
             val startTime = Instant.now().plusSeconds(durationInSeconds)
-            val delay: Long = 100L
-            var innerPercent: Float = 0f
+            val delay = 100L
+            var innerPercent = 0f
             val step: Float = (1f / durationInSeconds) / (1000 / delay)
 
             while (Instant.now().isBefore(startTime)) {

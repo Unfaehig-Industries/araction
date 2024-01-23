@@ -46,7 +46,8 @@ class ExampleListFragment : Fragment() {
                 Example.SENSOR,
                 Example.DIRECTION,
                 Example.RADIAL,
-                Example.TILE
+                Example.TILE,
+                Example.TILE_LOCKED
             ),
             parentFragment = this
         )
@@ -116,6 +117,15 @@ class ExampleListFragment : Fragment() {
                         }
                     )
                 }
+                Example.TILE_LOCKED.ordinal -> {
+                    bindItem(
+                        holder = holder,
+                        text = parentFragment.requireContext().getString(R.string.tile_locked_menu_example_name),
+                        clickListener = {
+                            parentFragment.findNavController().navigate(R.id.tile_locked_action)
+                        }
+                    )
+                }
             }
         }
 
@@ -130,7 +140,7 @@ class ExampleListFragment : Fragment() {
     }
 
     enum class Example {
-        FRAMERATE, SENSOR, DIRECTION, RADIAL, TILE
+        FRAMERATE, SENSOR, DIRECTION, RADIAL, TILE, TILE_LOCKED
     }
 
 }

@@ -1,12 +1,12 @@
 package tech.unfaehig_industries.tooz.araction.direction
 
-import tech.unfaehig_industries.tooz.araction.positional_tracking.CursorEventManager
-import tech.unfaehig_industries.tooz.araction.positional_tracking.SensorDataCallback
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import tech.unfaehig_industries.tooz.phone_tracking.SensorDataCallback
+import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
 import tech.unfaehig_industries.tooz.araction.databinding.DirectionFragmentBinding
@@ -77,8 +77,8 @@ class DirectionFragment : BaseToozifierFragment() {
     override val buttonEventListener = object : ButtonEventListener {
         override fun onButtonEvent(button: Button) {
             Timber.d("$BUTTON_EVENT $button")
-            cursorEventManager.resetZeroPosition()
-            layout.sendBlankFrame()
+            trackingEventManager.resetZeroPosition()
+            layout.setLayout()
         }
     }
 
@@ -89,10 +89,11 @@ class DirectionFragment : BaseToozifierFragment() {
     ): View {
         _binding = DirectionFragmentBinding.inflate(inflater, container, false)
 
-        cursorEventManager =
-            CursorEventManager( object : SensorDataCallback {
+        trackingEventManager =
+            TrackingEventManager( object : SensorDataCallback {
                 override fun onCursorUpdate(angle: Double, dist: Double) {
                     // Handle cursor data
+                    // TODO: make this do something
                     Timber.d("angle: $angle, distance: $dist")
                 }
 
@@ -101,8 +102,8 @@ class DirectionFragment : BaseToozifierFragment() {
                 }
             }, activity)
 
-        cursorEventManager.start()
-        cursorEventManager.resetZeroPosition()
+        trackingEventManager.start()
+        trackingEventManager.resetZeroPosition()
 
         return binding.root
     }

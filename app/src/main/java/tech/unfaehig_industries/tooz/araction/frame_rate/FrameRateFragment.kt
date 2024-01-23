@@ -114,7 +114,7 @@ class FrameRateFragment : Fragment() {
                 "geomagRotation" -> {
                     val sensorDataReading: ToozServiceMessage.Sensor.GeomagRotation? = sensorReading.reading.geomagRotation
                     Timber.d("Frame rate: ${sensorDataReading?.x}")
-                    layout.sendFrame()
+                    layout.updateFrame()
                 }
             }
         }

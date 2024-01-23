@@ -3,7 +3,6 @@ package tech.unfaehig_industries.tooz.araction.tile_menu
 import android.content.Context
 import android.view.LayoutInflater
 import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
-import tech.unfaehig_industries.tooz.araction.SafeSensorReading
 import tech.unfaehig_industries.tooz.araction.databinding.TileMenuLayoutBinding
 import tech.unfaehig_industries.tooz.araction.tile_views.TileMenu
 import tooz.bto.toozifier.Toozifier
@@ -14,17 +13,7 @@ class TileMenuLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
     private var tileMenuView: TileMenuLayoutBinding? = null
     val tileMenu: TileMenu get() = tileMenuView!!.tileMenu
 
-    override fun sendFrame() {
-        sendBlankFrame()
-    }
-
-    override fun sendFrame (reading: SafeSensorReading) {
-        tileMenuView?.run {
-            layoutView = this.root
-        }
-    }
-
-    override fun sendBlankFrame() {
+    override fun setLayout() {
         tileMenuView?.run {
             layoutView = this.root
         }
@@ -32,6 +21,6 @@ class TileMenuLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
 
     override fun inflateView(context: Context) {
         tileMenuView = TileMenuLayoutBinding.inflate(LayoutInflater.from(context))
-        sendBlankFrame()
+        setLayout()
     }
 }

@@ -1,12 +1,12 @@
 package tech.unfaehig_industries.tooz.araction.radial_menu
 
-import tech.unfaehig_industries.tooz.araction.positional_tracking.CursorEventManager
-import tech.unfaehig_industries.tooz.araction.positional_tracking.SensorDataCallback
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import tech.unfaehig_industries.tooz.phone_tracking.SensorDataCallback
+import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuFragmentBinding
 import timber.log.Timber
@@ -96,20 +96,21 @@ class RadialMenuFragment() : BaseToozifierFragment() {
         layout.inflateView(requireContext())
 
         // Initialize phone positional tracking
-        cursorEventManager =
-            CursorEventManager( object : SensorDataCallback {
+        trackingEventManager =
+            TrackingEventManager( object : SensorDataCallback {
                 override fun onCursorUpdate(angle: Double, dist: Double) {
                     // Handle cursor data
                     binding.radialMenu.highlightButton(angle, dist)
                     layout.radialMenu.highlightButton(angle, dist)
                 }
 
+
                 override fun onAccuracyChanged(accuracy: Int) {
                     // Handle accuracy change
                 }
             }, activity)
 
-        cursorEventManager.start()
-        cursorEventManager.resetZeroPosition()
+        trackingEventManager.start()
+        trackingEventManager.resetZeroPosition()
     }
 }

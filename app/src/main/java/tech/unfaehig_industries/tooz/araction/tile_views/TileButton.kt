@@ -6,12 +6,14 @@ import android.text.TextPaint
 import android.view.View
 import androidx.core.graphics.ColorUtils
 import kotlinx.coroutines.*
-import timber.log.Timber
 import java.time.Instant
 
 class TileButton : View {
 
-    private var rect: RectF = RectF(0f,0f,10f,10f)
+    private lateinit var positionRect: RectF
+    val baseX: Float get() = positionRect.left
+    val baseY: Float get() = positionRect.top
+    private lateinit var boundingRect: RectF
     private val rectInsetHighlight: Float = 5f
     var label: String = ""
     private var labelCoordinates: Pair<Float, Float> = Pair(0f, 0f)
@@ -21,31 +23,37 @@ class TileButton : View {
     private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     private lateinit var hoverJob: Job
+    private lateinit var callback: Any
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, rect: RectF, label: String, children: ArrayList<TileButton>, fillColor: Int, labelColor: Int) : super(context) {
-        this.rect = RectF(rect)
-        this.left = rect.left.toInt()
-        this.right = rect.right.toInt()
-        this.top = rect.top.toInt()
-        this.bottom = rect.bottom.toInt()
+    constructor(context: Context, _positionRect: RectF, _boundingRect: RectF, _label: String, _callback: Any, _children: ArrayList<TileButton>, fillColor: Int, labelColor: Int) : super(context) {
+        boundingRect = RectF(_boundingRect)
+        left = boundingRect.left.toInt()
+        right = boundingRect.right.toInt()
+        top = boundingRect.top.toInt()
+        bottom = boundingRect.bottom.toInt()
 
-        this.label = label
+        positionRect = RectF(_positionRect)
+        translationX = baseX
+        translationY = baseY
 
-        this.children = children
+        label = _label
+        callback = _callback
 
-        this.fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
-        this.labelCoordinates = Pair(rect.left+10f,rect.centerY()+(labelSize/2))
+        children = _children
+
+        fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
+        this.labelCoordinates = Pair(boundingRect.left+10f, boundingRect.centerY()+(labelSize/2))
         val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-        this.labelPaint.apply { color= labelColor; typeface= labelTypeface; textSize= labelSize }
+        labelPaint.apply { color= labelColor; typeface= labelTypeface; textSize= labelSize }
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
         canvas?.run {
-            this.drawRect(rect, fillPaint)
+            this.drawRect(boundingRect, fillPaint)
             this.drawText(label, labelCoordinates.first, labelCoordinates.second, labelPaint)
         }
     }
@@ -62,20 +70,24 @@ class TileButton : View {
     }
 
     private fun animateHover(durationInSeconds: Long = 3L) {
-        rect.inset(-rectInsetHighlight, -rectInsetHighlight)
+        boundingRect.inset(-rectInsetHighlight, -rectInsetHighlight)
 
         @OptIn(DelicateCoroutinesApi::class)
         hoverJob = GlobalScope.launch {
-            val startTime = Instant.now().plusSeconds(durationInSeconds)
-            val delay: Long = 100L
-            var percent: Float = 0f
+            val endTime = Instant.now().plusSeconds(durationInSeconds)
+            val delay = 100L
+            var percent = 0f
             val step: Float = (1f / durationInSeconds) / (1000 / delay)
 
-            while (Instant.now().isBefore(startTime)) {
-                fillPaint.shader = RadialGradient(rect.centerX(), rect.centerY(), ( rect.width() / 2 ), intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.6f), fillPaint.color), floatArrayOf(percent, 1f), Shader.TileMode.CLAMP)
+            while (Instant.now().isBefore(endTime)) {
+                fillPaint.shader = RadialGradient(boundingRect.centerX(), boundingRect.centerY(), boundingRect.width(), intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.6f), fillPaint.color), floatArrayOf(percent, (percent+0.1f).coerceAtMost(1f)), Shader.TileMode.CLAMP)
                 invalidate()
                 percent += step
                 delay(delay)
+            }
+
+            if(isHovered) {
+                callback
             }
         }
     }
@@ -83,22 +95,15 @@ class TileButton : View {
     private fun cancelHover() {
         hoverJob.cancel("hover leave")
 
-        rect.inset(rectInsetHighlight, rectInsetHighlight)
+        boundingRect.inset(rectInsetHighlight, rectInsetHighlight)
         fillPaint.shader = null
         invalidate()
     }
 
-    fun isOnButton(menu: View, screen: RectF, buttonRect: RectF): Boolean {
-        Timber.d("menu x: ${menu.translationX}")
-        Timber.d("menu y: ${menu.translationY}")
-        Timber.d("screen -x: ${screen.centerX() - ( buttonRect.width() / 2 )}")
-        Timber.d("screen +x: ${screen.centerX() + ( buttonRect.width() / 2 )}")
-        Timber.d("screen -y: ${screen.centerY() - ( buttonRect.height() / 2 )}")
-        Timber.d("screen +y: ${screen.centerY() + ( buttonRect.height() / 2 )}")
-
-        return menu.translationX + this.left >= screen.centerX() - ( buttonRect.width() / 2 ) &&
-                menu.translationX + this.right <= screen.centerX() + ( buttonRect.width() / 2 ) &&
-                menu.translationY + this.top >= screen.centerY() - ( buttonRect.height() / 2 ) &&
-                menu.translationY + this.bottom <= screen.centerY() + ( buttonRect.height() / 2 )
+    fun isInCenter(screen: RectF): Boolean {
+        return this.translationX <= screen.centerX() &&
+                this.translationX + this.boundingRect.width() >= screen.centerX() &&
+                this.translationY <= screen.centerY() &&
+                this.translationY + this.boundingRect.height() >= screen.centerY()
     }
 }

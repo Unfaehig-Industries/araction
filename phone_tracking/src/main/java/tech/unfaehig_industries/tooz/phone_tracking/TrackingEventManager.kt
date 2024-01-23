@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.positional_tracking
+package tech.unfaehig_industries.tooz.phone_tracking
 
 import android.app.Activity
 import android.content.Context
@@ -11,7 +11,7 @@ import android.hardware.SensorManager
 import kotlin.math.acos
 import kotlin.math.sqrt
 
-class CursorEventManager : SensorEventListener {
+class TrackingEventManager : SensorEventListener {
     private var sensorManager: SensorManager
     private var sensor: Sensor
     private var callback: SensorDataCallback
