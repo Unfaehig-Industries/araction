@@ -17,7 +17,7 @@ class RadialButton : RadialMenuButton {
     private var lengthDegrees: Float = 90f
     private var label: String = ""
     private var labelCoordinates: Pair<Float, Float> = Pair(0f, 0f)
-    private val labelSize: Float = 60f
+    private val labelSize: Float = 50f
     private val fillPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val backgroundPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
@@ -51,8 +51,8 @@ class RadialButton : RadialMenuButton {
         var y: Double = radius * sin(angleInRadians)
         x += radialBoundingRect.centerX()
         y += radialBoundingRect.centerY()
-        x -= labelSize / 4
-        y += labelSize / 4
+        x -= (labelSize / 4) + 10f
+        y += (labelSize / 4) + 10f
 
         return Pair(x.toFloat(), y.toFloat())
     }
