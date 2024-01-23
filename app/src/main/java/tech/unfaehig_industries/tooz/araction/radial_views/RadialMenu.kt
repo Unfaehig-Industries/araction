@@ -46,8 +46,8 @@ class RadialMenu : RelativeLayout {
         addMainButton()
     }
 
-    private fun addMainButton() {
-        mainButton = MainButton(context, radialBoundingRect, mainButtonRadius, mainColor)
+    private fun addMainButton(label: String) {
+        mainButton = MainButton(context, radialBoundingRect, mainButtonRadius, mainColor, label)
         this.addView(mainButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
     }
 

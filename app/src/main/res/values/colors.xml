@@ -3,6 +3,7 @@
     <color name="colorPrimary">#000</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#4c4e5c</color>
+    <color name="colorBackground">#FFFFFF</color>
 
     <color name="transparent">#00000000</color>
     <color name="white">#ffffff</color>
