@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/background_prompt"
+    android:background="@color/colorBackground"
     android:orientation="vertical">
 
     <tech.unfaehig_industries.tooz.araction.tile_views.TileMenu
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:mainColor="#CD2010"
-        app:backgroundColor="@color/background_prompt"
+        app:backgroundColor="@color/colorBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

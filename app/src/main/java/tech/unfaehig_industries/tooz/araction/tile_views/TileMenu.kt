@@ -12,7 +12,6 @@ import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
 import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.math.sqrt
 
 class TileMenu : RelativeLayout {
 
@@ -21,7 +20,8 @@ class TileMenu : RelativeLayout {
     private var mainColor: Int = Color.CYAN
     private var backgroundColor: Int = Color.BLACK
     private val screen = RectF(0f, 0f, 390f, 528f)
-    private val buttonRect = RectF(0f, 0f, (screen.width() / 3.5f), (screen.height() / 5))
+    //private val buttonRect = RectF(0f, 0f, (screen.width() / 3.5f), (screen.height() / 5))
+    private val buttonRect = RectF(0f, 0f, 200f, (screen.height() / 5))
     private val VIEWMOVEMENTFACTOR: Float = 2f
 
     constructor(context:Context) : super(context) {
@@ -39,24 +39,26 @@ class TileMenu : RelativeLayout {
         backgroundColor = typedArray.getColor(R.styleable.ToozMenuStyleable_backgroundColor, Color.BLACK)
 
         val menuMap = LinkedHashMap<String, Array<String>>()
-        menuMap["1"] = arrayOf("a", "b", "c", "d")
-        menuMap["2"] = arrayOf("a", "b", "c", "d")
-        menuMap["3"] = arrayOf("a", "b", "c", "d")
-        menuMap["4"] = arrayOf("a", "b", "c", "d")
-        menuMap["5"] = arrayOf("a", "b", "c", "d")
+        val actionArray = arrayOf("Vitalwerte", "Medikation", "Anamnese", "Aufenthalt")
+        menuMap["Karin Jager"] = actionArray
+        menuMap["Philipp Wexler"] = actionArray
+        menuMap["Marcel Gärtner"] = actionArray
+        menuMap["Christin Pabst"] = actionArray
         tileButtons = addTileButtons(menuMap)
     }
 
     private fun addTileButtons(data: LinkedHashMap<String, Array<String>>): ArrayList<TileButton> {
         val buttonsArray = ArrayList<TileButton>(data.size)
         val boundingRect = RectF(buttonRect)
-        val horizontalSpacing: Float = screen.width() / 2.5f
+        val horizontalSpacing: Float = buttonRect.width() + (buttonRect.width() / 5)
+        //val horizontalSpacing: Float = screen.width() / 2.5f
         boundingRect.offsetTo((horizontalSpacing / 3), screen.centerY() - (buttonRect.height() / 2))
 
         data.forEach { (label, children) ->
-            val childrenButtons = addTileButtons(children, boundingRect)
+            val fillColor = Color.argb(255, Random().nextInt(256), Random().nextInt(256), Random().nextInt(256))
+            val childrenButtons = addTileButtons(children, boundingRect, fillColor)
 
-            val tileButton: TileButton = createTileButton(label, childrenButtons, boundingRect)
+            val tileButton: TileButton = createTileButton(label, childrenButtons, boundingRect, fillColor)
 
             buttonsArray.add(tileButton)
             this.addView(tileButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
@@ -67,7 +69,7 @@ class TileMenu : RelativeLayout {
         return buttonsArray
     }
 
-    private fun addTileButtons(data: Array<String>, originRect: RectF = RectF()): ArrayList<TileButton> {
+    private fun addTileButtons(data: Array<String>, originRect: RectF = RectF(), fillColor: Int = Color.CYAN): ArrayList<TileButton> {
         val buttonsArray = ArrayList<TileButton>(data.size)
         val boundingRect = RectF(originRect)
         val verticalSpacing: Float = (screen.height() / 4)
@@ -79,7 +81,7 @@ class TileMenu : RelativeLayout {
         for (i in 0 until(data.size)) {
             boundingRect.offsetTo(boundingRect.left, boundingRect.top + verticalSpacing)
 
-            val tileButton = createTileButton(data[i], ArrayList(), boundingRect)
+            val tileButton = createTileButton(data[i], ArrayList(), boundingRect, fillColor)
 
             buttonsArray.add(tileButton)
             this.addView(tileButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
@@ -88,10 +90,7 @@ class TileMenu : RelativeLayout {
         return buttonsArray
     }
 
-    private fun createTileButton(label: String, children: ArrayList<TileButton>, boundingRect: RectF): TileButton {
-        val rnd = Random()
-        val fillColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
-
+    private fun createTileButton(label: String, children: ArrayList<TileButton>, boundingRect: RectF, fillColor: Int = Color.CYAN): TileButton {
         return TileButton(context, RectF(boundingRect), label, children, fillColor, backgroundColor)
     }
 
