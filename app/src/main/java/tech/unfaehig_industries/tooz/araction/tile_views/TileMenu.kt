@@ -29,13 +29,6 @@ open class TileMenu : RelativeLayout {
 
         mainColor = typedArray.getColor(R.styleable.ToozMenuStyleable_mainColor, Color.CYAN)
         backgroundColor = typedArray.getColor(R.styleable.ToozMenuStyleable_backgroundColor, Color.BLACK)
-
-//        val menuMap = LinkedHashMap<String, Array<String>>()
-//        val actionArray = arrayOf("Vitalwerte", "Medikation", "Anamnese", "Aufenthalt")
-//        menuMap["Karin Jager"] = actionArray
-//        menuMap["Philipp Wexler"] = actionArray
-//        menuMap["Marcel Gärtner"] = actionArray
-//        menuMap["Christin Pabst"] = actionArray
     }
 
     open fun populate(
@@ -59,8 +52,8 @@ open class TileMenu : RelativeLayout {
     private fun addTileButtons(tiles: List<TileData>, direction: Direction, boundingRect: RectF, level: Int = 0): ArrayList<TileButton> {
         val buttonsArray = ArrayList<TileButton>(tiles.size)
 
-        val horizontalSpacing: Float = screenRect.width() / 2.5f
-        val verticalSpacing: Float = (screenRect.height() / 4)
+        val horizontalSpacing: Float = boundingRect.width() + 40f
+        val verticalSpacing: Float = boundingRect.height() + 20f
 
         val otherDirection = when (direction) {
             Direction.HORIZONTAL -> Direction.VERTICAL

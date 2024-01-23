@@ -10,7 +10,7 @@
         android:id="@+id/tile_menu"
         android:layout_width="@dimen/width_safe_area"
         android:layout_height="@dimen/height_safe_area"
-        android:background="#C33232"
+        android:background="#686464"
         app:backgroundColor="@color/colorBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
