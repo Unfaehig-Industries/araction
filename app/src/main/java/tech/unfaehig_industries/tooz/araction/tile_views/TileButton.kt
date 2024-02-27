@@ -69,7 +69,7 @@ class TileButton : View {
         }
     }
 
-    private fun animateHover(durationInSeconds: Long = 3L) {
+    private fun animateHover(durationInSeconds: Long = 2L) {
         boundingRect.inset(-rectInsetHighlight, -rectInsetHighlight)
 
         @OptIn(DelicateCoroutinesApi::class)
@@ -77,10 +77,12 @@ class TileButton : View {
             val endTime = Instant.now().plusSeconds(durationInSeconds)
             val delay = 100L
             var percent = 0f
-            val step: Float = (1f / durationInSeconds) / (1000 / delay)
+            // Calculate steps from 60%, because the full width of the boundingRect is used, but the RadialGradient fills the button at about 60% already
+            // This ensures that the button is full, at about the same time as the while loop has ended
+            val step: Float = 0.6f / ((durationInSeconds * 1000) / delay)
 
             while (Instant.now().isBefore(endTime)) {
-                fillPaint.shader = RadialGradient(boundingRect.centerX(), boundingRect.centerY(), boundingRect.width(), intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.6f), fillPaint.color), floatArrayOf(percent, (percent+0.1f).coerceAtMost(1f)), Shader.TileMode.CLAMP)
+                fillPaint.shader = RadialGradient(boundingRect.centerX(), boundingRect.centerY(), boundingRect.width(), intArrayOf(ColorUtils.blendARGB(fillPaint.color, Color.BLACK, 0.6f), fillPaint.color), floatArrayOf((percent+step).coerceAtLeast(0f), percent), Shader.TileMode.CLAMP)
                 invalidate()
                 percent += step
                 delay(delay)
