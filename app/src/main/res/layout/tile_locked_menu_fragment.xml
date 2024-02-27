@@ -3,18 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/background_prompt"
+    android:background="@color/colorBackground"
     android:orientation="vertical">
 
     <tech.unfaehig_industries.tooz.araction.tile_locked_views.TileLockedMenu
         android:id="@+id/tile_locked_menu"
         android:layout_width="@dimen/width_safe_area"
         android:layout_height="@dimen/height_safe_area"
-        android:background="#686464"
-        app:backgroundColor="@color/background_prompt"
+        android:background="@color/colorMenuArea"
+        app:backgroundColor="@color/colorBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/actionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text=""
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tile_locked_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

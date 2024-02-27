@@ -8,6 +8,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.TileMenuFragmentBinding
 import tech.unfaehig_industries.tooz.araction.tile_views.TileData
@@ -130,5 +135,15 @@ class TileMenuFragment : BaseToozifierFragment() {
 
         trackingEventManager.start()
         trackingEventManager.resetZeroPosition()
+    }
+    
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun updateActionText(text: String) {
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                binding.actionText.text = text
+                layout.actionText.text = text
+            }
+        }
     }
 }
