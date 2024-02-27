@@ -2,6 +2,7 @@ package tech.unfaehig_industries.tooz.araction.radial_views
 
 import android.content.Context
 import android.graphics.*
+import android.text.TextPaint
 import androidx.core.graphics.ColorUtils
 import kotlinx.coroutines.*
 import java.time.Instant
@@ -12,15 +13,23 @@ class MainButton : RadialMenuButton {
     private var radius: Float = 5f
     private val radiusHighlight: Float = 1f
     private var fillPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var label: String = ""
+    private val labelSize: Float = 50f
+    private var labelCoordinates: Pair<Float, Float> = Pair(0f, 0f)
+    private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     private lateinit var hoverJob: Job
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, radialBoundingRect: RectF, radius: Float, fillColor: Int) : super(context) {
+    constructor(context: Context, radialBoundingRect: RectF, radius: Float, fillColor: Int, label: String) : super(context) {
         this.radialBoundingRect = radialBoundingRect
         this.radius = radius
         this.fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
+        this.label = label
+        this.labelCoordinates = Pair((radialBoundingRect.centerX()-(labelSize/2)-5f), (radialBoundingRect.centerY()+(labelSize/2)-5f))
+        val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+        this.labelPaint.apply { color= Color.BLACK ; typeface= labelTypeface; textSize= labelSize }
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -28,6 +37,7 @@ class MainButton : RadialMenuButton {
 
         canvas?.run {
             this.drawCircle(radialBoundingRect.centerX(), radialBoundingRect.centerY(), radius, fillPaint)
+            this.drawText(label, labelCoordinates.first, labelCoordinates.second, labelPaint)
         }
     }
 

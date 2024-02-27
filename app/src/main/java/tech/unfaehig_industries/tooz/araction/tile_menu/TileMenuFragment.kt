@@ -98,31 +98,18 @@ class TileMenuFragment : BaseToozifierFragment() {
         layout.inflateView(requireContext())
 
         //Initialize TileMenu
+        val actionTiles = listOf(
+            TileData("Vitalwerte", Color.parseColor("#00CCA3"), null, listOf()),
+            TileData("Medikation", Color.parseColor("#F39237"), null, listOf()),
+            TileData("Anamnese", Color.parseColor("#DC758F"), null, listOf()),
+            TileData("Aufenthalt", Color.parseColor("#008DD5"), null, listOf()),
+        )
+
         val tiles = listOf(
-            TileData("1", Color.BLUE, null,
-                listOf(
-                    TileData("a", Color.GREEN, null, listOf()),
-                    TileData("b", Color.GREEN, null, listOf()),
-                    TileData("c", Color.GREEN, null, listOf()),
-                    TileData("d", Color.GREEN, null, listOf()),
-                )
-            ),
-            TileData("2", Color.BLUE, null,
-                listOf(
-                    TileData("a", Color.GREEN, null, listOf()),
-                    TileData("b", Color.GREEN, null, listOf()),
-                    TileData("c", Color.GREEN, null, listOf()),
-                    TileData("d", Color.GREEN, null, listOf()),
-                )
-            ),
-            TileData("3", Color.BLUE, null,
-                listOf(
-                    TileData("a", Color.GREEN, null, listOf()),
-                    TileData("b", Color.GREEN, null, listOf()),
-                    TileData("c", Color.GREEN, null, listOf()),
-                    TileData("d", Color.GREEN, null, listOf()),
-                )
-            )
+            TileData("Karin Jager", Color.parseColor("#592E83"), null, actionTiles),
+            TileData("Philipp Wexler", Color.parseColor("#CCC900"), null, actionTiles),
+            TileData("Marcel Gärtner", Color.parseColor("#5C374C"), null, actionTiles),
+            TileData("Christin Pabst", Color.parseColor("#29339B"), null, actionTiles)
         )
 
         binding.tileMenu.populate(tiles)

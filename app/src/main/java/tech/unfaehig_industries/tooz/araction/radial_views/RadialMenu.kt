@@ -42,12 +42,12 @@ class RadialMenu : RelativeLayout {
         val backgroundColor: Int = typedArray.getColor(R.styleable.ToozMenuStyleable_backgroundColor, Color.BLACK)
         backgroundPaint.apply { color= backgroundColor; style= Paint.Style.FILL }
 
-        addRadialButtons(arrayOf("a", "b", "c", "d"))
-        addMainButton()
+        addRadialButtons(arrayOf(String(Character.toChars(0x2699)), String(Character.toChars(0x1F4A1)), String(Character.toChars(0x1F529)), String(Character.toChars(0x1F4CE))))
+        addMainButton(String(Character.toChars(0x274C)))
     }
 
-    private fun addMainButton() {
-        mainButton = MainButton(context, radialBoundingRect, mainButtonRadius, mainColor)
+    private fun addMainButton(label: String) {
+        mainButton = MainButton(context, radialBoundingRect, mainButtonRadius, mainColor, label)
         this.addView(mainButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
     }
 

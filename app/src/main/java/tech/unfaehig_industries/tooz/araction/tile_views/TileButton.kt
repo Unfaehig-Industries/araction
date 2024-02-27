@@ -16,7 +16,8 @@ class TileButton : View {
     private lateinit var boundingRect: RectF
     private val rectInsetHighlight: Float = 5f
     var label: String = ""
-    private val labelSize: Float = 60f
+    private var labelCoordinates: Pair<Float, Float> = Pair(0f, 0f)
+    private val labelSize: Float =25f
     var children: ArrayList<TileButton> = ArrayList()
     private val fillPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
@@ -43,6 +44,7 @@ class TileButton : View {
         children = _children
 
         fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
+        this.labelCoordinates = Pair(boundingRect.left+10f, boundingRect.centerY()+(labelSize/2))
         val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         labelPaint.apply { color= labelColor; typeface= labelTypeface; textSize= labelSize }
     }
@@ -52,7 +54,7 @@ class TileButton : View {
 
         canvas?.run {
             this.drawRect(boundingRect, fillPaint)
-            this.drawText(label, boundingRect.centerX(), boundingRect.centerY(), labelPaint)
+            this.drawText(label, labelCoordinates.first, labelCoordinates.second, labelPaint)
         }
     }
 
