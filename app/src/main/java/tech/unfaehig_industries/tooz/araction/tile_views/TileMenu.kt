@@ -78,7 +78,7 @@ open class TileMenu : RelativeLayout {
             }
 
             val children = addTileButtons(tile.children, otherDirection, RectF(boundingRect), level+1)
-            val callback: Any = tile.callback ?: {}
+            val callback: () -> Unit = tile.callback
 
             val tileButton = TileButton(
                 context,
@@ -142,7 +142,7 @@ open class TileMenu : RelativeLayout {
     }
 }
 
-class TileData(val title: String, val color: Int, val callback: Any?, val children: List<TileData>)
+class TileData(val title: String, val color: Int, val callback: () -> Unit, val children: List<TileData>)
 
 enum class Direction {
     HORIZONTAL, VERTICAL

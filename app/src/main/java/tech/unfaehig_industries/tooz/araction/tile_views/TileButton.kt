@@ -23,11 +23,11 @@ class TileButton : View {
     private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     private lateinit var hoverJob: Job
-    private lateinit var callback: Any
+    private lateinit var callback: () -> Unit
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, _positionRect: RectF, _boundingRect: RectF, _label: String, _callback: Any, _children: ArrayList<TileButton>, fillColor: Int, labelColor: Int) : super(context) {
+    constructor(context: Context, _positionRect: RectF, _boundingRect: RectF, _label: String, _callback: () -> Unit, _children: ArrayList<TileButton>, fillColor: Int, labelColor: Int) : super(context) {
         boundingRect = RectF(_boundingRect)
         left = boundingRect.left.toInt()
         right = boundingRect.right.toInt()
@@ -87,7 +87,7 @@ class TileButton : View {
             }
 
             if(isHovered) {
-                callback
+                callback()
             }
         }
     }

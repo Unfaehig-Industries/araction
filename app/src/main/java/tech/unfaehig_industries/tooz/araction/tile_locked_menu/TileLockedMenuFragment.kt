@@ -104,17 +104,17 @@ class TileLockedMenuFragment : BaseToozifierFragment() {
 
         //Initialize TileMenu
         val actionTiles = listOf(
-            TileData("Vitalwerte", Color.parseColor("#00CCA3"), null, listOf()),
-            TileData("Medikation", Color.parseColor("#F39237"), null, listOf()),
-            TileData("Anamnese", Color.parseColor("#DC758F"), null, listOf()),
-            TileData("Aufenthalt", Color.parseColor("#008DD5"), null, listOf()),
+            TileData("Vitalwerte", Color.parseColor("#00CCA3"), {updateActionText("Vitalwerte")}, listOf()),
+            TileData("Medikation", Color.parseColor("#F39237"), {updateActionText("Medikation")}, listOf()),
+            TileData("Anamnese", Color.parseColor("#DC758F"), {updateActionText("Anamnese")}, listOf()),
+            TileData("Aufenthalt", Color.parseColor("#008DD5"), {updateActionText("Aufenthalt")}, listOf()),
         )
 
         val tiles = listOf(
-            TileData("Karin Jager", Color.parseColor("#592E83"), null, actionTiles),
-            TileData("Philipp Wexler", Color.parseColor("#CCC900"), null, actionTiles),
-            TileData("Marcel Gärtner", Color.parseColor("#5C374C"), null, actionTiles),
-            TileData("Christin Pabst", Color.parseColor("#29339B"), null, actionTiles)
+            TileData("Karin Jager", Color.parseColor("#592E83"), {}, actionTiles),
+            TileData("Philipp Wexler", Color.parseColor("#CCC900"), {}, actionTiles),
+            TileData("Marcel Gärtner", Color.parseColor("#5C374C"), {}, actionTiles),
+            TileData("Christin Pabst", Color.parseColor("#29339B"), {}, actionTiles)
         )
 
         binding.tileLockedMenu.populate(tiles)
