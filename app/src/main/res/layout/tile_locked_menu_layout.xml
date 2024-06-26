@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/width_safe_area"
     android:layout_height="@dimen/height_safe_area"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorAccent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:visibility="visible">
 
     <tech.unfaehig_industries.tooz.araction.tile_locked_views.TileLockedMenu
         android:id="@+id/tile_locked_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:mainColor="@color/colorMenuArea"
-        app:backgroundColor="@color/background_prompt"
+        app:backgroundColor="@color/colorBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
