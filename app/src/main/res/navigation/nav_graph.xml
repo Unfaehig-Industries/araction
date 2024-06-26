@@ -24,13 +24,6 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/direction_action"
-            app:destination="@+id/direction_fragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-        <action
             android:id="@+id/radial_action"
             app:destination="@+id/radial_fragment"
             app:enterAnim="@anim/slide_in_right"
@@ -61,10 +54,6 @@
         android:id="@+id/sensor_data_fragment"
         android:name="tech.unfaehig_industries.tooz.araction.sensor_data.SensorDataFragment"
         android:label="@string/sensor_data_example_name" />
-    <fragment
-        android:id="@+id/direction_fragment"
-        android:name="tech.unfaehig_industries.tooz.araction.direction.DirectionFragment"
-        android:label="@string/direction_example_name" />
     <fragment
         android:id="@+id/radial_fragment"
         android:name="tech.unfaehig_industries.tooz.araction.radial_menu.RadialMenuFragment"

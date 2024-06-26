@@ -12,7 +12,7 @@ import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment.Companion.BU
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment.Companion.SENSOR_EVENT
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment.Companion.TOOZ_EVENT
 import tech.unfaehig_industries.tooz.araction.R
-import tech.unfaehig_industries.tooz.araction.databinding.DirectionFragmentBinding
+import tech.unfaehig_industries.tooz.araction.databinding.FrameRateFragmentBinding
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
@@ -28,7 +28,7 @@ class FrameRateFragment : Fragment() {
     private val toozifier = BaseApplication.getBaseApplication().toozifier
 
     // The binding contains the views that are part of this fragment
-    private var _binding: DirectionFragmentBinding? = null
+    private var _binding: FrameRateFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val layout: FrameRateLayout = FrameRateLayout(toozifier)
@@ -146,7 +146,7 @@ class FrameRateFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DirectionFragmentBinding.inflate(inflater, container, false)
+        _binding = FrameRateFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
