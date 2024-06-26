@@ -25,13 +25,13 @@ class TrackingEventManager : SensorEventListener {
 
     constructor(callback: SensorDataCallback, activity: Activity?) {
         sensorManager = activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        sensor = sensorManager.getDefaultSensor(TYPE_GAME_ROTATION_VECTOR)
+        sensor = sensorManager.getDefaultSensor(TYPE_GAME_ROTATION_VECTOR)!!
         this.callback = callback
     }
 
     constructor(callback: SensorDataCallback, activity: Activity?, sensitivity: Float) {
         sensorManager = activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        sensor = sensorManager.getDefaultSensor(TYPE_GAME_ROTATION_VECTOR)
+        sensor = sensorManager.getDefaultSensor(TYPE_GAME_ROTATION_VECTOR)!!
         this.callback = callback
         this.distanceSensitivity = sensitivity
     }

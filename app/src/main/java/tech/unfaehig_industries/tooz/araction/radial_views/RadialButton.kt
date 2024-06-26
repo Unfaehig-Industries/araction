@@ -57,10 +57,10 @@ class RadialButton : RadialMenuButton {
         return Pair(x.toFloat(), y.toFloat())
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        canvas?.run {
+        canvas.run {
             this.drawArc(radialBoundingRect, startDegrees, lengthDegrees, true, fillPaint)
             this.drawArc(radialInnerBoundingRect, startDegrees, lengthDegrees, true, backgroundPaint)
             this.drawText(label, labelCoordinates.first, labelCoordinates.second, labelPaint)

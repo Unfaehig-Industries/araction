@@ -32,10 +32,10 @@ class MainButton : RadialMenuButton {
         this.labelPaint.apply { color= Color.BLACK ; typeface= labelTypeface; textSize= labelSize }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        canvas?.run {
+        canvas.run {
             this.drawCircle(radialBoundingRect.centerX(), radialBoundingRect.centerY(), radius, fillPaint)
             this.drawText(label, labelCoordinates.first, labelCoordinates.second, labelPaint)
         }

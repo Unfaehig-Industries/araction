@@ -49,10 +49,10 @@ class TileButton : View {
         labelPaint.apply { color= labelColor; typeface= labelTypeface; textSize= labelSize }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        canvas?.run {
+        canvas.run {
             this.drawRect(boundingRect, fillPaint)
             this.drawText(label, labelCoordinates.first, labelCoordinates.second, labelPaint)
         }
