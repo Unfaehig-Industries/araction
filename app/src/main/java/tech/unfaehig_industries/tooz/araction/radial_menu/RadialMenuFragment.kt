@@ -104,8 +104,8 @@ class RadialMenuFragment() : BaseToozifierFragment() {
             RadialButtonData(String(Character.toChars(0x1F4CE)), Color.parseColor("#008DD5"), {}),
         )
 
-        binding.RadialButtonMenu.populate(main, radials)
-        layout.RadialButtonMenu.populate(main, radials)
+        binding.radialMenu.populate(main, radials)
+        layout.radialMenu.populate(main, radials)
 
         // Initialize phone positional tracking
         trackingEventManager =
@@ -124,5 +124,10 @@ class RadialMenuFragment() : BaseToozifierFragment() {
 
         trackingEventManager.start()
         trackingEventManager.resetZeroPosition()
+    }
+
+    override fun replaceMenu(menu: RadialMenu) {
+        binding.radialMenu = menu
+        layout.radialMenu = menu
     }
 }

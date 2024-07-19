@@ -137,6 +137,11 @@ class TileLockedMenuFragment : BaseToozifierFragment() {
         trackingEventManager.resetZeroPosition()
     }
 
+    override fun replaceMenu(menu: TileLockedMenu) {
+        binding.tileLockedMenu = menu
+        layout.tileLockedMenu = menu
+    }
+
     @OptIn(DelicateCoroutinesApi::class)
     private fun updateActionText(text: String) {
         GlobalScope.launch {

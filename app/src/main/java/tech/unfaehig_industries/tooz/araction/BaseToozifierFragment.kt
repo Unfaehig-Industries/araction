@@ -57,6 +57,7 @@ abstract class BaseToozifierFragment : Fragment() {
     protected abstract val registrationListener: RegistrationListener
     protected abstract val sensorDataListener : SensorDataListener
     protected abstract val buttonEventListener : ButtonEventListener
+    protected abstract fun replaceMenu(View) : Unit
 
     companion object {
         const val TOOZ_EVENT = "Tooz event:"
