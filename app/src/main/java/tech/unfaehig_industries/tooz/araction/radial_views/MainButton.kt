@@ -19,10 +19,11 @@ class MainButton : RadialMenuButton {
     private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     private lateinit var hoverJob: Job
+    private lateinit var callback: () -> Unit
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, radialBoundingRect: RectF, radius: Float, fillColor: Int, label: String) : super(context) {
+    constructor(context: Context, radialBoundingRect: RectF, radius: Float, fillColor: Int, label: String, _callback: () -> Unit) : super(context) {
         this.radialBoundingRect = radialBoundingRect
         this.radius = radius
         this.fillPaint.apply { color= fillColor; style= Paint.Style.FILL }

@@ -15,16 +15,13 @@ class RadialMenu : RelativeLayout {
     private lateinit var mainButton: MainButton
     private lateinit var radialButtons: ArrayList<RadialButton>
     private var hoveredButton: RadialMenuButton? = null
-    private var mainColor: Int = Color.CYAN
     private val backgroundPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private var widthToozScreen = 390f
-    private var heightToozScreen = 528f
-    // With the prerequisite that the screen is higher than wide
-    private var radialOuterPadding: Float = (heightToozScreen-widthToozScreen)/2
-    private var radialBoundingRect: RectF = RectF(0f, radialOuterPadding, widthToozScreen, widthToozScreen+radialOuterPadding)
-    private var radialInnerPadding: Float = widthToozScreen/4
-    private var radialInnerBoundingRect: RectF = RectF(radialInnerPadding, radialOuterPadding+radialInnerPadding, widthToozScreen-radialInnerPadding, widthToozScreen+radialOuterPadding-radialInnerPadding)
-    private var mainButtonRadius = widthToozScreen / 8
+    private lateinit var screenRect: RectF
+    private lateinit var radialOuterPadding: Float
+    private lateinit var radialBoundingRect: RectF
+    private lateinit var radialInnerPadding: Float
+    private lateinit var radialInnerBoundingRect: RectF
+    private lateinit var mainButtonRadius: Float
 
     constructor(context:Context) : super(context) {
         init(null)
@@ -37,29 +34,50 @@ class RadialMenu : RelativeLayout {
     private fun init(attr: AttributeSet?) {
         val typedArray = context.theme.obtainStyledAttributes(attr, R.styleable.ToozMenuStyleable, 0, 0)
 
-        mainColor = typedArray.getColor(R.styleable.ToozMenuStyleable_mainColor, Color.CYAN)
-
         val backgroundColor: Int = typedArray.getColor(R.styleable.ToozMenuStyleable_backgroundColor, Color.BLACK)
         backgroundPaint.apply { color= backgroundColor; style= Paint.Style.FILL }
-
-        addRadialButtons(arrayOf(String(Character.toChars(0x2699)), String(Character.toChars(0x1F4A1)), String(Character.toChars(0x1F529)), String(Character.toChars(0x1F4CE))))
-        addMainButton(String(Character.toChars(0x274C)))
     }
 
-    private fun addMainButton(label: String) {
-        mainButton = MainButton(context, radialBoundingRect, mainButtonRadius, mainColor, label)
+    open fun populate(
+        main: RadialButtonData,
+        radials: List<RadialButtonData>,
+        screen: RectF = RectF(0f, 0f, 390f, 528f),
+    ) {
+        screenRect = RectF(screen)
+
+        if(screenRect.height >= screenRect.width) {
+            val longSide = screenRect.height
+            val shortSide = screen.width
+        }
+        else {
+            val longSide = screenRect.width
+            val shortSide = screen.height
+        }
+
+        radialOuterPadding = (longSide - shortSide) / 2
+        radialBoundingRect  = RectF(0f, radialOuterPadding, shortSide, shortSide + radialOuterPadding)
+        radialInnerPadding = shortSide / 4
+        pradialInnerBoundingRect = RectF(radialInnerPadding, radialOuterPadding + radialInnerPadding, shortSide - radialInnerPadding, shortSide + radialOuterPadding - radialInnerPadding)
+        mainButtonRadius = shortSide / 8
+
+        addMainButton(main)
+        tileButtons = addRadialButtons(radials)
+        hoveredButton = mainButton
+    }
+
+    private fun addMainButton(data: RadialButtonData) {
+        mainButton = MainButton(context, radialBoundingRect, mainButtonRadius, data.color, data.title, data.callback)
         this.addView(mainButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
     }
 
-    private fun addRadialButtons(data: Array<String>) {
+    private fun addRadialButtons(data: Array<RadialButtonData>) {
         radialButtons = ArrayList(data.size)
         val length: Float = 360f / data.size
-        val rnd = Random()
 
         for (i in 0 until(data.size)) {
 
-            val fillColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
-            val radialButton = RadialButton(context, radialBoundingRect, radialInnerBoundingRect, i*length, length, data[i], fillColor, backgroundPaint)
+            val buttonData = data[i]
+            val radialButton = RadialButton(context, radialBoundingRect, radialInnerBoundingRect, i*length, length, buttonData.color, backgroundPaint, buttonData.title, buttonData.callback)
             radialButtons.add(radialButton)
 
             this.addView(radialButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
@@ -99,3 +117,5 @@ class RadialMenu : RelativeLayout {
         }
     }
 }
+
+class RadialButtonData(val title: String, val color: Int, val callback: () -> Unit)

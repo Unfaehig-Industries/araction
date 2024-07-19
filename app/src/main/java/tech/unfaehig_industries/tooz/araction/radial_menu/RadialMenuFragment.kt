@@ -95,6 +95,18 @@ class RadialMenuFragment() : BaseToozifierFragment() {
         // Get the view which is supposed to be shown on the glasses
         layout.inflateView(requireContext())
 
+        //Initialize RadialMenu
+        val main = RadialButtonData(String(Character.toChars(0x274C)), Color.parseColor("#ff0000"), {}),
+        val radials = listOf(
+            RadialButtonData(String(Character.toChars(0x2699)), Color.parseColor("#00CCA3"), {}),
+            RadialButtonData(String(Character.toChars(0x1F4A1)), Color.parseColor("#F39237"), {}),
+            RadialButtonData(String(Character.toChars(0x1F529)), Color.parseColor("#DC758F"), {}),
+            RadialButtonData(String(Character.toChars(0x1F4CE)), Color.parseColor("#008DD5"), {}),
+        )
+
+        binding.RadialButtonMenu.populate(main, radials)
+        layout.RadialButtonMenu.populate(main, radials)
+
         // Initialize phone positional tracking
         trackingEventManager =
             TrackingEventManager( object : SensorDataCallback {
