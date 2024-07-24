@@ -1,6 +1,7 @@
 package tech.unfaehig_industries.tooz.araction.radial_menu
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,9 @@ import tech.unfaehig_industries.tooz.phone_tracking.SensorDataCallback
 import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuFragmentBinding
+import tech.unfaehig_industries.tooz.araction.radial_views.RadialButtonData
+import tech.unfaehig_industries.tooz.araction.radial_views.RadialMenu
+import tech.unfaehig_industries.tooz.araction.tile_views.TileMenu
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
@@ -96,8 +100,8 @@ class RadialMenuFragment() : BaseToozifierFragment() {
         layout.inflateView(requireContext())
 
         //Initialize RadialMenu
-        val main = RadialButtonData(String(Character.toChars(0x274C)), Color.parseColor("#ff0000"), {}),
-        val radials = listOf(
+        val main = RadialButtonData(String(Character.toChars(0x274C)), Color.parseColor("#ff0000"), {})
+        val radials = arrayOf(
             RadialButtonData(String(Character.toChars(0x2699)), Color.parseColor("#00CCA3"), {}),
             RadialButtonData(String(Character.toChars(0x1F4A1)), Color.parseColor("#F39237"), {}),
             RadialButtonData(String(Character.toChars(0x1F529)), Color.parseColor("#DC758F"), {}),
@@ -126,8 +130,12 @@ class RadialMenuFragment() : BaseToozifierFragment() {
         trackingEventManager.resetZeroPosition()
     }
 
-    override fun replaceMenu(menu: RadialMenu) {
-        binding.radialMenu = menu
-        layout.radialMenu = menu
+    override fun replaceMenu(menu: ViewGroup) {
+        if(menu is RadialMenu) {
+            binding.radialMenu = menu
+            layout.radialMenu = menu
+        } else {
+            Timber.e("parameter menu is not of type TileLockedMenu")
+        }
     }
 }

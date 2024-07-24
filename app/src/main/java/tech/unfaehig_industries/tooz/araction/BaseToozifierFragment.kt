@@ -1,5 +1,7 @@
 package tech.unfaehig_industries.tooz.araction
 
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
 import tooz.bto.toozifier.button.ButtonEventListener
@@ -57,7 +59,7 @@ abstract class BaseToozifierFragment : Fragment() {
     protected abstract val registrationListener: RegistrationListener
     protected abstract val sensorDataListener : SensorDataListener
     protected abstract val buttonEventListener : ButtonEventListener
-    protected abstract fun replaceMenu(View) : Unit
+    protected abstract fun replaceMenu(menu: ViewGroup) : Unit
 
     companion object {
         const val TOOZ_EVENT = "Tooz event:"

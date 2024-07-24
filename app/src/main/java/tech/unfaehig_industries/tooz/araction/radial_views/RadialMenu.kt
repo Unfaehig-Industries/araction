@@ -17,11 +17,11 @@ class RadialMenu : RelativeLayout {
     private var hoveredButton: RadialMenuButton? = null
     private val backgroundPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private lateinit var screenRect: RectF
-    private lateinit var radialOuterPadding: Float
+    private var radialOuterPadding: Float = 0F
     private lateinit var radialBoundingRect: RectF
-    private lateinit var radialInnerPadding: Float
+    private var radialInnerPadding: Float = 0F
     private lateinit var radialInnerBoundingRect: RectF
-    private lateinit var mainButtonRadius: Float
+    private var mainButtonRadius: Float = 0F
 
     constructor(context:Context) : super(context) {
         init(null)
@@ -40,28 +40,31 @@ class RadialMenu : RelativeLayout {
 
     open fun populate(
         main: RadialButtonData,
-        radials: List<RadialButtonData>,
+        radials: Array<RadialButtonData>,
         screen: RectF = RectF(0f, 0f, 390f, 528f),
     ) {
         screenRect = RectF(screen)
 
-        if(screenRect.height >= screenRect.width) {
-            val longSide = screenRect.height
-            val shortSide = screen.width
+        val longSide: Float
+        val shortSide: Float
+
+        if(screenRect.height() >= screenRect.width()) {
+            longSide = screenRect.height()
+            shortSide = screen.width()
         }
         else {
-            val longSide = screenRect.width
-            val shortSide = screen.height
+            longSide = screenRect.width()
+            shortSide = screen.height()
         }
 
         radialOuterPadding = (longSide - shortSide) / 2
         radialBoundingRect  = RectF(0f, radialOuterPadding, shortSide, shortSide + radialOuterPadding)
         radialInnerPadding = shortSide / 4
-        pradialInnerBoundingRect = RectF(radialInnerPadding, radialOuterPadding + radialInnerPadding, shortSide - radialInnerPadding, shortSide + radialOuterPadding - radialInnerPadding)
+        radialInnerBoundingRect = RectF(radialInnerPadding, radialOuterPadding + radialInnerPadding, shortSide - radialInnerPadding, shortSide + radialOuterPadding - radialInnerPadding)
         mainButtonRadius = shortSide / 8
 
         addMainButton(main)
-        tileButtons = addRadialButtons(radials)
+        addRadialButtons(radials)
         hoveredButton = mainButton
     }
 

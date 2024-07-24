@@ -19,7 +19,7 @@ class MainButton : RadialMenuButton {
     private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     private lateinit var hoverJob: Job
-    private lateinit var callback: () -> Unit
+    lateinit var callback: () -> Unit
 
     constructor(context: Context) : super(context)
 

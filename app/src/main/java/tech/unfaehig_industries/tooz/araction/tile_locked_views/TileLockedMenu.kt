@@ -23,7 +23,7 @@ class TileLockedMenu : TileMenu {
     }
 
     override fun populate(
-        tiles: List<TileData>,
+        tiles: Array<TileData>,
         screen: RectF,
         _sensitivityX: Float,
         _sensitivityY: Float

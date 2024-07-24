@@ -15,7 +15,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.TileMenuFragmentBinding
+import tech.unfaehig_industries.tooz.araction.tile_locked_views.TileLockedMenu
 import tech.unfaehig_industries.tooz.araction.tile_views.TileData
+import tech.unfaehig_industries.tooz.araction.tile_views.TileMenu
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
@@ -103,14 +105,14 @@ class TileMenuFragment : BaseToozifierFragment() {
         layout.inflateView(requireContext())
 
         //Initialize TileMenu
-        val actionTiles = listOf(
-            TileData("Vitalwerte", Color.parseColor("#00CCA3"), {updateActionText("Vitalwerte")}, listOf()),
-            TileData("Medikation", Color.parseColor("#F39237"), {updateActionText("Medikation")}, listOf()),
-            TileData("Anamnese", Color.parseColor("#DC758F"), {updateActionText("Anamnese")}, listOf()),
-            TileData("Aufenthalt", Color.parseColor("#008DD5"), {updateActionText("Aufenthalt")}, listOf()),
+        val actionTiles = arrayOf(
+            TileData("Vitalwerte", Color.parseColor("#00CCA3"), {updateActionText("Vitalwerte")}, arrayOf()),
+            TileData("Medikation", Color.parseColor("#F39237"), {updateActionText("Medikation")}, arrayOf()),
+            TileData("Anamnese", Color.parseColor("#DC758F"), {updateActionText("Anamnese")}, arrayOf()),
+            TileData("Aufenthalt", Color.parseColor("#008DD5"), {updateActionText("Aufenthalt")}, arrayOf()),
         )
 
-        val tiles = listOf(
+        val tiles = arrayOf(
             TileData("Karin Jager", Color.parseColor("#592E83"), {}, actionTiles),
             TileData("Philipp Wexler", Color.parseColor("#CCC900"), {}, actionTiles),
             TileData("Marcel Gärtner", Color.parseColor("#5C374C"), {}, actionTiles),
@@ -137,9 +139,13 @@ class TileMenuFragment : BaseToozifierFragment() {
         trackingEventManager.resetZeroPosition()
     }
 
-    override fun replaceMenu(menu: TileMenu) {
-        binding.tileMenu = menu
-        layout.tileMenu = menu
+    override fun replaceMenu(menu: ViewGroup) {
+        if(menu is TileMenu) {
+            binding.tileMenu = menu
+            layout.tileMenu = menu
+        } else {
+            Timber.e("parameter menu is not of type TileLockedMenu")
+        }
     }
     
     @OptIn(DelicateCoroutinesApi::class)
