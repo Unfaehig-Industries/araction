@@ -118,6 +118,10 @@ class RadialMenu : RelativeLayout {
             }
         }
     }
+
+    fun stopHoverJob() {
+        hoveredButton?.cancelHover()
+    }
 }
 
 class RadialButtonData(val title: String, val color: Int, val callback: () -> Unit)

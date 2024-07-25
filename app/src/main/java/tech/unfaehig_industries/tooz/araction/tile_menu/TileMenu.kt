@@ -138,6 +138,10 @@ open class TileMenu : RelativeLayout {
             }
         }
     }
+
+    fun stopHoverJob() {
+        hoveredButton?.cancelHover()
+    }
 }
 
 class TileData(val title: String, val color: Int, val callback: () -> Unit, val children: Array<TileData>)

@@ -127,4 +127,11 @@ class RadialMenuFragment() : BaseToozifierFragment() {
         trackingEventManager.start()
         trackingEventManager.resetZeroPosition()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        binding.radialMenu.stopHoverJob()
+        layout.radialMenu.stopHoverJob()
+    }
 }
