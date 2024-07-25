@@ -5,6 +5,9 @@ import android.view.View
 
 abstract class RadialMenuButton(context: Context) : View(context) {
 
+    var callback: (() -> Unit)? = null
+    var submenu: RadialMenuData? = null
+
     override fun onHoverChanged(hovered: Boolean) {
         super.onHoverChanged(hovered)
 

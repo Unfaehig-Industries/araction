@@ -10,7 +10,9 @@ import tech.unfaehig_industries.tooz.phone_tracking.SensorDataCallback
 import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuFragmentBinding
-import tech.unfaehig_industries.tooz.araction.radial_menu.RadialButtonData
+import tech.unfaehig_industries.tooz.araction.radial_menu.RadialActionButtonData
+import tech.unfaehig_industries.tooz.araction.radial_menu.RadialMenuData
+import tech.unfaehig_industries.tooz.araction.radial_menu.RadialSubMenuButtonData
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
@@ -20,7 +22,7 @@ import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
 import tooz.bto.toozifier.sensors.SensorDataListener
 
-class RadialMenuFragment() : BaseToozifierFragment() {
+class RadialMenuFragment : BaseToozifierFragment() {
 
     // The binding contains the views that are part of this fragment
     private var _binding: RadialMenuFragmentBinding? = null
@@ -98,12 +100,18 @@ class RadialMenuFragment() : BaseToozifierFragment() {
         layout.inflateView(requireContext())
 
         //Initialize RadialMenu
-        val main = RadialButtonData(String(Character.toChars(0x274C)), Color.parseColor("#ff0000"), {})
+        val main = RadialActionButtonData(String(Character.toChars(0x274C)), Color.parseColor("#808080"), {Timber.d("Callback called")})
+        val main2 = RadialActionButtonData(String(Character.toChars(0x274C)), Color.parseColor("#e5e5e5"), {Timber.d("Callback called")})
+        val subMenu = RadialMenuData(main2, arrayOf(
+            RadialActionButtonData(String(Character.toChars(0x1F1A1)), Color.parseColor("#e5e5e5"), {Timber.d("Callback called")}),
+            RadialActionButtonData(String(Character.toChars(0x1F579)), Color.parseColor("#18281a"), {Timber.d("Callback called")}),
+            RadialActionButtonData(String(Character.toChars(0x1B4CE)), Color.parseColor("#355ce8"), {Timber.d("Callback called")})
+        ))
         val radials = arrayOf(
-            RadialButtonData(String(Character.toChars(0x2699)), Color.parseColor("#00CCA3"), {}),
-            RadialButtonData(String(Character.toChars(0x1F4A1)), Color.parseColor("#F39237"), {}),
-            RadialButtonData(String(Character.toChars(0x1F529)), Color.parseColor("#DC758F"), {}),
-            RadialButtonData(String(Character.toChars(0x1F4CE)), Color.parseColor("#008DD5"), {}),
+            RadialSubMenuButtonData(String(Character.toChars(0x2699)), Color.parseColor("#00CCA3"), subMenu),
+            RadialActionButtonData(String(Character.toChars(0x1F4A1)), Color.parseColor("#F39237"), {Timber.d("Callback called")}),
+            RadialActionButtonData(String(Character.toChars(0x1F529)), Color.parseColor("#DC758F"), {Timber.d("Callback called")}),
+            RadialActionButtonData(String(Character.toChars(0x1F4CE)), Color.parseColor("#008DD5"), {Timber.d("Callback called")})
         )
 
         binding.radialMenu.populate(main, radials)

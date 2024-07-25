@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 android {
     defaultConfig {
         applicationId "tech.unfaehig_industries.tooz.araction"
-        minSdkVersion 26
+        minSdkVersion 28
         compileSdk 34
         targetSdkVersion 33
         versionCode 1

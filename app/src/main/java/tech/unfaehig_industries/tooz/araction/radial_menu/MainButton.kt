@@ -19,11 +19,10 @@ class MainButton : RadialMenuButton {
     private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     private lateinit var hoverJob: Job
-    lateinit var callback: () -> Unit
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, radialBoundingRect: RectF, radius: Float, fillColor: Int, label: String, _callback: () -> Unit) : super(context) {
+    constructor(context: Context, radialBoundingRect: RectF, radius: Float, fillColor: Int, label: String) : super(context) {
         this.radialBoundingRect = radialBoundingRect
         this.radius = radius
         this.fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
@@ -32,9 +31,13 @@ class MainButton : RadialMenuButton {
         val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         this.labelPaint.apply { color= Color.BLACK ; typeface= labelTypeface; textSize= labelSize }
 
-        this.callback = _callback
-
         this.z = 1F
+    }
+
+    fun updateContent(fillColor: Int, label: String) {
+        this.fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
+        this.label = label
+        invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -62,6 +65,11 @@ class MainButton : RadialMenuButton {
                 innerPercent += step
                 delay(delay)
             }
+
+            callback?.let { it() }
+            if (parent is RadialMenu) {
+                submenu?.let { (parent as RadialMenu).replaceContent(it) }
+            }
         }
     }
 
@@ -70,5 +78,7 @@ class MainButton : RadialMenuButton {
         radius -= radiusHighlight
         fillPaint.shader = null
         invalidate()
+
+        this.parent
     }
 }

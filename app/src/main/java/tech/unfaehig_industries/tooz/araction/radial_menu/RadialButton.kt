@@ -24,11 +24,10 @@ class RadialButton : RadialMenuButton {
 
     private lateinit var hoverJob: Job
     private val boundingRectInsetHighlight: Float = 5f
-    lateinit var callback: () -> Unit
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, radialBoundingRect: RectF, radialInnerBoundingRect: RectF, _startDegrees: Float, _circumference: Float, fillColor: Int, background: Paint, label: String, _callback: () -> Unit) : super(context) {
+    constructor(context: Context, radialBoundingRect: RectF, radialInnerBoundingRect: RectF, _startDegrees: Float, _circumference: Float, fillColor: Int, background: Paint, label: String) : super(context) {
         this.radialBoundingRect = RectF(radialBoundingRect)
         this.radialInnerBoundingRect = RectF(radialInnerBoundingRect)
         this.startDegrees = _startDegrees
@@ -41,8 +40,6 @@ class RadialButton : RadialMenuButton {
         this.backgroundPaint.apply { color= background.color }
         val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         this.labelPaint.apply { color= background.color ; typeface= labelTypeface; textSize= labelSize }
-
-        this.callback = _callback
     }
 
     private fun calculateLabelCoordinates(): Pair<Float, Float> {
@@ -87,6 +84,12 @@ class RadialButton : RadialMenuButton {
                 percent += step
                 delay(delay)
             }
+
+            callback?.let { it() }
+            if (parent is RadialMenu) {
+                submenu?.let { (parent as RadialMenu).replaceContent(it) }
+            }
+
         }
     }
 

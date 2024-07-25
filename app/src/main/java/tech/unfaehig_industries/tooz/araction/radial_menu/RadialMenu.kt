@@ -7,6 +7,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.widget.RelativeLayout
 import tech.unfaehig_industries.tooz.araction.R
+import timber.log.Timber
 import kotlin.collections.ArrayList
 
 class RadialMenu : RelativeLayout {
@@ -49,11 +50,11 @@ class RadialMenu : RelativeLayout {
 
         if(screenRect.height() >= screenRect.width()) {
             longSide = screenRect.height()
-            shortSide = screen.width()
+            shortSide = screenRect.width()
         }
         else {
             longSide = screenRect.width()
-            shortSide = screen.height()
+            shortSide = screenRect.height()
         }
 
         radialOuterPadding = (longSide - shortSide) / 2
@@ -67,9 +68,45 @@ class RadialMenu : RelativeLayout {
         hoveredButton = mainButton
     }
 
+    fun replaceContent(data: RadialMenuData) {
+        replaceMainButton(data.main)
+        replaceRadialButtons(data.radials)
+        invalidate()
+        Timber.d("replaced Menu")
+    }
+
     private fun addMainButton(data: RadialButtonData) {
-        mainButton = MainButton(context, radialBoundingRect, mainButtonRadius, data.color, data.title, data.callback)
+
+        mainButton = MainButton(
+            context,
+            radialBoundingRect,
+            mainButtonRadius,
+            data.color,
+            data.title,
+
+        )
+
+        if(data is RadialActionButtonData) {
+            mainButton.callback = data.callback
+        }
+        if(data is RadialSubMenuButtonData) {
+            mainButton.submenu = data.submenu
+        }
+
         this.addView(mainButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+    }
+
+    private fun replaceMainButton(data: RadialButtonData) {
+        mainButton.updateContent(data.color, data.title)
+
+        if(data is RadialActionButtonData) {
+            mainButton.callback = data.callback
+            mainButton.submenu = null
+        }
+        if(data is RadialSubMenuButtonData) {
+            mainButton.callback = null
+            mainButton.submenu = data.submenu
+        }
     }
 
     private fun addRadialButtons(data: Array<RadialButtonData>) {
@@ -79,11 +116,40 @@ class RadialMenu : RelativeLayout {
         for (i in 0 until(data.size)) {
 
             val buttonData = data[i]
-            val radialButton = RadialButton(context, radialBoundingRect, radialInnerBoundingRect, i*length, length, buttonData.color, backgroundPaint, buttonData.title, buttonData.callback)
-            radialButtons.add(radialButton)
+            val radialButton = RadialButton(
+                context,
+                radialBoundingRect,
+                radialInnerBoundingRect,
+                i * length,
+                length,
+                buttonData.color,
+                backgroundPaint,
+                buttonData.title
+            )
 
+            if(buttonData is RadialActionButtonData) {
+                radialButton.callback = buttonData.callback
+            }
+            if(buttonData is RadialSubMenuButtonData) {
+                radialButton.submenu = buttonData.submenu
+            }
+
+            radialButtons.add(radialButton)
             this.addView(radialButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         }
+    }
+
+    private fun replaceRadialButtons(data: Array<RadialButtonData>) {
+        context.mainExecutor.execute {
+            run {
+                for (radialButton in radialButtons) {
+                    this.removeView(radialButton)
+                }
+
+                addRadialButtons(data)
+            }
+        }
+        invalidate()
     }
 
     fun highlightButton(angle: Double, distance: Double) {
@@ -124,4 +190,8 @@ class RadialMenu : RelativeLayout {
     }
 }
 
-class RadialButtonData(val title: String, val color: Int, val callback: () -> Unit)
+class RadialMenuData(val main: RadialButtonData, val radials: Array<RadialButtonData>)
+
+abstract class RadialButtonData(val title: String, val color: Int)
+class RadialActionButtonData(title: String, color: Int, val callback: () -> Unit = {}) : RadialButtonData(title, color)
+class RadialSubMenuButtonData(title: String, color: Int, val submenu: RadialMenuData) : RadialButtonData(title, color)
