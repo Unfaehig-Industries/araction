@@ -33,6 +33,8 @@ class MainButton : RadialMenuButton {
         this.labelPaint.apply { color= Color.BLACK ; typeface= labelTypeface; textSize= labelSize }
 
         this.callback = _callback
+
+        this.z = 1F
     }
 
     override fun onDraw(canvas: Canvas) {
