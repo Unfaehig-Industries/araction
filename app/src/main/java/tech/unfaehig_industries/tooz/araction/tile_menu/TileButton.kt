@@ -94,7 +94,7 @@ class TileButton : View {
         }
     }
 
-    private fun cancelHover() {
+    fun cancelHover() {
         hoverJob.cancel("hover leave")
 
         boundingRect.inset(rectInsetHighlight, rectInsetHighlight)
