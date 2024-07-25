@@ -150,7 +150,7 @@ class TileMenuFragment : BaseToozifierFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        binding.radialMenu.stopHoverJob()
-        layout.radialMenu.stopHoverJob()
+        binding.tileMenu.stopHoverJob()
+        layout.tileMenu.stopHoverJob()
     }
 }
