@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.radial_menu
+package tech.unfaehig_industries.tooz.araction.radial_views
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -10,9 +10,7 @@ import tech.unfaehig_industries.tooz.phone_tracking.SensorDataCallback
 import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuFragmentBinding
-import tech.unfaehig_industries.tooz.araction.radial_views.RadialButtonData
-import tech.unfaehig_industries.tooz.araction.radial_views.RadialMenu
-import tech.unfaehig_industries.tooz.araction.tile_views.TileMenu
+import tech.unfaehig_industries.tooz.araction.radial_menu.RadialButtonData
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
@@ -128,14 +126,5 @@ class RadialMenuFragment() : BaseToozifierFragment() {
 
         trackingEventManager.start()
         trackingEventManager.resetZeroPosition()
-    }
-
-    override fun replaceMenu(menu: ViewGroup) {
-        if(menu is RadialMenu) {
-            binding.radialMenu = menu
-            layout.radialMenu = menu
-        } else {
-            Timber.e("parameter menu is not of type TileLockedMenu")
-        }
     }
 }

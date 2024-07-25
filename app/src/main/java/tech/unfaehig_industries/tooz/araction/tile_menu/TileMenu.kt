@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.tile_views
+package tech.unfaehig_industries.tooz.araction.tile_menu
 
 import android.content.Context
 import android.graphics.Color
@@ -56,7 +56,7 @@ open class TileMenu : RelativeLayout {
 
         val otherDirection = when (direction) {
             Direction.HORIZONTAL -> Direction.VERTICAL
-            Direction.VERTICAL ->  Direction.HORIZONTAL
+            Direction.VERTICAL -> Direction.HORIZONTAL
         }
 
         tiles.forEachIndexed { i, tile ->

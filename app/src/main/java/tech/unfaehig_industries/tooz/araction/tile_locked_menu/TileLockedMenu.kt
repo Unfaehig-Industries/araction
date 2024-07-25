@@ -1,11 +1,11 @@
-package tech.unfaehig_industries.tooz.araction.tile_locked_views
+package tech.unfaehig_industries.tooz.araction.tile_locked_menu
 
 import android.content.Context
 import android.graphics.RectF
 import android.util.AttributeSet
-import tech.unfaehig_industries.tooz.araction.tile_views.TileButton
-import tech.unfaehig_industries.tooz.araction.tile_views.TileData
-import tech.unfaehig_industries.tooz.araction.tile_views.TileMenu
+import tech.unfaehig_industries.tooz.araction.tile_menu.TileButton
+import tech.unfaehig_industries.tooz.araction.tile_menu.TileData
+import tech.unfaehig_industries.tooz.araction.tile_menu.TileMenu
 import kotlin.math.cos
 import kotlin.math.sin
 

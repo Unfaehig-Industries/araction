@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.radial_views
+package tech.unfaehig_industries.tooz.araction.radial_menu
 
 import android.content.Context
 import android.graphics.*
@@ -41,6 +41,8 @@ class RadialButton : RadialMenuButton {
         this.backgroundPaint.apply { color= background.color }
         val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         this.labelPaint.apply { color= background.color ; typeface= labelTypeface; textSize= labelSize }
+
+        this.callback = _callback
     }
 
     private fun calculateLabelCoordinates(): Pair<Float, Float> {

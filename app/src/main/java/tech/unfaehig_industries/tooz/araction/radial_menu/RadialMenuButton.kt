@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.radial_views
+package tech.unfaehig_industries.tooz.araction.radial_menu
 
 import android.content.Context
 import android.view.View

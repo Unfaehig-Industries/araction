@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.radial_views
+package tech.unfaehig_industries.tooz.araction.radial_menu
 
 import android.content.Context
 import android.graphics.Color
@@ -7,7 +7,6 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.widget.RelativeLayout
 import tech.unfaehig_industries.tooz.araction.R
-import java.util.*
 import kotlin.collections.ArrayList
 
 class RadialMenu : RelativeLayout {
@@ -38,7 +37,7 @@ class RadialMenu : RelativeLayout {
         backgroundPaint.apply { color= backgroundColor; style= Paint.Style.FILL }
     }
 
-    open fun populate(
+    fun populate(
         main: RadialButtonData,
         radials: Array<RadialButtonData>,
         screen: RectF = RectF(0f, 0f, 390f, 528f),

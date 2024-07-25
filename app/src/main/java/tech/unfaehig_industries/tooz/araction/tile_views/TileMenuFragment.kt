@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.tile_locked_menu
+package tech.unfaehig_industries.tooz.araction.tile_views
 
 import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
 import tech.unfaehig_industries.tooz.phone_tracking.SensorDataCallback
@@ -14,9 +14,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
-import tech.unfaehig_industries.tooz.araction.databinding.TileLockedMenuFragmentBinding
-import tech.unfaehig_industries.tooz.araction.tile_locked_views.TileLockedMenu
-import tech.unfaehig_industries.tooz.araction.tile_views.TileData
+import tech.unfaehig_industries.tooz.araction.databinding.TileMenuFragmentBinding
+import tech.unfaehig_industries.tooz.araction.tile_menu.TileData
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
@@ -26,13 +25,13 @@ import tooz.bto.toozifier.registration.RegistrationListener
 import tooz.bto.toozifier.sensors.Sensor
 import tooz.bto.toozifier.sensors.SensorDataListener
 
-class TileLockedMenuFragment : BaseToozifierFragment() {
+class TileMenuFragment : BaseToozifierFragment() {
 
     // The binding contains the views that are part of this fragment
-    private var _binding: TileLockedMenuFragmentBinding? = null
+    private var _binding: TileMenuFragmentBinding? = null
     private val binding get() = _binding!!
 
-    override val layout: TileLockedMenuLayout = TileLockedMenuLayout(toozifier)
+    override val layout: TileMenuLayout = TileMenuLayout(toozifier)
     override val dataSensors: Array<Sensor> = arrayOf()
 
     override val registrationListener = object : RegistrationListener {
@@ -91,7 +90,7 @@ class TileLockedMenuFragment : BaseToozifierFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = TileLockedMenuFragmentBinding.inflate(inflater, container, false)
+        _binding = TileMenuFragmentBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -118,15 +117,15 @@ class TileLockedMenuFragment : BaseToozifierFragment() {
             TileData("Christin Pabst", Color.parseColor("#29339B"), {}, actionTiles)
         )
 
-        binding.tileLockedMenu.populate(tiles)
-        layout.tileLockedMenu.populate(tiles)
+        binding.tileMenu.populate(tiles)
+        layout.tileMenu.populate(tiles)
 
         // Initialize phone positional tracking
         trackingEventManager =
             TrackingEventManager( object : SensorDataCallback {
                 override fun onCursorUpdate(angle: Double, dist: Double) {
-                    binding.tileLockedMenu.moveView(angle, dist)
-                    layout.tileLockedMenu.moveView(angle, dist)
+                    binding.tileMenu.moveView(angle, dist)
+                    layout.tileMenu.moveView(angle, dist)
                 }
 
                 override fun onAccuracyChanged(accuracy: Int) {
@@ -137,17 +136,7 @@ class TileLockedMenuFragment : BaseToozifierFragment() {
         trackingEventManager.start()
         trackingEventManager.resetZeroPosition()
     }
-
-    override fun replaceMenu(menu: ViewGroup) {
-
-        if(menu is TileLockedMenu) {
-            binding.tileLockedMenu. = menu
-            layout.tileLockedMenu = menu
-        } else {
-            Timber.e("parameter menu is not of type TileLockedMenu")
-        }
-    }
-
+    
     @OptIn(DelicateCoroutinesApi::class)
     private fun updateActionText(text: String) {
         GlobalScope.launch {

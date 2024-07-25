@@ -1,10 +1,10 @@
-package tech.unfaehig_industries.tooz.araction.radial_menu
+package tech.unfaehig_industries.tooz.araction.radial_views
 
 import android.content.Context
 import android.view.LayoutInflater
 import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
 import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuLayoutBinding
-import tech.unfaehig_industries.tooz.araction.radial_views.RadialMenu
+import tech.unfaehig_industries.tooz.araction.radial_menu.RadialMenu
 import tooz.bto.toozifier.Toozifier
 
 class RadialMenuLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
