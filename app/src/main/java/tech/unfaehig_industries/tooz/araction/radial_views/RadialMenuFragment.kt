@@ -121,9 +121,8 @@ class RadialMenuFragment : BaseToozifierFragment() {
             RadialActionButtonData(String(Character.toChars(0x1F4CE)), Color.parseColor("#008DD5"), {Timber.d("Callback called")})
         )
 
-        binding.radialMenu.populate(main, radials)
-        layout.radialMenu.populate(main, radials)
         binding.radialMenu.populate(RadialMenuData(main, radials))
+        layout.radialMenu.populate(RadialMenuData(main, radials))
 
         // Initialize phone positional tracking
         trackingEventManager =
