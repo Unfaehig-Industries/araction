@@ -7,14 +7,17 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.widget.RelativeLayout
 import tech.unfaehig_industries.tooz.araction.R
-import timber.log.Timber
 import kotlin.collections.ArrayList
 
 class RadialMenu : RelativeLayout {
 
+    private lateinit var menuData: RadialMenuData
+    private var currentIndex = ""
+    private var hoveredButton: RadialMenuButton? = null
+
     private lateinit var mainButton: MainButton
     private lateinit var radialButtons: ArrayList<RadialButton>
-    private var hoveredButton: RadialMenuButton? = null
+
     private val backgroundPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private lateinit var screenRect: RectF
     private var radialOuterPadding: Float = 0F
@@ -39,10 +42,10 @@ class RadialMenu : RelativeLayout {
     }
 
     fun populate(
-        main: RadialButtonData,
-        radials: Array<RadialButtonData>,
+        data: RadialMenuData,
         screen: RectF = RectF(0f, 0f, 390f, 528f),
     ) {
+        menuData = data
         screenRect = RectF(screen)
 
         val longSide: Float
@@ -63,51 +66,78 @@ class RadialMenu : RelativeLayout {
         radialInnerBoundingRect = RectF(radialInnerPadding, radialOuterPadding + radialInnerPadding, shortSide - radialInnerPadding, shortSide + radialOuterPadding - radialInnerPadding)
         mainButtonRadius = shortSide / 8
 
-        addMainButton(main)
-        addRadialButtons(radials)
-        hoveredButton = mainButton
+        addMainButton(data.main)
+        addRadialButtons(data.radials)
     }
 
-    fun replaceContent(data: RadialMenuData) {
-        replaceMainButton(data.main)
+    fun loadNewMenu(index: Int, data: RadialMenuData) {
+        currentIndex = currentIndex.plus("$index-")
+        updateMenuData(data)
+    }
+
+    fun loadLastMenu() {
+        val data = searchForMenuData(currentIndex, menuData)
+
+        if(currentIndex.length > 2) {
+            currentIndex = currentIndex.substring(0, currentIndex.lastIndexOf("-") - 1)
+        } else {
+            currentIndex = ""
+        }
+        updateMenuData(data)
+    }
+
+    private fun searchForMenuData(indexString: String, data: RadialMenuData): RadialMenuData {
+        if(indexString.length <= 2) {
+            return data
+        }
+
+        val index = indexString.first().digitToInt()
+        val newIndexString = indexString.substring(indexString.indexOf("-") + 1, indexString.length)
+
+        if(index == -1) {
+            if(data.main is RadialSubmenuButtonData) {
+                return searchForMenuData(newIndexString, data.main.submenu)
+            } else {
+                throw Error("Error in indexing")
+            }
+        }
+
+        val buttonData = data.radials[index]
+        if(buttonData is RadialSubmenuButtonData) {
+            return searchForMenuData(newIndexString, buttonData.submenu)
+        } else {
+            throw Error("Error in indexing")
+        }
+    }
+
+    private fun updateMenuData(data: RadialMenuData) {
         updateMainButton(data.main)
         replaceRadialButtons(data.radials)
+        hoveredButton = null
         invalidate()
-        Timber.d("replaced Menu")
     }
 
     private fun addMainButton(data: RadialButtonData) {
 
         mainButton = MainButton(
             context,
+            -1,
+            data,
             radialBoundingRect,
             mainButtonRadius,
-            data.color,
-            data.title,
-
         )
-
-        if(data is RadialActionButtonData) {
-            mainButton.callback = data.callback
-        }
-        if(data is RadialSubmenuButtonData) {
-            mainButton.submenu = data.submenu
-        }
 
         this.addView(mainButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
     }
 
     private fun updateMainButton(data: RadialButtonData) {
-        mainButton.updateContent(data.color, data.title)
-
-        if(data is RadialActionButtonData) {
-            mainButton.callback = data.callback
-            mainButton.submenu = null
+        context.mainExecutor.execute {
+            run {
+                this.removeView(mainButton)
+                addMainButton(data)
+            }
         }
-        if(data is RadialSubmenuButtonData) {
-            mainButton.callback = null
-            mainButton.submenu = data.submenu
-        }
+        invalidate()
     }
 
     private fun addRadialButtons(data: Array<RadialButtonData>) {
@@ -119,21 +149,14 @@ class RadialMenu : RelativeLayout {
             val buttonData = data[i]
             val radialButton = RadialButton(
                 context,
+                i,
+                buttonData,
                 radialBoundingRect,
                 radialInnerBoundingRect,
                 i * length,
                 length,
-                buttonData.color,
-                backgroundPaint,
-                buttonData.title
+                backgroundPaint
             )
-
-            if(buttonData is RadialActionButtonData) {
-                radialButton.callback = buttonData.callback
-            }
-            if(buttonData is RadialSubmenuButtonData) {
-                radialButton.submenu = buttonData.submenu
-            }
 
             radialButtons.add(radialButton)
             this.addView(radialButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
@@ -196,3 +219,4 @@ class RadialMenuData(val main: RadialButtonData, val radials: Array<RadialButton
 abstract class RadialButtonData(val title: String, val color: Int)
 class RadialActionButtonData(title: String, color: Int, val callback: () -> Unit = {}) : RadialButtonData(title, color)
 class RadialSubmenuButtonData(title: String, color: Int, val submenu: RadialMenuData) : RadialButtonData(title, color)
+class RadialBackButtonData(title: String, color: Int) : RadialButtonData(title, color)

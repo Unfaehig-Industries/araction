@@ -22,22 +22,20 @@ class MainButton : RadialMenuButton {
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, radialBoundingRect: RectF, radius: Float, fillColor: Int, label: String) : super(context) {
+    constructor(context: Context, index: Int, data: RadialButtonData, radialBoundingRect: RectF, radius: Float) : super(context, index) {
         this.radialBoundingRect = radialBoundingRect
         this.radius = radius
-        this.fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
-        this.label = label
+        this.label = data.title
+
+        this.fillPaint.apply { color= data.color; style= Paint.Style.FILL }
+
         this.labelCoordinates = Pair((radialBoundingRect.centerX()-(labelSize/2)-5f), (radialBoundingRect.centerY()+(labelSize/2)-5f))
         val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         this.labelPaint.apply { color= Color.BLACK ; typeface= labelTypeface; textSize= labelSize }
 
         this.z = 1F
-    }
 
-    fun updateContent(fillColor: Int, label: String) {
-        this.fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
-        this.label = label
-        invalidate()
+        setAction(data)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -66,10 +64,7 @@ class MainButton : RadialMenuButton {
                 delay(delay)
             }
 
-            callback?.let { it() }
-            if (parent is RadialMenu) {
-                submenu?.let { (parent as RadialMenu).updateMenuData(it) }
-            }
+            takeAction()
         }
     }
 
@@ -78,7 +73,5 @@ class MainButton : RadialMenuButton {
         radius -= radiusHighlight
         fillPaint.shader = null
         invalidate()
-
-        this.parent
     }
 }

@@ -27,19 +27,21 @@ class RadialButton : RadialMenuButton {
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, radialBoundingRect: RectF, radialInnerBoundingRect: RectF, _startDegrees: Float, _circumference: Float, fillColor: Int, background: Paint, label: String) : super(context) {
+    constructor(context: Context, index: Int, data: RadialButtonData, radialBoundingRect: RectF, radialInnerBoundingRect: RectF, _startDegrees: Float, _circumference: Float, background: Paint) : super(context, index) {
         this.radialBoundingRect = RectF(radialBoundingRect)
         this.radialInnerBoundingRect = RectF(radialInnerBoundingRect)
         this.startDegrees = _startDegrees
         this.circumferenceInDegrees = _circumference
 
-        this.label = label
-        this.labelCoordinates = calculateLabelCoordinates()
-
-        this.fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
+        this.fillPaint.apply { color= data.color; style= Paint.Style.FILL }
         this.backgroundPaint.apply { color= background.color }
+
+        this.label = data.title
+        this.labelCoordinates = calculateLabelCoordinates()
         val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         this.labelPaint.apply { color= background.color ; typeface= labelTypeface; textSize= labelSize }
+
+        setAction(data)
     }
 
     private fun calculateLabelCoordinates(): Pair<Float, Float> {
@@ -85,11 +87,7 @@ class RadialButton : RadialMenuButton {
                 delay(delay)
             }
 
-            callback?.let { it() }
-            if (parent is RadialMenu) {
-                submenu?.let { (parent as RadialMenu).updateMenuData(it) }
-            }
-
+            takeAction()
         }
     }
 
