@@ -70,6 +70,7 @@ class RadialMenu : RelativeLayout {
 
     fun replaceContent(data: RadialMenuData) {
         replaceMainButton(data.main)
+        updateMainButton(data.main)
         replaceRadialButtons(data.radials)
         invalidate()
         Timber.d("replaced Menu")
@@ -89,21 +90,21 @@ class RadialMenu : RelativeLayout {
         if(data is RadialActionButtonData) {
             mainButton.callback = data.callback
         }
-        if(data is RadialSubMenuButtonData) {
+        if(data is RadialSubmenuButtonData) {
             mainButton.submenu = data.submenu
         }
 
         this.addView(mainButton, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
     }
 
-    private fun replaceMainButton(data: RadialButtonData) {
+    private fun updateMainButton(data: RadialButtonData) {
         mainButton.updateContent(data.color, data.title)
 
         if(data is RadialActionButtonData) {
             mainButton.callback = data.callback
             mainButton.submenu = null
         }
-        if(data is RadialSubMenuButtonData) {
+        if(data is RadialSubmenuButtonData) {
             mainButton.callback = null
             mainButton.submenu = data.submenu
         }
@@ -130,7 +131,7 @@ class RadialMenu : RelativeLayout {
             if(buttonData is RadialActionButtonData) {
                 radialButton.callback = buttonData.callback
             }
-            if(buttonData is RadialSubMenuButtonData) {
+            if(buttonData is RadialSubmenuButtonData) {
                 radialButton.submenu = buttonData.submenu
             }
 
@@ -194,4 +195,4 @@ class RadialMenuData(val main: RadialButtonData, val radials: Array<RadialButton
 
 abstract class RadialButtonData(val title: String, val color: Int)
 class RadialActionButtonData(title: String, color: Int, val callback: () -> Unit = {}) : RadialButtonData(title, color)
-class RadialSubMenuButtonData(title: String, color: Int, val submenu: RadialMenuData) : RadialButtonData(title, color)
+class RadialSubmenuButtonData(title: String, color: Int, val submenu: RadialMenuData) : RadialButtonData(title, color)

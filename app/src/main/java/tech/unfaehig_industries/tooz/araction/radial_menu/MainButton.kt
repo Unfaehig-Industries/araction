@@ -68,7 +68,7 @@ class MainButton : RadialMenuButton {
 
             callback?.let { it() }
             if (parent is RadialMenu) {
-                submenu?.let { (parent as RadialMenu).replaceContent(it) }
+                submenu?.let { (parent as RadialMenu).updateMenuData(it) }
             }
         }
     }

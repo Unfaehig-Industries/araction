@@ -12,7 +12,7 @@ import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuFragmentBinding
 import tech.unfaehig_industries.tooz.araction.radial_menu.RadialActionButtonData
 import tech.unfaehig_industries.tooz.araction.radial_menu.RadialMenuData
-import tech.unfaehig_industries.tooz.araction.radial_menu.RadialSubMenuButtonData
+import tech.unfaehig_industries.tooz.araction.radial_menu.RadialSubmenuButtonData
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
@@ -108,7 +108,7 @@ class RadialMenuFragment : BaseToozifierFragment() {
             RadialActionButtonData(String(Character.toChars(0x1B4CE)), Color.parseColor("#355ce8"), {Timber.d("Callback called")})
         ))
         val radials = arrayOf(
-            RadialSubMenuButtonData(String(Character.toChars(0x2699)), Color.parseColor("#00CCA3"), subMenu),
+            RadialSubmenuButtonData(String(Character.toChars(0x2699)), Color.parseColor("#00CCA3"), subMenu),
             RadialActionButtonData(String(Character.toChars(0x1F4A1)), Color.parseColor("#F39237"), {Timber.d("Callback called")}),
             RadialActionButtonData(String(Character.toChars(0x1F529)), Color.parseColor("#DC758F"), {Timber.d("Callback called")}),
             RadialActionButtonData(String(Character.toChars(0x1F4CE)), Color.parseColor("#008DD5"), {Timber.d("Callback called")})
