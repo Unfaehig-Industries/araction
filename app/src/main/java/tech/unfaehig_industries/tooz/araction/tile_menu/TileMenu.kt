@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.LinearInterpolator
 import android.widget.RelativeLayout
 import tech.unfaehig_industries.tooz.araction.R
 import kotlin.collections.ArrayList
@@ -124,6 +125,11 @@ open class TileMenu : RelativeLayout {
 
         val distX: Float = -(distance * sin(angle)).toFloat() * sensitivityX
         val distY: Float = (distance * cos(angle)).toFloat() * sensitivityY
+
+        val animator = this.animate()
+        animator.setDuration(100)
+        animator.setInterpolator(LinearInterpolator())
+        animator.setStartDelay(0)
 
         tileButtons.forEach { button: TileButton ->
             button.animate().translationX(button.baseX + distX)
