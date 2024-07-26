@@ -15,19 +15,22 @@ class TileButton : View {
     val baseY: Float get() = positionRect.top
     private lateinit var boundingRect: RectF
     private val rectInsetHighlight: Float = 5f
-    var label: String = ""
+
+    private var label: String = ""
     private var labelCoordinates: Pair<Float, Float> = Pair(0f, 0f)
     private val labelSize: Float =25f
-    var children: ArrayList<TileButton> = ArrayList()
+
     private val fillPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val labelPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     private lateinit var hoverJob: Job
-    private lateinit var callback: () -> Unit
+
+    private lateinit var callback: (() -> Unit)
+    private lateinit var children: ArrayList<TileButton>
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, _positionRect: RectF, _boundingRect: RectF, _label: String, _callback: () -> Unit, _children: ArrayList<TileButton>, fillColor: Int, labelColor: Int) : super(context) {
+    constructor(context: Context, _positionRect: RectF, _boundingRect: RectF, _label: String, _children: ArrayList<TileButton>, _callback: () -> Unit, tileColor: Int, labelColor: Int) : super(context) {
         boundingRect = RectF(_boundingRect)
         left = boundingRect.left.toInt()
         right = boundingRect.right.toInt()
@@ -39,14 +42,14 @@ class TileButton : View {
         translationY = baseY
 
         label = _label
-        callback = _callback
-
-        children = _children
-
-        fillPaint.apply { color= fillColor; style= Paint.Style.FILL }
         this.labelCoordinates = Pair(boundingRect.left+10f, boundingRect.centerY()+(labelSize/2))
         val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         labelPaint.apply { color= labelColor; typeface= labelTypeface; textSize= labelSize }
+
+        fillPaint.apply { color= tileColor; style= Paint.Style.FILL }
+
+        children = _children
+        callback = _callback
     }
 
     override fun onDraw(canvas: Canvas) {

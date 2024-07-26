@@ -68,7 +68,8 @@ open class TileMenu : RelativeLayout {
 
             val children = layoutTileButtons(tile.children, otherDirection, RectF(boundingRect), level+1)
 
-            addTileButton(boundingRect, tile, children, buttonHidden)
+            val button = addTileButton(boundingRect, tile, children, buttonHidden)
+            buttonsArray.add(button)
         }
 
         return buttonsArray
@@ -91,20 +92,20 @@ open class TileMenu : RelativeLayout {
         return boundingRect
     }
 
-    private fun addTileButton(boundingRect: RectF, data: TileButtonData, children: ArrayList<TileButton>, hidden: Boolean) {
+    private fun addTileButton(boundingRect: RectF, data: TileButtonData, children: ArrayList<TileButton>, hidden: Boolean): TileButton {
         val tileButton = TileButton(
             context,
             boundingRect,
             RectF(buttonRect),
             data.title,
-            data.callback,
             children,
-            data.color,
+            data.callback,
+            data.tileColor,
             backgroundColor
         )
 
         if(hidden) {
-            tileButton.visibility = View.GONE
+            tileButton.visibility = View.INVISIBLE
         }
 
         this.addView(
@@ -113,6 +114,7 @@ open class TileMenu : RelativeLayout {
         )
 
         tileButtons.add(tileButton)
+        return tileButton
     }
 
     open fun moveView(angle: Double, distance: Double) {
@@ -157,7 +159,7 @@ open class TileMenu : RelativeLayout {
     }
 }
 
-class TileButtonData(val title: String, val color: Int, val callback: () -> Unit, val children: Array<TileButtonData>)
+class TileButtonData(val title: String, val tileColor: Int, val callback: () -> Unit, val children: Array<TileButtonData>)
 
 enum class Direction {
     HORIZONTAL, VERTICAL
