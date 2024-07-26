@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.TileLockedMenuFragmentBinding
-import tech.unfaehig_industries.tooz.araction.tile_menu.TileData
+import tech.unfaehig_industries.tooz.araction.tile_menu.TileButtonData
 import timber.log.Timber
 import tooz.bto.common.ToozServiceMessage.Sensor.SensorReading
 import tooz.bto.toozifier.button.Button
@@ -104,17 +104,17 @@ class TileLockedMenuFragment : BaseToozifierFragment() {
 
         //Initialize TileMenu
         val actionTiles = arrayOf(
-            TileData("Vitalwerte", Color.parseColor("#00CCA3"), {updateActionText("Vitalwerte")}, arrayOf()),
-            TileData("Medikation", Color.parseColor("#F39237"), {updateActionText("Medikation")}, arrayOf()),
-            TileData("Anamnese", Color.parseColor("#DC758F"), {updateActionText("Anamnese")}, arrayOf()),
-            TileData("Aufenthalt", Color.parseColor("#008DD5"), {updateActionText("Aufenthalt")}, arrayOf()),
+            TileButtonData("Vitalwerte", Color.parseColor("#00CCA3"), {updateActionText("Vitalwerte")}, arrayOf()),
+            TileButtonData("Medikation", Color.parseColor("#F39237"), {updateActionText("Medikation")}, arrayOf()),
+            TileButtonData("Anamnese", Color.parseColor("#DC758F"), {updateActionText("Anamnese")}, arrayOf()),
+            TileButtonData("Aufenthalt", Color.parseColor("#008DD5"), {updateActionText("Aufenthalt")}, arrayOf()),
         )
 
         val tiles = arrayOf(
-            TileData("Karin Jager", Color.parseColor("#592E83"), {}, actionTiles),
-            TileData("Philipp Wexler", Color.parseColor("#CCC900"), {}, actionTiles),
-            TileData("Marcel Gärtner", Color.parseColor("#5C374C"), {}, actionTiles),
-            TileData("Christin Pabst", Color.parseColor("#29339B"), {}, actionTiles)
+            TileButtonData("Karin Jager", Color.parseColor("#592E83"), {}, actionTiles),
+            TileButtonData("Philipp Wexler", Color.parseColor("#CCC900"), {}, actionTiles),
+            TileButtonData("Marcel Gärtner", Color.parseColor("#5C374C"), {}, actionTiles),
+            TileButtonData("Christin Pabst", Color.parseColor("#29339B"), {}, actionTiles)
         )
 
         binding.tileLockedMenu.populate(tiles)

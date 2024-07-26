@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.RectF
 import android.util.AttributeSet
 import tech.unfaehig_industries.tooz.araction.tile_menu.TileButton
-import tech.unfaehig_industries.tooz.araction.tile_menu.TileData
+import tech.unfaehig_industries.tooz.araction.tile_menu.TileButtonData
 import tech.unfaehig_industries.tooz.araction.tile_menu.TileMenu
 import kotlin.math.cos
 import kotlin.math.sin
@@ -23,7 +23,7 @@ class TileLockedMenu : TileMenu {
     }
 
     override fun populate(
-        tiles: Array<TileData>,
+        tiles: Array<TileButtonData>,
         screen: RectF,
         _sensitivityX: Float,
         _sensitivityY: Float

@@ -31,7 +31,7 @@ open class TileMenu : RelativeLayout {
     }
 
     open fun populate(
-        tiles: Array<TileData>,
+        tiles: Array<TileButtonData>,
         screen: RectF = RectF(0f, 0f, 390f, 528f),
         _sensitivityX: Float = 4f,
         _sensitivityY: Float = 4f
@@ -48,7 +48,7 @@ open class TileMenu : RelativeLayout {
         hoveredButton = tileButtons.first()
     }
 
-    private fun addTileButtons(tiles: Array<TileData>, direction: Direction, boundingRect: RectF, level: Int = 0): ArrayList<TileButton> {
+    private fun addTileButtons(tiles: Array<TileButtonData>, direction: Direction, boundingRect: RectF, level: Int = 0): ArrayList<TileButton> {
         val buttonsArray = ArrayList<TileButton>(tiles.size)
 
         val horizontalSpacing: Float = boundingRect.width() + 40f
@@ -144,7 +144,7 @@ open class TileMenu : RelativeLayout {
     }
 }
 
-class TileData(val title: String, val color: Int, val callback: () -> Unit, val children: Array<TileData>)
+class TileButtonData(val title: String, val color: Int, val callback: () -> Unit, val children: Array<TileButtonData>)
 
 enum class Direction {
     HORIZONTAL, VERTICAL
