@@ -38,8 +38,12 @@ class TileMenuFragment : BaseToozifierFragment() {
         layout.inflateView(requireContext())
 
         //Initialize TileMenu
+        val subsubmenuTiles = arrayOf(
+            TileButtonData("1", Color.parseColor("#00CCA3"), {updateActionText("Puls")}, arrayOf()),
+            TileButtonData("2", Color.parseColor("#00CCA3"), {updateActionText("Blutdruck")}, arrayOf())
+        )
         val submenuTiles = arrayOf(
-            TileButtonData("Puls", Color.parseColor("#00CCA3"), {updateActionText("Puls")}, arrayOf()),
+            TileButtonData("Puls", Color.parseColor("#00CCA3"), {updateActionText("Puls")}, subsubmenuTiles),
             TileButtonData("Blutdruck", Color.parseColor("#00CCA3"), {updateActionText("Blutdruck")}, arrayOf())
         )
         val actionTiles = arrayOf(
