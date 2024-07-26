@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.RectF
 import android.util.AttributeSet
+import android.view.View
 import android.widget.RelativeLayout
 import tech.unfaehig_industries.tooz.araction.R
 import kotlin.collections.ArrayList
@@ -14,6 +15,7 @@ open class TileMenu : RelativeLayout {
 
     protected var tileButtons: ArrayList<TileButton> = ArrayList()
     private var hoveredButton: TileButton? = null
+
     private var mainColor: Int = Color.CYAN
     private var backgroundColor: Int = Color.BLACK
     private lateinit var screenRect: RectF
@@ -45,62 +47,72 @@ open class TileMenu : RelativeLayout {
         val boundingRect = RectF(buttonRect)
 
         boundingRect.offsetTo(screenRect.centerX() - (buttonRect.width() / 2), screenRect.centerY() - (buttonRect.height() / 2))
-        tileButtons = addTileButtons(tiles, direction, boundingRect)
+        layoutTileButtons(tiles, direction, boundingRect)
         hoveredButton = tileButtons.first()
     }
 
-    private fun addTileButtons(tiles: Array<TileButtonData>, direction: Direction, boundingRect: RectF, level: Int = 0): ArrayList<TileButton> {
+    private fun layoutTileButtons(tiles: Array<TileButtonData>, direction: Direction, boundingRect: RectF, level: Int = 0): ArrayList<TileButton> {
         val buttonsArray = ArrayList<TileButton>(tiles.size)
-
-        val horizontalSpacing: Float = boundingRect.width() + 40f
-        val verticalSpacing: Float = boundingRect.height() + 20f
 
         val otherDirection = when (direction) {
             Direction.HORIZONTAL -> Direction.VERTICAL
             Direction.VERTICAL -> Direction.HORIZONTAL
         }
 
-        tiles.forEachIndexed { i, tile ->
+        val buttonHidden = level > 1
 
-            when (direction) {
-                Direction.HORIZONTAL -> {
-                    if (i > 0 || level > 0) {
-                        boundingRect.offsetTo(
-                            boundingRect.left + horizontalSpacing,
-                            boundingRect.top
-                        )
-                    }
-                }
-
-                Direction.VERTICAL -> {
-                    boundingRect.offsetTo(boundingRect.left, boundingRect.top + verticalSpacing)
-                }
+        for((index, tile) in tiles.withIndex()) {
+            if (index > 0 || level > 0) {
+                offsetTile(direction, boundingRect)
             }
 
-            val children = addTileButtons(tile.children, otherDirection, RectF(boundingRect), level+1)
-            val callback: () -> Unit = tile.callback
+            val children = layoutTileButtons(tile.children, otherDirection, RectF(boundingRect), level+1)
 
-            val tileButton = TileButton(
-                context,
-                boundingRect,
-                RectF(buttonRect),
-                tile.title,
-                callback,
-                children,
-                tile.color,
-                backgroundColor
-            )
-
-            buttonsArray.add(tileButton)
-            buttonsArray.addAll(children)
-
-            this.addView(
-                tileButton,
-                LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            )
+            addTileButton(boundingRect, tile, children, buttonHidden)
         }
 
         return buttonsArray
+    }
+
+    private fun offsetTile(direction: Direction, boundingRect: RectF): RectF {
+        val horizontalSpacing: Float = boundingRect.width() + 40f
+        val verticalSpacing: Float = boundingRect.height() + 20f
+
+        when (direction) {
+            Direction.HORIZONTAL -> {
+                boundingRect.offsetTo(boundingRect.left + horizontalSpacing, boundingRect.top)
+            }
+
+            Direction.VERTICAL -> {
+                boundingRect.offsetTo(boundingRect.left, boundingRect.top + verticalSpacing)
+            }
+        }
+
+        return boundingRect
+    }
+
+    private fun addTileButton(boundingRect: RectF, data: TileButtonData, children: ArrayList<TileButton>, hidden: Boolean) {
+        val tileButton = TileButton(
+            context,
+            boundingRect,
+            RectF(buttonRect),
+            data.title,
+            data.callback,
+            children,
+            data.color,
+            backgroundColor
+        )
+
+        if(hidden) {
+            tileButton.visibility = View.GONE
+        }
+
+        this.addView(
+            tileButton,
+            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        )
+
+        tileButtons.add(tileButton)
     }
 
     open fun moveView(angle: Double, distance: Double) {
