@@ -34,7 +34,8 @@ open class TileMenu : RelativeLayout {
         tiles: Array<TileButtonData>,
         screen: RectF = RectF(0f, 0f, 390f, 528f),
         _sensitivityX: Float = 4f,
-        _sensitivityY: Float = 4f
+        _sensitivityY: Float = 4f,
+        direction: Direction = Direction.HORIZONTAL
     ) {
         screenRect = RectF(screen)
         buttonRect = RectF(0f, 0f, 200f, (screen.height() / 5))
@@ -44,7 +45,7 @@ open class TileMenu : RelativeLayout {
         val boundingRect = RectF(buttonRect)
 
         boundingRect.offsetTo(screenRect.centerX() - (buttonRect.width() / 2), screenRect.centerY() - (buttonRect.height() / 2))
-        tileButtons = addTileButtons(tiles, Direction.HORIZONTAL, boundingRect)
+        tileButtons = addTileButtons(tiles, direction, boundingRect)
         hoveredButton = tileButtons.first()
     }
 
