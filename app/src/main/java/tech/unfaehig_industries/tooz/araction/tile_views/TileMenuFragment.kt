@@ -2,17 +2,11 @@ package tech.unfaehig_industries.tooz.araction.tile_views
 
 import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
 import tech.unfaehig_industries.tooz.phone_tracking.SensorDataCallback
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.TileMenuFragmentBinding
 import tech.unfaehig_industries.tooz.araction.tile_menu.TileButtonData
@@ -37,7 +31,6 @@ class TileMenuFragment : BaseToozifierFragment() {
         return binding.root
     }
 
-    @SuppressLint("InflateParams", "ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -82,11 +75,10 @@ class TileMenuFragment : BaseToozifierFragment() {
         trackingEventManager.start()
         trackingEventManager.resetZeroPosition()
     }
-    
-    @OptIn(DelicateCoroutinesApi::class)
+
     private fun updateActionText(text: String) {
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
+        context?.mainExecutor?.execute {
+            run {
                 binding.actionText.text = text
                 layout.actionText.text = text
             }
