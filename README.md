@@ -67,10 +67,8 @@ The two values **d** and **α** are then sent to the externally provided callbac
 
 #### Phone tracking
 
-::: warn
-When both frequently sending IMU tracking data and also frequentliy receiving frame data the utilized *tooz* AR glasses crash.
-
-:::
+> [!WARNING]
+> When both frequently sending IMU tracking data and also frequentliy receiving frame data the utilized *tooz* AR glasses crash.
 
 Due to this reliability limit of the glasses we decided to use the IMU of the connected smarphone as a drop-in replacement. The calculation stays the same but instead of controlling the application with head movements, users use the smartphone as a wand (like a laser pointer or a Wii-mote).
 
