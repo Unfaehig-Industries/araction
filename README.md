@@ -80,7 +80,7 @@ Due to this reliability limit of the glasses we decided to use the IMU of the co
 
 The araction-app is a so called *toozer* and communicates with the *tooz Control App* through Inter Process Communication (IPC) by using a library provided by *tooz*.
 
-![bto_components.png](https://gitlab.com/toozout/bto-sdk/doc-toozifier/-/raw/master/images/bto_components.png)
+![bto_components.png](assets/bto_components.png)
 
 #### araction software architecture
 
