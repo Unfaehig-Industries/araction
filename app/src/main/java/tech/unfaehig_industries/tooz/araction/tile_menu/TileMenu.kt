@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.RelativeLayout
 import tech.unfaehig_industries.tooz.araction.R
@@ -23,6 +22,9 @@ open class TileMenu : RelativeLayout {
     protected lateinit var buttonRect: RectF
     protected var sensitivityX: Float = 4f
     protected var sensitivityY: Float = 4f
+
+    private var distX = 0f
+    private var distY = 0f
 
     constructor(context: Context) : super(context)
 
@@ -52,67 +54,75 @@ open class TileMenu : RelativeLayout {
         hoveredButton = tileButtons.first()
     }
 
-    private fun layoutTileButtons(tiles: Array<TileButtonData>, direction: Direction, boundingRect: RectF, level: Int = 0): ArrayList<TileButton> {
-        val buttonsArray = ArrayList<TileButton>(tiles.size)
-
-        val otherDirection = when (direction) {
+    private fun layoutTileButtons(tiles: Array<TileButtonData>, mainTileDirection: Direction, boundingRect: RectF) {
+        val childTileDirection = when (mainTileDirection) {
             Direction.HORIZONTAL -> Direction.VERTICAL
             Direction.VERTICAL -> Direction.HORIZONTAL
         }
 
-        val buttonHidden = level > 1
+        var tileBoundingRect = RectF(boundingRect)
 
         for((index, tile) in tiles.withIndex()) {
-            if (index > 0 || level > 0) {
-                offsetTile(direction, boundingRect)
+            if (index > 0) {
+                tileBoundingRect = offsetTile(mainTileDirection, tileBoundingRect)
             }
 
-            val children = layoutTileButtons(tile.children, otherDirection, RectF(boundingRect), level+1)
+            if (tile is TileSubmenuButtonData) {
+                val children: ArrayList<TileButton> = arrayListOf()
+                var childBoundingRect = RectF(tileBoundingRect)
 
-            val button = addTileButton(boundingRect, tile, children, buttonHidden)
-            buttonsArray.add(button)
+                for (child in tile.submenu) {
+                    childBoundingRect = offsetTile(childTileDirection, childBoundingRect)
+
+                    val childButton = addTileButton(childBoundingRect, child)
+                    children.add(childButton)
+                }
+            }
+
+            addTileButton(tileBoundingRect, tile, false)
         }
-
-        return buttonsArray
     }
 
     private fun offsetTile(direction: Direction, boundingRect: RectF): RectF {
         val horizontalSpacing: Float = boundingRect.width() + 40f
         val verticalSpacing: Float = boundingRect.height() + 20f
 
+        val offsetBoundingRect = RectF(boundingRect)
         when (direction) {
             Direction.HORIZONTAL -> {
-                boundingRect.offsetTo(boundingRect.left + horizontalSpacing, boundingRect.top)
+                offsetBoundingRect.offsetTo(boundingRect.left + horizontalSpacing, boundingRect.top)
             }
 
             Direction.VERTICAL -> {
-                boundingRect.offsetTo(boundingRect.left, boundingRect.top + verticalSpacing)
+                offsetBoundingRect.offsetTo(boundingRect.left, boundingRect.top + verticalSpacing)
             }
         }
 
-        return boundingRect
+        return offsetBoundingRect
     }
 
-    private fun addTileButton(boundingRect: RectF, data: TileButtonData, children: ArrayList<TileButton>, hidden: Boolean): TileButton {
+    private fun addTileButton(positionRect: RectF, data: TileButtonData, actionable: Boolean = true): TileButton {
         val tileButton = TileButton(
             context,
-            boundingRect,
+            data,
+            positionRect,
             RectF(buttonRect),
-            data.title,
-            children,
-            data.callback,
-            data.tileColor,
-            backgroundColor
+            backgroundColor,
+            actionable
         )
-
-        if(hidden) {
-            tileButton.visibility = View.INVISIBLE
-        }
 
         this.addView(
             tileButton,
             LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         )
+
+        val animator = tileButton.animate()
+        animator.setInterpolator(LinearInterpolator())
+        animator.setStartDelay(0)
+        animator.setDuration(0)
+        animator.translationX(tileButton.baseX + distX)
+        animator.translationY(tileButton.baseY + distY)
+        animator.setDuration(100)
 
         tileButtons.add(tileButton)
         return tileButton
@@ -123,13 +133,8 @@ open class TileMenu : RelativeLayout {
             return
         }
 
-        val distX: Float = -(distance * sin(angle)).toFloat() * sensitivityX
-        val distY: Float = (distance * cos(angle)).toFloat() * sensitivityY
-
-        val animator = this.animate()
-        animator.setDuration(100)
-        animator.setInterpolator(LinearInterpolator())
-        animator.setStartDelay(0)
+        distX = -(distance * sin(angle)).toFloat() * sensitivityX
+        distY = (distance * cos(angle)).toFloat() * sensitivityY
 
         tileButtons.forEach { button: TileButton ->
             button.animate().translationX(button.baseX + distX)
@@ -163,9 +168,33 @@ open class TileMenu : RelativeLayout {
     fun stopHoverJob() {
         hoveredButton?.cancelHover()
     }
+
+    fun loadNewMenu(triggeredButton: TileButton, submenu: Array<TileButtonData>) {
+        context.mainExecutor.execute {
+            run {
+                for (tile in tileButtons) {
+                    if (tile == triggeredButton) continue
+
+                    this.removeView(tile)
+                }
+
+                tileButtons = arrayListOf()
+                tileButtons.add(triggeredButton)
+
+                val positionRect = offsetTile(Direction.HORIZONTAL, triggeredButton.positionRect)
+
+                layoutTileButtons(submenu, Direction.HORIZONTAL, positionRect)
+                invalidate()
+            }
+        }
+
+
+    }
 }
 
-class TileButtonData(val title: String, val tileColor: Int, val callback: () -> Unit, val children: Array<TileButtonData>)
+open class TileButtonData(val label: String, val tileColor: Int)
+class TileActionButtonData(label: String, tileColor: Int, val callback: () -> Unit): TileButtonData(label, tileColor)
+class TileSubmenuButtonData (label: String, tileColor: Int, val submenu: Array<TileButtonData>): TileButtonData(label, tileColor)
 
 enum class Direction {
     HORIZONTAL, VERTICAL

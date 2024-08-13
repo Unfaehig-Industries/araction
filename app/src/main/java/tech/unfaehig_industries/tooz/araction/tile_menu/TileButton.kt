@@ -8,9 +8,9 @@ import androidx.core.graphics.ColorUtils
 import kotlinx.coroutines.*
 import java.time.Instant
 
-class TileButton : View {
+open class TileButton : View {
 
-    private lateinit var positionRect: RectF
+    lateinit var positionRect: RectF
     val baseX: Float get() = positionRect.left
     val baseY: Float get() = positionRect.top
     private lateinit var boundingRect: RectF
@@ -25,12 +25,13 @@ class TileButton : View {
 
     private lateinit var hoverJob: Job
 
-    private lateinit var callback: (() -> Unit)
-    private lateinit var children: ArrayList<TileButton>
+    private var actionable: Boolean = true
+    private var callback: (() -> Unit)? = null
+    private var submenu: Array<TileButtonData>? = null
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, _positionRect: RectF, _boundingRect: RectF, _label: String, _children: ArrayList<TileButton>, _callback: () -> Unit, tileColor: Int, labelColor: Int) : super(context) {
+    constructor(context: Context, data: TileButtonData, _positionRect: RectF, _boundingRect: RectF, labelColor: Int, _actionable: Boolean) : super(context) {
         boundingRect = RectF(_boundingRect)
         left = boundingRect.left.toInt()
         right = boundingRect.right.toInt()
@@ -41,15 +42,15 @@ class TileButton : View {
         translationX = baseX
         translationY = baseY
 
-        label = _label
+        label = data.label
         this.labelCoordinates = Pair(boundingRect.left+10f, boundingRect.centerY()+(labelSize/2))
         val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         labelPaint.apply { color= labelColor; typeface= labelTypeface; textSize= labelSize }
 
-        fillPaint.apply { color= tileColor; style= Paint.Style.FILL }
+        fillPaint.apply { color= data.tileColor; style= Paint.Style.FILL }
 
-        children = _children
-        callback = _callback
+        actionable = _actionable
+        setAction(data)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -73,7 +74,12 @@ class TileButton : View {
     }
 
     private fun animateHover(durationInSeconds: Long = 2L) {
-        boundingRect.inset(-rectInsetHighlight, -rectInsetHighlight)
+        boundingRect.offset(-rectInsetHighlight, -rectInsetHighlight)
+
+        if (!actionable) {
+            invalidate()
+            return
+        }
 
         @OptIn(DelicateCoroutinesApi::class)
         hoverJob = GlobalScope.launch {
@@ -92,7 +98,7 @@ class TileButton : View {
             }
 
             if(isHovered) {
-                callback()
+                takeAction()
             }
         }
     }
@@ -102,7 +108,8 @@ class TileButton : View {
             hoverJob.cancel("hover leave")
         }
 
-        boundingRect.inset(rectInsetHighlight, rectInsetHighlight)
+        positionRect.offset(-rectInsetHighlight, -rectInsetHighlight)
+        boundingRect.offset(rectInsetHighlight, rectInsetHighlight)
         fillPaint.shader = null
         invalidate()
     }
@@ -112,5 +119,26 @@ class TileButton : View {
                 this.translationX + this.boundingRect.width() >= screen.centerX() &&
                 this.translationY <= screen.centerY() &&
                 this.translationY + this.boundingRect.height() >= screen.centerY()
+    }
+
+    private fun setAction(data: TileButtonData) {
+        if(data is TileActionButtonData) {
+            callback = data.callback
+            submenu = null
+        }
+        if(data is TileSubmenuButtonData) {
+            callback = null
+            submenu = data.submenu
+        }
+    }
+
+    private fun takeAction() {
+        callback?.let { it() }
+
+        submenu?.let {
+            if (parent is TileMenu) {
+                (parent as TileMenu).loadNewMenu(this, it)
+            }
+        }
     }
 }

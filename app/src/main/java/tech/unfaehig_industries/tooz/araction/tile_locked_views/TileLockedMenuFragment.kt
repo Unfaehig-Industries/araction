@@ -15,7 +15,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.TileLockedMenuFragmentBinding
+import tech.unfaehig_industries.tooz.araction.tile_menu.TileActionButtonData
 import tech.unfaehig_industries.tooz.araction.tile_menu.TileButtonData
+import tech.unfaehig_industries.tooz.araction.tile_menu.TileSubmenuButtonData
 import tooz.bto.toozifier.sensors.Sensor
 
 class TileLockedMenuFragment : BaseToozifierFragment() {
@@ -44,19 +46,27 @@ class TileLockedMenuFragment : BaseToozifierFragment() {
         // Get the view which is supposed to be shown on the glasses
         layout.inflateView(requireContext())
 
-        //Initialize TileMenu
-        val actionTiles = arrayOf(
-            TileButtonData("Vitalwerte", Color.parseColor("#00CCA3"), {updateActionText("Vitalwerte")}, arrayOf()),
-            TileButtonData("Medikation", Color.parseColor("#F39237"), {updateActionText("Medikation")}, arrayOf()),
-            TileButtonData("Anamnese", Color.parseColor("#DC758F"), {updateActionText("Anamnese")}, arrayOf()),
-            TileButtonData("Aufenthalt", Color.parseColor("#008DD5"), {updateActionText("Aufenthalt")}, arrayOf()),
+        //Initialize TileLockedMenu
+        val subsubmenuTiles: Array<TileButtonData> = arrayOf(
+            TileActionButtonData("1", Color.parseColor("#00CCA3"), {updateActionText("Puls")}),
+            TileActionButtonData("2", Color.parseColor("#00CCA3"), {updateActionText("Blutdruck")})
+        )
+        val submenuTiles: Array<TileButtonData> = arrayOf(
+            TileSubmenuButtonData("Puls", Color.parseColor("#00CCA3"), subsubmenuTiles),
+            TileActionButtonData("Blutdruck", Color.parseColor("#00CCA3"), {updateActionText("Blutdruck")})
+        )
+        val actionTiles: Array<TileButtonData> = arrayOf(
+            TileSubmenuButtonData("Vitalwerte", Color.parseColor("#00CCA3"), submenuTiles),
+            TileActionButtonData("Medikation", Color.parseColor("#F39237"), {updateActionText("Medikation")}),
+            TileActionButtonData("Anamnese", Color.parseColor("#DC758F"), {updateActionText("Anamnese")}),
+            TileActionButtonData("Aufenthalt", Color.parseColor("#008DD5"), {updateActionText("Aufenthalt")})
         )
 
-        val tiles = arrayOf(
-            TileButtonData("Karin Jager", Color.parseColor("#592E83"), {}, actionTiles),
-            TileButtonData("Philipp Wexler", Color.parseColor("#CCC900"), {}, actionTiles),
-            TileButtonData("Marcel Gärtner", Color.parseColor("#5C374C"), {}, actionTiles),
-            TileButtonData("Christin Pabst", Color.parseColor("#29339B"), {}, actionTiles)
+        val tiles: Array<TileButtonData> = arrayOf(
+            TileSubmenuButtonData("Karin Jager", Color.parseColor("#592E83"), actionTiles),
+            TileSubmenuButtonData("Philipp Wexler", Color.parseColor("#CCC900"), actionTiles),
+            TileSubmenuButtonData("Marcel Gärtner", Color.parseColor("#5C374C"), actionTiles),
+            TileSubmenuButtonData("Christin Pabst", Color.parseColor("#29339B"), actionTiles)
         )
 
         binding.tileLockedMenu.populate(tiles)
