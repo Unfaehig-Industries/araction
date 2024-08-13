@@ -95,7 +95,9 @@ class TileButton : View {
     }
 
     fun cancelHover() {
-        hoverJob.cancel("hover leave")
+        if(this::hoverJob.isInitialized) {
+            hoverJob.cancel("hover leave")
+        }
 
         boundingRect.inset(rectInsetHighlight, rectInsetHighlight)
         fillPaint.shader = null
