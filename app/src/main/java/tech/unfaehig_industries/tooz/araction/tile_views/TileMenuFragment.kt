@@ -81,7 +81,7 @@ class TileMenuFragment : BaseToozifierFragment() {
     }
 
     private fun updateActionText(text: String) {
-        context?.mainExecutor?.execute {
+        requireContext().mainExecutor?.execute {
             run {
                 binding.actionText.text = text
                 layout.actionText.text = text
