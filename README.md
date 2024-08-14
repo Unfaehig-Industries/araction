@@ -118,9 +118,9 @@ The TileLockedMenu looks the same but if the user moves down into a column, thei
 
 The TileLockedMenu extends the TileMenu and only overrides how the view is moved, to achieve the described effect.
 
-Both menus are only two dimensional. If a submenu needs to be opened, a new TileMenu or TileLockedMenu needs to be provided, which is then placed at the spot of triggered button.
+Both menus are only two dimensional. If a submenu is opened, the new tiles are laid out to the right of the triggered button, while all other tiles, except the trigggered button are deleted from the view.
 
-The menu is created with an Array of MainTileButtonData, which has a label, color, callback and children, which represent the tiles in the column of this tile in the main row. The children are TileButtonData, which also need a label, color and callback. The callback in both is called if the button is triggered.
+The menu is created with an Array of the abstract TileButtonData, which has a label and color. It is extended by TileActionButtonData and TileSubmenuButtonData. TileActionButtonData additionaly has a callback function, while TileSubmenuButtonData has an array of further TileButtonData.
 
 ##### Base fragment and layout
 
