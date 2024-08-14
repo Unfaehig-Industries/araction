@@ -64,7 +64,7 @@ open class TileMenu : RelativeLayout {
 
         for((index, tile) in tiles.withIndex()) {
             if (index > 0) {
-                tileBoundingRect = offsetTile(mainTileDirection, tileBoundingRect)
+                tileBoundingRect = offsetBoundingRect(mainTileDirection, tileBoundingRect)
             }
 
             if (tile is TileSubmenuButtonData) {
@@ -72,7 +72,7 @@ open class TileMenu : RelativeLayout {
                 var childBoundingRect = RectF(tileBoundingRect)
 
                 for (child in tile.submenu) {
-                    childBoundingRect = offsetTile(childTileDirection, childBoundingRect)
+                    childBoundingRect = offsetBoundingRect(childTileDirection, childBoundingRect)
 
                     val childButton = addTileButton(childBoundingRect, child)
                     children.add(childButton)
@@ -83,7 +83,7 @@ open class TileMenu : RelativeLayout {
         }
     }
 
-    private fun offsetTile(direction: Direction, boundingRect: RectF): RectF {
+    private fun offsetBoundingRect(direction: Direction, boundingRect: RectF): RectF {
         val horizontalSpacing: Float = boundingRect.width() + 40f
         val verticalSpacing: Float = boundingRect.height() + 20f
 
