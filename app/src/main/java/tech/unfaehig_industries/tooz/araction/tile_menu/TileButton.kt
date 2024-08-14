@@ -25,7 +25,7 @@ open class TileButton : View {
 
     private lateinit var hoverJob: Job
 
-    private var actionable: Boolean = true
+    var actionable: Boolean = true
     private var callback: (() -> Unit)? = null
     private var submenu: Array<TileButtonData>? = null
 

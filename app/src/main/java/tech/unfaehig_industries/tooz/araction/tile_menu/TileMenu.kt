@@ -180,6 +180,7 @@ open class TileMenu : RelativeLayout {
 
                 tileButtons = arrayListOf()
                 tileButtons.add(triggeredButton)
+                triggeredButton.actionable = false
 
                 val positionRect = offsetTile(Direction.HORIZONTAL, triggeredButton.positionRect)
 
