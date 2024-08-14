@@ -41,12 +41,12 @@ class TileMenuFragment : BaseToozifierFragment() {
 
         //Initialize TileMenu
         val subsubmenuTiles: Array<TileButtonData> = arrayOf(
-            TileActionButtonData("1", Color.parseColor("#00CCA3"), {updateActionText("Puls")}),
-            TileActionButtonData("2", Color.parseColor("#00CCA3"), {updateActionText("Blutdruck")})
+            TileActionButtonData("Sys", Color.parseColor("#592E83"), {updateActionText("120")}),
+            TileActionButtonData("Dia", Color.parseColor("#5C374C"), {updateActionText("60")})
         )
         val submenuTiles: Array<TileButtonData> = arrayOf(
-            TileSubmenuButtonData("Puls", Color.parseColor("#00CCA3"), subsubmenuTiles),
-            TileActionButtonData("Blutdruck", Color.parseColor("#00CCA3"), {updateActionText("Blutdruck")})
+            TileSubmenuButtonData("Blutdruck", Color.parseColor("#F39237"), subsubmenuTiles),
+            TileActionButtonData("Puls", Color.parseColor("#DC758F"), {updateActionText("50")})
         )
         val actionTiles: Array<TileButtonData> = arrayOf(
             TileSubmenuButtonData("Vitalwerte", Color.parseColor("#00CCA3"), submenuTiles),
