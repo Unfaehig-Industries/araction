@@ -14,7 +14,6 @@ open class TileButton : View {
     val baseX: Float get() = positionRect.left
     val baseY: Float get() = positionRect.top
     private lateinit var boundingRect: RectF
-    private val rectInsetHighlight: Float = 5f
 
     private var label: String = ""
     private var labelCoordinates: Pair<Float, Float> = Pair(0f, 0f)
@@ -45,7 +44,7 @@ open class TileButton : View {
         label = data.label
         this.labelCoordinates = Pair(boundingRect.left+10f, boundingRect.centerY()+(labelSize/2))
         val labelTypeface: Typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-        labelPaint.apply { color= labelColor; typeface= labelTypeface; textSize= labelSize }
+        labelPaint.apply { color= labelColor; typeface= labelTypeface; textSize= labelSize; strokeWidth= 3f }
 
         fillPaint.apply { color= data.tileColor; style= Paint.Style.FILL }
 
@@ -56,9 +55,16 @@ open class TileButton : View {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        canvas.run {
-            this.drawRect(boundingRect, fillPaint)
-            this.drawText(label, labelCoordinates.first, labelCoordinates.second, labelPaint)
+        canvas.let {
+            canvas.drawRect(boundingRect, fillPaint)
+            canvas.drawText(label, labelCoordinates.first, labelCoordinates.second, labelPaint)
+
+            if(isHovered) {
+                canvas.drawLine(0f, 0f, boundingRect.width() - 1f, 0f, labelPaint) // Top
+                canvas.drawLine(0f, 0f, 0f, boundingRect.height() - 1f, labelPaint) // Left
+                canvas.drawLine(boundingRect.width() - 1f, 0f, boundingRect.width() - 1f, boundingRect.height() - 1f, labelPaint) // Right
+                canvas.drawLine(0f, boundingRect.height() - 1f, boundingRect.width() - 1f, boundingRect.height() - 1f, labelPaint) // Bottom
+            }
         }
     }
 
@@ -74,8 +80,6 @@ open class TileButton : View {
     }
 
     private fun animateHover(durationInSeconds: Long = 2L) {
-        boundingRect.offset(-rectInsetHighlight, -rectInsetHighlight)
-
         if (!actionable) {
             invalidate()
             return
@@ -108,8 +112,6 @@ open class TileButton : View {
             hoverJob.cancel("hover leave")
         }
 
-        positionRect.offset(-rectInsetHighlight, -rectInsetHighlight)
-        boundingRect.offset(rectInsetHighlight, rectInsetHighlight)
         fillPaint.shader = null
         invalidate()
     }
