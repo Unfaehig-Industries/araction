@@ -32,7 +32,7 @@ class TileLockedMenu : TileMenu {
     ) {
         super.populate(tiles, screen, _sensitivityX, _sensitivityY, direction)
 
-        for (button in tileButtons) {
+        for (button in tileButtons.descendants) {
 
             if (button.translationX > menuRect.right) {
                 menuRect.right = button.translationX - buttonRect.width()
@@ -85,7 +85,7 @@ class TileLockedMenu : TileMenu {
             distY = menuRect.bottom
         }
 
-        tileButtons.forEach { button: TileButton ->
+        tileButtons.descendants.forEach { button: TileButton ->
             button.animate().translationX(button.baseX - distX)
             button.animate().translationY(button.baseY - distY)
         }

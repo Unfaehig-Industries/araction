@@ -67,6 +67,12 @@ open class TileButton : View {
 
         if (hovered) {
             animateHover()
+
+            submenu?.let {
+                if (actionable && parent is TileMenu) {
+                    (parent as TileMenu).loadSubMenu(this, it)
+                }
+            }
         }
         else {
             cancelHover()
@@ -135,10 +141,10 @@ open class TileButton : View {
     private fun takeAction() {
         callback?.let { it() }
 
-        submenu?.let {
-            if (parent is TileMenu) {
-                (parent as TileMenu).loadNewMenu(this, it)
-            }
-        }
+//        submenu?.let {
+//            if (parent is TileMenu) {
+//                (parent as TileMenu).loadSubMenu(this, it)
+//            }
+//        }
     }
 }
