@@ -173,26 +173,26 @@ open class TileMenu : RelativeLayout {
     }
 
     fun loadNewMenu(triggeredButton: TileButton, submenu: Array<TileButtonData>) {
+        val oldTileButtonArrayList = tileButtons
+
+        tileButtons = arrayListOf()
+        tileButtons.add(triggeredButton)
+        triggeredButton.actionable = false
+
+        val positionRect = offsetBoundingRect(Direction.HORIZONTAL, triggeredButton.positionRect)
+
         context.mainExecutor.execute {
             run {
-                for (tile in tileButtons) {
+                for (tile in oldTileButtonArrayList) {
                     if (tile == triggeredButton) continue
 
                     this.removeView(tile)
                 }
 
-                tileButtons = arrayListOf()
-                tileButtons.add(triggeredButton)
-                triggeredButton.actionable = false
-
-                val positionRect = offsetTile(Direction.HORIZONTAL, triggeredButton.positionRect)
-
                 layoutTileButtons(submenu, Direction.HORIZONTAL, positionRect)
                 invalidate()
             }
         }
-
-
     }
 }
 
