@@ -17,11 +17,9 @@ class TileLockedMenu : TileMenu {
     private var lockedMovement: Boolean = false
     private var translationX: Float = 0f
 
-    constructor(context:Context) : super(context) {
-    }
+    constructor(context:Context) : super(context)
 
-    constructor(context:Context, attrs:AttributeSet) : super(context, attrs) {
-    }
+    constructor(context:Context, attrs:AttributeSet) : super(context, attrs)
 
     override fun populate(
         tiles: Array<TileButtonData>,
