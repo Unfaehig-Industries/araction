@@ -35,7 +35,7 @@ open class TileMenu : RelativeLayout {
         backgroundColor = typedArray.getColor(R.styleable.ToozMenuStyleable_backgroundColor, Color.BLACK)
     }
 
-    open fun populate(
+    fun populate(
         tiles: Array<TileButtonData>,
         screen: RectF = RectF(0f, 0f, 390f, 528f),
         _sensitivityX: Float = 4f,
@@ -54,7 +54,7 @@ open class TileMenu : RelativeLayout {
         hoveredButton = tileButtons.first()
     }
 
-    private fun layoutTileButtons(tiles: Array<TileButtonData>, mainTileDirection: Direction, boundingRect: RectF) {
+    protected open fun layoutTileButtons(tiles: Array<TileButtonData>, mainTileDirection: Direction, boundingRect: RectF) {
         val childTileDirection = when (mainTileDirection) {
             Direction.HORIZONTAL -> Direction.VERTICAL
             Direction.VERTICAL -> Direction.HORIZONTAL
@@ -196,7 +196,7 @@ open class TileMenu : RelativeLayout {
     }
 }
 
-open class TileButtonData(val label: String, val tileColor: Int)
+abstract class TileButtonData(val label: String, val tileColor: Int)
 class TileActionButtonData(label: String, tileColor: Int, val callback: () -> Unit): TileButtonData(label, tileColor)
 class TileSubmenuButtonData (label: String, tileColor: Int, val submenu: Array<TileButtonData>): TileButtonData(label, tileColor)
 
