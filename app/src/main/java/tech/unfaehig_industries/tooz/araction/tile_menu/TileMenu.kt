@@ -117,11 +117,14 @@ open class TileMenu : RelativeLayout {
         )
 
         val animator = tileButton.animate()
+        // Configure animator
         animator.setInterpolator(LinearInterpolator())
         animator.setStartDelay(0)
+        // Set Position immediately
         animator.setDuration(0)
         animator.translationX(tileButton.baseX + distX)
         animator.translationY(tileButton.baseY + distY)
+        // Set duration to desired value for later animations
         animator.setDuration(100)
 
         tileButtons.add(tileButton)
