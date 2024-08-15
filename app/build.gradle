@@ -54,8 +54,7 @@ dependencies {
     implementation 'androidx.databinding:viewbinding:8.5.0'
     implementation 'com.ramotion.circlemenu:circle-menu:0.3.2'
     implementation project(path: ':phone_tracking')
-    implementation project(path: ':phone_tracking')
-    implementation project(path: ':phone_tracking')
+    implementation project(path: ':tooz_IMU_tracking')
     implementation project(path: ':radial_menu')
 
     testImplementation 'junit:junit:4.13.2'
