@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction
+package tech.unfaehig_industries.tooz.araction.sensor_data
 
 
 class SafeSensorReading (val sensor: String) {

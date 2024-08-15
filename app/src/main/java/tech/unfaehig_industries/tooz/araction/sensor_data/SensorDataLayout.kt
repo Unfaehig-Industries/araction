@@ -4,9 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.widget.TextView
 import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierLayout
-import tech.unfaehig_industries.tooz.araction.SafeSensorReading
 import tech.unfaehig_industries.tooz.araction.databinding.SensorDataLayoutBinding
-import tech.unfaehig_industries.tooz.araction.roundDecimal
 import tooz.bto.toozifier.Toozifier
 
 class SensorDataLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
@@ -50,4 +48,6 @@ class SensorDataLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {
         yText = sensorDataView?.sensorY
         zText = sensorDataView?.sensorZ
     }
+
+    private fun Double.roundDecimal(digit: Int) = "%.${digit}f".format(this)
 }
