@@ -6,7 +6,7 @@
     android:background="@color/colorBackground"
     android:orientation="vertical">
 
-    <tech.unfaehig_industries.tooz.araction.radial_menu.RadialMenu
+    <tech.unfaehig_industries.tooz.radial_menu.RadialMenu
         android:id="@+id/radial_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.radial_menu
+package tech.unfaehig_industries.tooz.radial_menu
 
 import android.content.Context
 import android.graphics.*

@@ -56,6 +56,7 @@ dependencies {
     implementation project(path: ':phone_tracking')
     implementation project(path: ':phone_tracking')
     implementation project(path: ':phone_tracking')
+    implementation project(path: ':radial_menu')
 
     testImplementation 'junit:junit:4.13.2'
     implementation 'pl.bclogic:pulsator4droid:1.0.3'

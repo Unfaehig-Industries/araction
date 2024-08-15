@@ -10,10 +10,10 @@ import tech.unfaehig_industries.tooz.phone_tracking.SensorDataCallback
 import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
 import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuFragmentBinding
-import tech.unfaehig_industries.tooz.araction.radial_menu.RadialActionButtonData
-import tech.unfaehig_industries.tooz.araction.radial_menu.RadialBackButtonData
-import tech.unfaehig_industries.tooz.araction.radial_menu.RadialMenuData
-import tech.unfaehig_industries.tooz.araction.radial_menu.RadialSubmenuButtonData
+import tech.unfaehig_industries.tooz.radial_menu.RadialActionButtonData
+import tech.unfaehig_industries.tooz.radial_menu.RadialBackButtonData
+import tech.unfaehig_industries.tooz.radial_menu.RadialMenuData
+import tech.unfaehig_industries.tooz.radial_menu.RadialSubmenuButtonData
 import timber.log.Timber
 import tooz.bto.toozifier.sensors.Sensor
 

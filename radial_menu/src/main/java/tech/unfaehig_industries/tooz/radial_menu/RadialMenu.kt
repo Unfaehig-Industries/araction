@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.radial_menu
+package tech.unfaehig_industries.tooz.radial_menu
 
 import android.content.Context
 import android.graphics.Color
@@ -6,7 +6,6 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.widget.RelativeLayout
-import tech.unfaehig_industries.tooz.araction.R
 import kotlin.collections.ArrayList
 
 class RadialMenu : RelativeLayout {
