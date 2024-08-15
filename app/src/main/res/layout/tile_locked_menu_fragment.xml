@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:visibility="visible">
 
-    <tech.unfaehig_industries.tooz.araction.tile_locked_menu.TileLockedMenu
+    <tech.unfaehig_industries.tooz.tile_menu.tile_locked_menu.TileLockedMenu
         android:id="@+id/tile_locked_menu"
         android:layout_width="@dimen/width_safe_area"
         android:layout_height="@dimen/height_safe_area"

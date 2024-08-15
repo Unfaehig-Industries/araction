@@ -1,11 +1,11 @@
-package tech.unfaehig_industries.tooz.araction.tile_locked_menu
+package tech.unfaehig_industries.tooz.tile_menu.tile_locked_menu
 
 import android.content.Context
 import android.graphics.RectF
 import android.util.AttributeSet
-import tech.unfaehig_industries.tooz.araction.tile_menu.Direction
-import tech.unfaehig_industries.tooz.araction.tile_menu.TileButtonData
-import tech.unfaehig_industries.tooz.araction.tile_menu.TileMenu
+import tech.unfaehig_industries.tooz.tile_menu.tile_menu.Direction
+import tech.unfaehig_industries.tooz.tile_menu.tile_menu.TileButtonData
+import tech.unfaehig_industries.tooz.tile_menu.tile_menu.TileMenu
 import kotlin.math.cos
 import kotlin.math.sin
 

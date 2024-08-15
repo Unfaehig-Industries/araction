@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierLayout
 import tech.unfaehig_industries.tooz.araction.databinding.TileLockedMenuLayoutBinding
-import tech.unfaehig_industries.tooz.araction.tile_locked_menu.TileLockedMenu
+import tech.unfaehig_industries.tooz.tile_menu.tile_locked_menu.TileLockedMenu
 import tooz.bto.toozifier.Toozifier
 
 class TileLockedMenuLayout (toozifier: Toozifier) : BaseToozifierLayout(toozifier) {

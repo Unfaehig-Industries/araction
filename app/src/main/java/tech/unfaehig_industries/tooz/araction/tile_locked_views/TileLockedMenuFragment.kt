@@ -15,9 +15,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.TileLockedMenuFragmentBinding
-import tech.unfaehig_industries.tooz.araction.tile_menu.TileActionButtonData
-import tech.unfaehig_industries.tooz.araction.tile_menu.TileButtonData
-import tech.unfaehig_industries.tooz.araction.tile_menu.TileSubmenuButtonData
+import tech.unfaehig_industries.tooz.tile_menu.tile_menu.TileActionButtonData
+import tech.unfaehig_industries.tooz.tile_menu.tile_menu.TileButtonData
+import tech.unfaehig_industries.tooz.tile_menu.tile_menu.TileSubmenuButtonData
 import tooz.bto.toozifier.sensors.Sensor
 
 class TileLockedMenuFragment : BaseToozifierFragment() {

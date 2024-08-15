@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction.tile_menu
+package tech.unfaehig_industries.tooz.tile_menu.tile_menu
 
 import android.content.Context
 import android.graphics.Color
@@ -6,7 +6,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.animation.LinearInterpolator
 import android.widget.RelativeLayout
-import tech.unfaehig_industries.tooz.araction.R
+import tech.unfaehig_industries.tooz.tile_menu.R
 import kotlin.collections.ArrayList
 import kotlin.math.cos
 import kotlin.math.sin

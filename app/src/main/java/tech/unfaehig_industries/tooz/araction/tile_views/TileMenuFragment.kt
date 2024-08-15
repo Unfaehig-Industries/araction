@@ -9,9 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.TileMenuFragmentBinding
-import tech.unfaehig_industries.tooz.araction.tile_menu.TileActionButtonData
-import tech.unfaehig_industries.tooz.araction.tile_menu.TileButtonData
-import tech.unfaehig_industries.tooz.araction.tile_menu.TileSubmenuButtonData
+import tech.unfaehig_industries.tooz.tile_menu.tile_menu.TileActionButtonData
+import tech.unfaehig_industries.tooz.tile_menu.tile_menu.TileButtonData
+import tech.unfaehig_industries.tooz.tile_menu.tile_menu.TileSubmenuButtonData
 import tooz.bto.toozifier.sensors.Sensor
 
 class TileMenuFragment : BaseToozifierFragment() {

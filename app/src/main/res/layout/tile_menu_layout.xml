@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:visibility="visible">
 
-    <tech.unfaehig_industries.tooz.araction.tile_menu.TileMenu
+    <tech.unfaehig_industries.tooz.tile_menu.tile_menu.TileMenu
         android:id="@+id/tile_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
