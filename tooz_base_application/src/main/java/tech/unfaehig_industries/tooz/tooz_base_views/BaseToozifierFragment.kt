@@ -1,4 +1,4 @@
-package tech.unfaehig_industries.tooz.araction
+package tech.unfaehig_industries.tooz.tooz_base_views
 
 import androidx.fragment.app.Fragment
 import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager

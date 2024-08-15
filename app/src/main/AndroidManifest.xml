@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name="tech.unfaehig_industries.tooz.araction.BaseApplication"
+        android:name="tech.unfaehig_industries.tooz.araction.aractionApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"

@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
+import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.TileMenuFragmentBinding
 import tech.unfaehig_industries.tooz.araction.tile_menu.TileActionButtonData
 import tech.unfaehig_industries.tooz.araction.tile_menu.TileButtonData

@@ -2,7 +2,7 @@ package tech.unfaehig_industries.tooz.araction.radial_views
 
 import android.content.Context
 import android.view.LayoutInflater
-import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
+import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierLayout
 import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuLayoutBinding
 import tech.unfaehig_industries.tooz.radial_menu.RadialMenu
 import tooz.bto.toozifier.Toozifier

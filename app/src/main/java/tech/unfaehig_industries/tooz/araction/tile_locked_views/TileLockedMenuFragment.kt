@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import tech.unfaehig_industries.tooz.araction.BaseToozifierFragment
+import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.TileLockedMenuFragmentBinding
 import tech.unfaehig_industries.tooz.araction.tile_menu.TileActionButtonData
 import tech.unfaehig_industries.tooz.araction.tile_menu.TileButtonData

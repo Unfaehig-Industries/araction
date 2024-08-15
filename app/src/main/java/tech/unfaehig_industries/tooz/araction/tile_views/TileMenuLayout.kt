@@ -3,7 +3,7 @@ package tech.unfaehig_industries.tooz.araction.tile_views
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.TextView
-import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
+import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierLayout
 import tech.unfaehig_industries.tooz.araction.databinding.TileMenuLayoutBinding
 import tech.unfaehig_industries.tooz.araction.tile_menu.TileMenu
 import tooz.bto.toozifier.Toozifier

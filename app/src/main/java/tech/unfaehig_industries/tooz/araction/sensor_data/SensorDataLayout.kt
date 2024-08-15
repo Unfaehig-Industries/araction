@@ -3,7 +3,7 @@ package tech.unfaehig_industries.tooz.araction.sensor_data
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.TextView
-import tech.unfaehig_industries.tooz.araction.BaseToozifierLayout
+import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierLayout
 import tech.unfaehig_industries.tooz.araction.SafeSensorReading
 import tech.unfaehig_industries.tooz.araction.databinding.SensorDataLayoutBinding
 import tech.unfaehig_industries.tooz.araction.roundDecimal

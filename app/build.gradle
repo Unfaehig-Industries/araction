@@ -56,6 +56,7 @@ dependencies {
     implementation project(path: ':phone_tracking')
     implementation project(path: ':tooz_IMU_tracking')
     implementation project(path: ':radial_menu')
+    implementation project(path: ':tooz_base_application')
 
     testImplementation 'junit:junit:4.13.2'
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
