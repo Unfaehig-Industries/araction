@@ -74,13 +74,13 @@ Due to this reliability limit of the glasses we decided to use the IMU of the co
 
 ## Architecture
 
-#### tooz software architecture
+### tooz software architecture
 
 The araction-app is a so called *toozer* and communicates with the *tooz Control App* through Inter Process Communication (IPC) by using a library provided by *tooz*.
 
 ![bto_components.png](assets/bto_components.png)
 
-#### araction software architecture
+### araction software architecture
 
 The araction app consists of multiple packages that each comprise a certain feature.
 
@@ -94,7 +94,7 @@ The araction app also includes multiple examples, that were used to experiment w
 
 ![tooz Komponenten (3).png](assets/araction_components.png)
 
-##### Radial menu package
+#### Radial menu package
 
 The radial menu package includes the components of the menu, as well as the BaseToozifierFragment and BaseToozifierLayout (see [here](#Base-fragment-and-layout)).
 
@@ -109,7 +109,7 @@ When creating the radial menu, RadialMenuData needs to be provided. This consist
 - The RadialSubmenuButtonData includes a submenu of RadialMenuData, which is the menu, that is displayed if this button is triggered.
 - The RadialBackButtonData creates a back button, that move the menu up one layer if triggered.
 
-##### Tile menu package
+#### Tile menu package
 
 The tile menu package includes the two provided menus, the components they are based around, as well as the BaseToozifierFragment and BaseToozifierLayout (see [here](#Base-fragment-and-layout)).
 
@@ -122,12 +122,13 @@ Both menus are only two dimensional. If a submenu is opened, the new tiles are l
 
 The menu is created with an Array of the abstract TileButtonData, which has a label and color. It is extended by TileActionButtonData and TileSubmenuButtonData. TileActionButtonData additionaly has a callback function, while TileSubmenuButtonData has an array of further TileButtonData.
 
-##### Base fragment and layout
+#### Base application package
 
 These provide base behavior that can be overriden.
 
-The BaseToozifierLayout controls sending the view to the *tooz* AR glasses, by starting a loop where it constantly sends a new frame to the *tooz* AR glasses and then waits for a preset delay.
+The BaseApplication just creates a toozifier instance, that can then be used from the views.
 
+The BaseToozifierLayout controls sending the view to the *tooz* AR glasses, by starting a loop where it constantly sends a new frame to the *tooz* AR glasses and then waits for a preset delay.
 The BaseToozifierFragment controls registering with the *tooz* AR glasses, interacting with the tracking package and how the view is shown on the phone screen.
 
 Both should be extended with menu specific classes, where the following methods should be overriden:
@@ -139,7 +140,7 @@ Both should be extended with menu specific classes, where the following methods 
   - TrackingEventManager should be initialized
 - onDestroyView, where the hover jobs of both menus in the binding and layout should be stopped
 
-##### tracking packages
+#### Tracking packages
 
 The TrackingEventManager class (tooz_imu_tracking or phone_tracking) provides a SensorDataCallback interface which needs to be implemented when instantiating the class. A SensorDataCallback consists of two callback methods, one for handling a tracking update and one to notify about an update of the sensor accuracy.  
   
