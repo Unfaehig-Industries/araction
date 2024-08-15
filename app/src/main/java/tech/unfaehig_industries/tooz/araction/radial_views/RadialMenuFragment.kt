@@ -45,17 +45,16 @@ class RadialMenuFragment : BaseToozifierFragment() {
 
         //Initialize RadialMenu
         val main = RadialActionButtonData(String(Character.toChars(0x274C)), Color.parseColor("#808080"), {Timber.d("Callback called")})
-        val main2 = RadialBackButtonData(String(Character.toChars(0x274C)), Color.parseColor("#e5e5e5"))
-        val main3 = RadialBackButtonData(String(Character.toChars(0x2f4C)), Color.parseColor("#e5e5e5"))
+        val main2 = RadialBackButtonData(String(Character.toChars(0x2B05)), Color.parseColor("#e5e5e5"))
+        val main3 = RadialBackButtonData(String(Character.toChars(0x2B05)), Color.parseColor("#e5e5e5"))
         val subMenu = RadialMenuData(main2, arrayOf(
-            RadialActionButtonData(String(Character.toChars(0x1F1A1)), Color.parseColor("#e5e5e5"), {Timber.d("Callback called")}),
-            RadialActionButtonData(String(Character.toChars(0x1F579)), Color.parseColor("#18281a"), {Timber.d("Callback called")}),
-            RadialActionButtonData(String(Character.toChars(0x1B4CE)), Color.parseColor("#355ce8"), {Timber.d("Callback called")})
+            RadialActionButtonData(String(Character.toChars(0x1F4CF)), Color.parseColor("#e5e5e5"), {Timber.d("Callback called")}),
+            RadialActionButtonData(String(Character.toChars(0x1F579)), Color.parseColor("#18281a"), {Timber.d("Callback called")})
         ))
         val subMenu2 = RadialMenuData(main3, arrayOf(
-            RadialSubmenuButtonData(String(Character.toChars(0x1F1A1)), Color.parseColor("#e5d5f5"), subMenu),
+            RadialSubmenuButtonData(String(Character.toChars(0x1F4CF)), Color.parseColor("#e5d5f5"), subMenu),
             RadialActionButtonData(String(Character.toChars(0x1F579)), Color.parseColor("#1a281a"), {Timber.d("Callback called")}),
-            RadialActionButtonData(String(Character.toChars(0x1B4CE)), Color.parseColor("#D55ce8"), {Timber.d("Callback called")})
+            RadialActionButtonData(String(Character.toChars(0x1F4CB)), Color.parseColor("#D55ce8"), {Timber.d("Callback called")})
         ))
         val radials = arrayOf(
             RadialSubmenuButtonData(String(Character.toChars(0x2699)), Color.parseColor("#00CCA3"), subMenu2),
