@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import tech.unfaehig_industries.tooz.phone_tracking.SensorDataCallback
 import tech.unfaehig_industries.tooz.phone_tracking.TrackingEventManager
-import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierFragment
+import tech.unfaehig_industries.tooz.tooz_base_application.BaseToozifierFragment
 import tech.unfaehig_industries.tooz.araction.databinding.RadialMenuFragmentBinding
 import tech.unfaehig_industries.tooz.radial_menu.RadialActionButtonData
 import tech.unfaehig_industries.tooz.radial_menu.RadialBackButtonData

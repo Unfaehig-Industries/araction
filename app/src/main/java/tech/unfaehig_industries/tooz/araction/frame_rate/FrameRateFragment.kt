@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import tech.unfaehig_industries.tooz.tooz_base_views.BaseApplication
-import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierFragment.Companion.BUTTON_EVENT
-import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierFragment.Companion.SENSOR_EVENT
-import tech.unfaehig_industries.tooz.tooz_base_views.BaseToozifierFragment.Companion.TOOZ_EVENT
+import tech.unfaehig_industries.tooz.tooz_base_application.BaseApplication
+import tech.unfaehig_industries.tooz.tooz_base_application.BaseToozifierFragment.Companion.BUTTON_EVENT
+import tech.unfaehig_industries.tooz.tooz_base_application.BaseToozifierFragment.Companion.SENSOR_EVENT
+import tech.unfaehig_industries.tooz.tooz_base_application.BaseToozifierFragment.Companion.TOOZ_EVENT
 import tech.unfaehig_industries.tooz.araction.R
 import tech.unfaehig_industries.tooz.araction.databinding.FrameRateFragmentBinding
 import timber.log.Timber
